@@ -29,6 +29,20 @@ template LegeBebouwingsComponent
 		attribute<pand_asl>                           pand_aandeel       : [];
 		attribute<string>                             label              : [];
 
+		//initial state
+		attribute<Classifications/Schillabel>         SchilLabel_rel     : [];
+		attribute<Classifications/WarmteOptie>        WarmteOptie_rel    : [];
+		container InstallatiePerProduct := for_each_nedv(Classifications/Product/name
+			, 'DataArray(.., Classifications/Installatie, ''[]'')'
+			, ., Classifications/Installatie
+		)
+		{
+			attribute<Classifications/Installatie> Dak (..) : []; //TODO_OV
+		}
+		attribute<Classifications/AfgifteSysteem> AfgifteSysteem_rel : [];
+		attribute<UInt32>                   AfnameGebied_rel   : [];
+		attribute<Classifications/GebouwOptie>    GebouwOptie_rel    : []; // REMOVE, OBSOLETE, vervangen door Schillabel_rel, InstallatiePerProduct en GebiedsOptie
+		
 		container Criteria;
 
 		container Gebied

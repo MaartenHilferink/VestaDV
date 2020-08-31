@@ -5,10 +5,10 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 container PlanregioResults
-{
+{   
 	attribute<nrWoning> nrWEQ    (Planregio) :=
-		  sum(bebouwing/BestaandeWoning/nrAansluitingen / 1.0[nrAsl / nrWoning], bebouwing/BestaandeWoning/Planregio_rel)
-		+ sum(bebouwing/BestaandeUtil/Oppervlakte / 130[m2 / nrWoning], bebouwing/BestaandeUtil/Planregio_rel);
+		  sum(bebouwing/BestaandeWoning/nrAansluitingen / 1.0[nrAsl / nrWoning], bebouwing/BestaandeWoning/Planregio_rel) + sum(bebouwing/NieuwbouwWoning/nrAansluitingen / 1.0[nrAsl / nrWoning], bebouwing/NieuwbouwWoning/Planregio_rel)
+		+ sum(bebouwing/BestaandeUtil/Oppervlakte / 130[m2 / nrWoning], bebouwing/BestaandeUtil/Planregio_rel) + sum(bebouwing/NieuwbouwUtil/Oppervlakte / 130[m2 / nrWoning], bebouwing/NieuwbouwUtil/Planregio_rel);
 	attribute<ratio>      R_StadV  (Planregio) := Invoer/RuimtelijkeData/StudieGebied/buurt/R_StadV;
 	attribute<ratio>      R_AardG  (Planregio) := 1D - R_StadV;
 	attribute<string>     IsWater  (Planregio) := Invoer/RuimtelijkeData/StudieGebied/buurt/IsWater;
@@ -40,14 +40,13 @@ container PlanregioResults
 			attribute<nrWoning> nrWEQ   := .../nrWEQ;
 			attribute<ratio>    R_StadV := .../R_StadV;
 			attribute<GJ_yr>    VraagH2 := StateNaAllocatie/Totaal/Verbruik/V_H2;
-			attribute<GJ_yr>    VraagGG := 
-				(Statisch/IsUitgesloten || nrWEQ == 0[nrWoning])
+			attribute<GJ_yr>    VraagGG := =
+				'(Statisch/IsUitgesloten || !GroenGas || nrWEQ == 0[nrWoning])
 					? 0[GJ_yr] 
 					: MakeDefined(
-							  R_AardG * sum(Allocatie/BestaandeWoning/metervraag/Aardgas, bebouwing/BestaandeWoning/PlanRegio_rel)
-							+ R_AardG * sum(Allocatie/BestaandeUtil/metervraag/Aardgas  , bebouwing/BestaandeUtil/PlanRegio_rel)
+							  add('+AsItemList('R_AardG * sum(Allocatie/'+Classifications/BebouwingsComponent/name+'/metervraag/Aardgas, bebouwing/'+Classifications/BebouwingsComponent/name+'/PlanRegio_rel)')+')
 						,0[GJ_yr]
-					 ) * GroenGasFactor;
+					 )';
 			attribute<string> Uitgesloten := string(Statisch/IsUitgesloten);
 			attribute<string> IsOngeldig    := string(Checks/s3GeenLT || Checks/s2GeenMT || Statisch/IsUitgesloten);
 
@@ -140,8 +139,8 @@ container PlanregioResults
 			attribute<string>   I06_gemeentenaam       := IsUitgesloten ? 'UITGESLOTEN' : replace(Invoer/RuimtelijkeData/StudieGebied/buurt/GM_NAAM, ',' , '');
 			attribute<string>   I07_energieregionaam   := IsUitgesloten ? 'UITGESLOTEN' : replace(Invoer/RuimtelijkeData/StudieGebied/buurt/ER_NAAM, ',' , '');
 			attribute<string>   I08_provincienaam      := IsUitgesloten ? 'UITGESLOTEN' : replace(Invoer/RuimtelijkeData/StudieGebied/buurt/PROV_NAAM, ',' , '');
-			attribute<nrAsl>    I09_aantal_woningen    := IsUitgesloten ? 0[nrAsl]      : roundUp(sum(bebouwing/BestaandeWoning/nrAansluitingen, bebouwing/BestaandeWoning/PlanRegio_rel))[nrAsl];
-			attribute<nrAsl>    I10_aantal_utiliteit   := IsUitgesloten ? 0[nrAsl]      : roundUp(sum(bebouwing/BestaandeUtil/nrAansluitingen  , bebouwing/BestaandeUtil/PlanRegio_rel))[nrAsl];
+			attribute<nrAsl>    I09_aantal_woningen    := IsUitgesloten ? 0[nrAsl]      : roundUp(sum(bebouwing/BestaandeWoning/nrAansluitingen, bebouwing/BestaandeWoning/PlanRegio_rel) + sum(bebouwing/NieuwbouwWoning/nrAansluitingen, bebouwing/NieuwbouwWoning/PlanRegio_rel))[nrAsl];
+			attribute<nrAsl>    I10_aantal_utiliteit   := IsUitgesloten ? 0[nrAsl]      : roundUp(sum(bebouwing/BestaandeUtil/nrAansluitingen  , bebouwing/BestaandeUtil/PlanRegio_rel)   + sum(bebouwing/NieuwbouwUtil/nrAansluitingen  , bebouwing/NieuwbouwUtil/PlanRegio_rel))[nrAsl];
 			attribute<nrWoning> I11_woningequivalenten := IsUitgesloten ? 0[nrwoning]   : roundUp(nrWEQ)[nrWoning]; //130m2 utiliteit = 1 WEQ
 
 			attribute<ton_yr>   I12_CO2_startjaar      :=
@@ -170,7 +169,6 @@ container PlanregioResults
 	//dynamische indicatoren op hoofdlijnen
 	container Hoofdindicatoren
 	{
-
 		unit<uint32> extensief := Invoer/DefaultInstellingen/Basis/PlanRegio
 		{
 			attribute<bool> IsOngeldig := Hulpvariabelen/Checks/s3GeenLT || Hulpvariabelen/Checks/s2GeenMT ||
@@ -179,32 +177,29 @@ container PlanregioResults
 			// VRAAG
 			attribute<GJ_yr> H01_Vraag_totaal := add(H02_Vraag_RV, H03_Vraag_TW, H04_Vraag_Vent, H05_Vraag_K, H06_Vraag_App);
 
-			attribute<GJ_yr> H02_Vraag_RV := IsOngeldig
+			attribute<GJ_yr> H02_Vraag_RV := ='IsOngeldig
 				? (0/0)[GJ_yr]
 				: (Statisch/IsUitgesloten || nrWEQ == 0[nrWoning])
 					? 0[GJ_yr]
 					: MakeDefined(
-						  sum(Allocatie/BestaandeWoning/BO/Functioneel/V_RV, bebouwing/BestaandeWoning/PlanRegio_rel)
-						+ sum(Allocatie/BestaandeUtil/BO/Functioneel/V_RV  , bebouwing/BestaandeUtil/PlanRegio_rel)
-						, 0[GJ_yr]);
+						add('+AsItemList('sum(Allocatie/'+Classifications/BebouwingsComponent/name+'/BO/Functioneel/V_RV, bebouwing/'+Classifications/BebouwingsComponent/name+'/PlanRegio_rel)')+')
+						, 0[GJ_yr])';
 
-			attribute<GJ_yr> H03_Vraag_TW := IsOngeldig
+			attribute<GJ_yr> H03_Vraag_TW := ='IsOngeldig
 				? (0/0)[GJ_yr]
 				: (Statisch/IsUitgesloten || nrWEQ == 0[nrWoning])
 					? 0[GJ_yr]
 					: MakeDefined(
-						  sum(Allocatie/BestaandeWoning/BO/Functioneel/V_TW, bebouwing/BestaandeWoning/PlanRegio_rel)
-						+ sum(Allocatie/BestaandeUtil/BO/Functioneel/V_TW  , bebouwing/BestaandeUtil/PlanRegio_rel)
-						,0[GJ_yr]);
+						add('+AsItemList('sum(Allocatie/'+Classifications/BebouwingsComponent/name+'/BO/Functioneel/V_TW, bebouwing/'+Classifications/BebouwingsComponent/name+'/PlanRegio_rel)')+')
+						,0[GJ_yr])';
 
-			attribute<GJ_yr> H04_Vraag_Vent := IsOngeldig
+			attribute<GJ_yr> H04_Vraag_Vent := ='IsOngeldig
 				? (0/0)[GJ_yr]
 				: (Statisch/IsUitgesloten || nrWEQ == 0[nrWoning])
 					? 0[GJ_yr]
 					: MakeDefined(
-						  sum(Allocatie/BestaandeWoning/BO/Functioneel/V_Vent, bebouwing/BestaandeWoning/PlanRegio_rel)
-						+ sum(Allocatie/BestaandeUtil/BO/Functioneel/V_Vent  , bebouwing/BestaandeUtil/PlanRegio_rel)
-						,0[GJ_yr]);
+						add('+AsItemList('sum(Allocatie/'+Classifications/BebouwingsComponent/name+'/BO/Functioneel/V_Vent, bebouwing/'+Classifications/BebouwingsComponent/name+'/PlanRegio_rel)')+')
+						,0[GJ_yr])';
 
 			attribute<GJ_yr> H05_Vraag_K := IsOngeldig
 				? (0/0)[GJ_yr]
@@ -213,16 +208,17 @@ container PlanregioResults
 					: MakeDefined(
 						  sum(Allocatie/BestaandeWoning/BO/Functioneel/V_K * float64(Allocatie/BestaandeWoning/aandelen/WKO), bebouwing/BestaandeWoning/PlanRegio_rel)
 						+ sum(Allocatie/BestaandeUtil/BO/Functioneel/V_K                                                    , bebouwing/BestaandeUtil/PlanRegio_rel)
+						+ sum(Allocatie/NieuwbouwWoning/BO/Functioneel/V_K * float64(Allocatie/NieuwbouwWoning/aandelen/WKO), bebouwing/NieuwbouwWoning/PlanRegio_rel)
+						+ sum(Allocatie/NieuwbouwUtil/BO/Functioneel/V_K                                                    , bebouwing/NieuwbouwUtil/PlanRegio_rel)
 						,0[GJ_yr]);
 
-			attribute<GJ_yr> H06_Vraag_App := IsOngeldig 
+			attribute<GJ_yr> H06_Vraag_App := ='IsOngeldig 
 				? (0/0)[GJ_yr]
 				: (Statisch/IsUitgesloten || nrWEQ == 0[nrWoning])
 					? 0[GJ_yr]
 					: MakeDefined(
-						  sum(Allocatie/BestaandeWoning/BO/Functioneel/V_App, bebouwing/BestaandeWoning/PlanRegio_rel)
-						+ sum(Allocatie/BestaandeUtil/BO/Functioneel/V_App  , bebouwing/BestaandeUtil/PlanRegio_rel)
-						,0[GJ_yr]);
+						add('+AsItemList('sum(Allocatie/'+Classifications/BebouwingsComponent/name+'/BO/Functioneel/V_App, bebouwing/'+Classifications/BebouwingsComponent/name+'/PlanRegio_rel)')+')
+						,0[GJ_yr])';
 
 			// INPUTS
 			attribute<GJ_yr> H08_Input_totaal := H09_Input_aardgas + H10_Input_duurzaamgas + H11_Input_elektriciteit + H12_input_MTwarmtebronnen + H13_input_LTwarmtebronnen + H14_Saldo_Omgevingswarmte;
@@ -232,7 +228,6 @@ container PlanregioResults
 				: (Statisch/IsUitgesloten || nrWEQ == 0[nrWoning])
 					? 0[GJ_yr]
 					: MakeDefined(
-						  R_AardG * sum(Allocatie/BestaandeWoning/metervraag/Aardgas, bebouwing/BestaandeWoning/PlanRegio_rel)
 						+ R_AardG * sum(Allocatie/BestaandeUtil/metervraag/Aardgas  , bebouwing/BestaandeUtil/PlanRegio_rel)
 						+ R_AardG * StateNaAllocatie/totaal/verbruik/V_id_gas
 						+ R_AardG * StateNaAllocatie/totaal/verbruik/V_wd_gas
@@ -254,27 +249,26 @@ container PlanregioResults
 						+ WarmteBestaand/V_Bijstook
 					 ,0[GJ_yr]) * GroenGasFactor;
 
-			attribute<GJ_yr> H11_Input_elektriciteit := IsOngeldig
+			attribute<GJ_yr> H11_Input_elektriciteit := ='IsOngeldig
 				? (0/0)[GJ_yr]
 				: (Statisch/IsUitgesloten || nrWEQ == 0[nrWoning])
 					? 0[GJ_yr]
 					: MakeDefined(
-						  R_AardG * sum(Allocatie/BestaandeWoning/metervraag/Elektriciteit, bebouwing/BestaandeWoning/PlanRegio_rel)
-						+ R_AardG * sum(Allocatie/BestaandeUtil/metervraag/Elektriciteit, bebouwing/BestaandeUtil/PlanRegio_rel)
+						add('+AsItemList('R_AardG * sum(Allocatie/'+Classifications/BebouwingsComponent/name+'/metervraag/Elektriciteit, bebouwing/'+Classifications/BebouwingsComponent/name+'/PlanRegio_rel)')+')
 						+ R_AardG * StateNaAllocatie/totaal/verbruik/V_id_elek
 						+ R_AardG * StateNaAllocatie/totaal/verbruik/V_wd_elek
 						+ R_AardG * StateNaAllocatie/totaal/verbruik/V_ow_elek
 						+ WarmteBestaand/V_wd_elek
 						+ WarmteBestaand/V_elek_w
 						+ WarmteBestaand/V_elek_u
-					 ,0[GJ_yr]);
+					 ,0[GJ_yr])';
 
 			attribute<GJ_yr> H12_input_MTwarmtebronnen := IsOngeldig
 				? (0/0)[GJ_yr]
 				: (Statisch/IsUitgesloten || nrWEQ == 0[nrWoning])
 					? 0[GJ_yr]
 					: MakeDefined(
-						(sum(Allocatie/BestaandeWoning/metervraag/Warmte_LT, bebouwing/BestaandeWoning/PlanRegio_rel) > 0[GJ_yr]
+						(sum(Allocatie/BestaandeWoning/metervraag/Warmte_LT, bebouwing/BestaandeWoning/PlanRegio_rel) + sum(Allocatie/NieuwbouwWoning/metervraag/Warmte_LT, bebouwing/NieuwbouwWoning/PlanRegio_rel) > 0[GJ_yr]
 							? 0[GJ_yr]
 							:
 							  R_AardG * StateNaAllocatie/Totaal/Verbruik/V_warmte
@@ -289,7 +283,7 @@ container PlanregioResults
 				: (Statisch/IsUitgesloten || nrWEQ == 0[nrWoning])
 					? 0[GJ_yr]
 					: MakeDefined(
-						sum(Allocatie/BestaandeWoning/metervraag/Warmte_LT, bebouwing/BestaandeWoning/PlanRegio_rel) > 0[GJ_yr]
+						sum(Allocatie/BestaandeWoning/metervraag/Warmte_LT, bebouwing/BestaandeWoning/PlanRegio_rel) + sum(Allocatie/NieuwbouwWoning/metervraag/Warmte_LT, bebouwing/NieuwbouwWoning/PlanRegio_rel) > 0[GJ_yr]
 							? R_AardG * StateNaAllocatie/Totaal/Verbruik/V_warmte 
 							: 0[GJ_yr]
 					 ,0[GJ_yr]);
@@ -696,15 +690,14 @@ container PlanregioResults
 							,0[nrAsl]) * (1.0 - GroenGasFactor)
 				)[nrAsl];
 
-			attribute<nrAsl> A02_Aansl_eWP :=
+			attribute<nrAsl> A02_Aansl_eWP := ='
 				round(
 					Statisch/IsUitgesloten
 						? 0[nrAsl]
 						: MakeDefined(
-							   R_AardG * Allocatie/BestaandeWoning/Aansluitingen/Enet_ewp
-							 + R_AardG * Allocatie/BestaandeUtil/Aansluitingen/Enet_ewp
+							add('+AsItemList('R_AardG * Allocatie/'+Classifications/BebouwingsComponent/name+'/Aansluitingen/Enet_ewp')+')
 							,0[nrAsl])
-				)[nrAsl];
+				)[nrAsl]';
 
 			attribute<nrAsl> A03_Aansl_MT :=
 				round(
@@ -737,26 +730,25 @@ container PlanregioResults
 							,0[nrAsl])
 				)[nrAsl];
 
-			attribute<nrAsl> A05_Aansl_hWP_HG :=
+			attribute<nrAsl> A05_Aansl_hWP_HG := ='
 				round(
 					Statisch/IsUitgesloten
 							? 0[nrAsl]
 							: MakeDefined(
-								   R_AardG * Allocatie/BestaandeUtil/Aansluitingen/Enet_hwp
-								 + R_AardG * Allocatie/BestaandeWoning/Aansluitingen/Enet_hwp
+								add('+AsItemList('R_AardG * Allocatie/'+Classifications/BebouwingsComponent/name+'/Aansluitingen/Enet_hwp')+')
 								,0[nrAsl])
-				)[nrAsl];
+				)[nrAsl]';
 
-			attribute<nrAsl> A06_Aansl_HR_HG :=
+			attribute<nrAsl> A06_Aansl_HR_HG := ='
 				round(
 					(Statisch/IsUitgesloten)
 							? 0[nrAsl]
 							: MakeDefined(
-								   R_AardG * sum(Allocatie/BestaandeUtil/BO/Aansluitingen/Gnet   * float64(Allocatie/BestaandeUtil/BO/Aansluitingen/Enet_hwp   == 0[nrAsl]), Allocatie/BestaandeUtil/BO/Planregio_rel)
-								 + R_AardG * sum(Allocatie/BestaandeWoning/BO/Aansluitingen/Gnet * float64(Allocatie/BestaandeWoning/BO/Aansluitingen/Enet_hwp == 0[nrAsl]), Allocatie/BestaandeWoning/BO/Planregio_rel)
+								add('+AsItemList('R_AardG * sum(Allocatie/'+Classifications/BebouwingsComponent/name+'/BO/Aansluitingen/Gnet * float64(Allocatie/'+Classifications/BebouwingsComponent/name+'/BO/Aansluitingen/Enet_hwp   == 0[nrAsl])
+									, Allocatie/'+Classifications/BebouwingsComponent/name+'/BO/Planregio_rel)')+')
 								 + R_AardG * StateNaAllocatie/nrAansluitinging/WaterstofHR
 								,0[nrAsl]) * GroenGasFactor
-				)[nrAsl];
+				)[nrAsl]';
 		}
 		parameter<string> RefExpr := isStap0 ? 'Ref_2019_' : isReferentie ? 'Ref_2030_' : '%configName%/';
 

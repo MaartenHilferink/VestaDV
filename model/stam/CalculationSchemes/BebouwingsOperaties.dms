@@ -38,67 +38,87 @@ container BebouwingsOperaties
 		unit<uint32> Bestaand;
 		unit<uint32> Nieuwbouw;
 		// end case parameters
-
+		
+		// TODO MTA : Waaar? container StartNieuwbouwState :=  CalculationSchemes/StartingStateComponent ( NieuwbouwZOnderState, Kengetallen, BebouwingsComponent_rel )
+		unit<uint32> EchtNieuw := subset(!IsDefined(rlookup(Nieuwbouw/code, Bestaand/code)));
+		
 		unit<uint8> ModelObjectKeyDomein;
 
-		unit<uint32> result := union_unit(Bestaand, Nieuwbouw)
+		unit<uint32> result := union_unit(Bestaand, EchtNieuw)
 		,	DialogType = "Map"
 		,	DialogData = "geometry"
 		{
-			attribute<Geography/rdc_meter> point    := union_data(., Bestaand/point, Nieuwbouw/point);
+			attribute<Geography/rdc_meter> point    := union_data(., Bestaand/point, Nieuwbouw/point[EchtNieuw/nr_OrgEntity]);
 			attribute<Geography/rdc_meter> geometry := point;
-			attribute<string>              code     := union_data(., Bestaand/code,  Nieuwbouw/code);
-			attribute<string>              label    := union_data(., Bestaand/label, Nieuwbouw/label), DialogType = "labelText";
+			attribute<string>              code     := union_data(., Bestaand/code,  Nieuwbouw/code [EchtNieuw/nr_OrgEntity]);
+			attribute<string>              label    := union_data(., Bestaand/label, Nieuwbouw/label[EchtNieuw/nr_OrgEntity]), DialogType = "labelText";
 
 			attribute<Invoer/SpecifiekeInstellingen/PlanRegio> PlanRegio_rel := point_in_polygon(point, Invoer/SpecifiekeInstellingen/PlanRegio/geometry), FreeData = "False";
 
 			unit<uint8> BebouwingsTypeDomein := Bestaand/BebouwingsTypeDomein;
 
-			attribute<Invoer/RuimtelijkeData/StudieGebied/buurt> buurt_rel   := union_data(., Bestaand/buurt_rel        , Nieuwbouw/buurt_rel);
-			attribute<BebouwingsTypeDomein>                BebouwingsType    := union_data(., Bestaand/BebouwingsType   , Nieuwbouw/BebouwingsType);
-			attribute<Classifications/BouwJaar>            Bouwjaar          := union_data(., Bestaand/Bouwjaar         , Nieuwbouw/Bouwjaar);
-			attribute<ModelObjectKeyDomein>                ModelObjectKey    := union_data(., Bestaand/ModelObjectKey   , Nieuwbouw/ModelObjectKey);
-			attribute<nrAsl>                               nrAansluitingen_i := union_data(., Bestaand/nrAansluitingen_i, Nieuwbouw/nrAansluitingen_i);
-			attribute<m2>                                  Oppervlakte_i     := union_data(., Bestaand/Oppervlakte_i    , Nieuwbouw/Oppervlakte_i);
-			attribute<pand_asl>                            pand_aandeel      := union_data(., Bestaand/pand_aandeel     , Nieuwbouw/pand_aandeel);
+			attribute<Invoer/RuimtelijkeData/StudieGebied/buurt> buurt_rel   := union_data(., Bestaand/buurt_rel        , Nieuwbouw/buurt_rel        [EchtNieuw/nr_OrgEntity]);
+			attribute<BebouwingsTypeDomein>                BebouwingsType    := union_data(., Bestaand/BebouwingsType   , Nieuwbouw/BebouwingsType   [EchtNieuw/nr_OrgEntity]);
+			attribute<Classifications/BouwJaar>            Bouwjaar          := union_data(., Bestaand/Bouwjaar         , Nieuwbouw/Bouwjaar         [EchtNieuw/nr_OrgEntity]);
+			attribute<ModelObjectKeyDomein>                ModelObjectKey    := union_data(., Bestaand/ModelObjectKey   , Nieuwbouw/ModelObjectKey   [EchtNieuw/nr_OrgEntity]);
+			attribute<nrAsl>                               nrAansluitingen_i := union_data(., Bestaand/nrAansluitingen_i, Nieuwbouw/nrAansluitingen_i[EchtNieuw/nr_OrgEntity]);
+			attribute<m2>                                  Oppervlakte_i     := union_data(., Bestaand/Oppervlakte_i    , Nieuwbouw/Oppervlakte_i    [EchtNieuw/nr_OrgEntity]);
+			attribute<pand_asl>                            pand_aandeel      := union_data(., Bestaand/pand_aandeel     , Nieuwbouw/pand_aandeel     [EchtNieuw/nr_OrgEntity]);
 
+			// State variables
+			unit<uint32>  AfnameGebied         := PrevState/AfnameGebied;
+
+			attribute<Classifications/Schillabel>  Schillabel_rel  := union_data(., Bestaand/Schillabel_rel , Nieuwbouw/Schillabel_rel [EchtNieuw/nr_OrgEntity]);
+			attribute<Classifications/WarmteOptie> WarmteOptie_rel := union_data(., Bestaand/WarmteOptie_rel, Nieuwbouw/WarmteOptie_rel[EchtNieuw/nr_OrgEntity]);
+
+			container InstallatiePerProduct := for_each_nedv(Classifications/Product/name
+				, replace('union_data(.., Bestaand/InstallatiePerProduct/@P, Nieuwbouw/InstallatiePerProduct/@P[EchtNieuw/nr_OrgEntity])','@P',Classifications/Product/name)
+				, ., Classifications/Installatie
+			)
+			{
+				attribute<Classifications/Installatie> Dak (..) := const(Classifications/Installatie/V/geen, BO); //TODO_OV
+			}
+
+			attribute<Classifications/AfgifteSysteem> AfgifteSysteem_rel := union_data(., Bestaand/AfgifteSysteem_rel, Nieuwbouw/AfgifteSysteem_rel[EchtNieuw/nr_OrgEntity]);
+			attribute<AfnameGebied>                   AfnameGebied_rel   := union_data(., Bestaand/AfnameGebied_rel,   Nieuwbouw/AfnameGebied_rel  [EchtNieuw/nr_OrgEntity]);
+			// attribute<Classifications/GebouwOptie>    GebouwOptie_rel    := union_data(., Bestaand/GebouwOptie_rel,    Nieuwbouw/GebouwOptie_rel   [EchtNieuw/nr_OrgEntity]); // REMOVE, OBSOLETE, vervangen door Schillabel_rel, InstallatiePerProduct en GebiedsOptie
+			
 			container Gebied
 			{
-				attribute<float64> n      (..) := union_data(.., Bestaand/Gebied/n,      Nieuwbouw/Gebied/n);
-				attribute<float64> MEAN_x (..) := union_data(.., Bestaand/Gebied/MEAN_x, Nieuwbouw/Gebied/MEAN_x);
-				attribute<float64> MEAN_y (..) := union_data(.., Bestaand/Gebied/MEAN_y, Nieuwbouw/Gebied/MEAN_y);
-				attribute<float64> SSD_xx (..) := union_data(.., Bestaand/Gebied/SSD_xx, Nieuwbouw/Gebied/SSD_xx);
-				attribute<float64> SSD_xy (..) := union_data(.., Bestaand/Gebied/SSD_xy, Nieuwbouw/Gebied/SSD_xy);
-				attribute<float64> SSD_yy (..) := union_data(.., Bestaand/Gebied/SSD_yy, Nieuwbouw/Gebied/SSD_yy);
+				attribute<float64> n      (..) := union_data(.., Bestaand/Gebied/n,      Nieuwbouw/Gebied/n     [EchtNieuw/nr_OrgEntity]);
+				attribute<float64> MEAN_x (..) := union_data(.., Bestaand/Gebied/MEAN_x, Nieuwbouw/Gebied/MEAN_x[EchtNieuw/nr_OrgEntity]);
+				attribute<float64> MEAN_y (..) := union_data(.., Bestaand/Gebied/MEAN_y, Nieuwbouw/Gebied/MEAN_y[EchtNieuw/nr_OrgEntity]);
+				attribute<float64> SSD_xx (..) := union_data(.., Bestaand/Gebied/SSD_xx, Nieuwbouw/Gebied/SSD_xx[EchtNieuw/nr_OrgEntity]);
+				attribute<float64> SSD_xy (..) := union_data(.., Bestaand/Gebied/SSD_xy, Nieuwbouw/Gebied/SSD_xy[EchtNieuw/nr_OrgEntity]);
+				attribute<float64> SSD_yy (..) := union_data(.., Bestaand/Gebied/SSD_yy, Nieuwbouw/Gebied/SSD_yy[EchtNieuw/nr_OrgEntity]);
 			}
 
 			container Kapitaallasten
 			{
 				//Aansluitbijdrages
-				attribute<Eur_yr> Kji_Asl_Enet (..) := union_data(.., Bestaand/Kapitaallasten/Kji_Asl_Enet, Nieuwbouw/Kapitaallasten/Kji_Asl_Enet);
-				attribute<Eur_yr> Kmi_Asl_Enet (..) := union_data(.., Bestaand/Kapitaallasten/Kmi_Asl_Enet, Nieuwbouw/Kapitaallasten/Kmi_Asl_Enet);
-				attribute<Eur_yr> Kji_Asl_Gnet (..) := union_data(.., Bestaand/Kapitaallasten/Kji_Asl_Gnet, Nieuwbouw/Kapitaallasten/Kji_Asl_Gnet);
-				attribute<Eur_yr> Kmi_Asl_Gnet (..) := union_data(.., Bestaand/Kapitaallasten/Kmi_Asl_Gnet, Nieuwbouw/Kapitaallasten/Kmi_Asl_Gnet);
+				attribute<Eur_yr> Kji_Asl_Enet (..) := union_data(.., Bestaand/Kapitaallasten/Kji_Asl_Enet, Nieuwbouw/Kapitaallasten/Kji_Asl_Enet[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Kmi_Asl_Enet (..) := union_data(.., Bestaand/Kapitaallasten/Kmi_Asl_Enet, Nieuwbouw/Kapitaallasten/Kmi_Asl_Enet[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Kji_Asl_Gnet (..) := union_data(.., Bestaand/Kapitaallasten/Kji_Asl_Gnet, Nieuwbouw/Kapitaallasten/Kji_Asl_Gnet[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Kmi_Asl_Gnet (..) := union_data(.., Bestaand/Kapitaallasten/Kmi_Asl_Gnet, Nieuwbouw/Kapitaallasten/Kmi_Asl_Gnet[EchtNieuw/nr_OrgEntity]);
 
 				//Investeringen
-				attribute<Eur_yr> Kji30_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kji30_LO, Nieuwbouw/Kapitaallasten/Kji30_LO);
-				attribute<Eur_yr> Kmi30_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kmi30_LO, Nieuwbouw/Kapitaallasten/Kmi30_LO);
-				attribute<Eur_yr> Kji20_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kji20_LO, Nieuwbouw/Kapitaallasten/Kji20_LO);
-				attribute<Eur_yr> Kmi20_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kmi20_LO, Nieuwbouw/Kapitaallasten/Kmi20_LO);
-				attribute<Eur_yr> Kji15_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kji15_LO, Nieuwbouw/Kapitaallasten/Kji15_LO);
-				attribute<Eur_yr> Kmi15_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kmi15_LO, Nieuwbouw/Kapitaallasten/Kmi15_LO);
-				attribute<Eur_yr> Kji_gv   (..) := union_data(.., Bestaand/Kapitaallasten/Kji_gv,   Nieuwbouw/Kapitaallasten/Kji_gv  );
-				attribute<Eur_yr> Kmi_gv   (..) := union_data(.., Bestaand/Kapitaallasten/Kmi_gv,   Nieuwbouw/Kapitaallasten/Kmi_gv  );
-				attribute<Eur_yr> Kj_gv_incentive(..) := union_data(.., Bestaand/Kapitaallasten/Kj_gv_incentive,   Nieuwbouw/Kapitaallasten/Kj_gv_incentive  );
+				attribute<Eur_yr> Kji30_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kji30_LO, Nieuwbouw/Kapitaallasten/Kji30_LO[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Kmi30_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kmi30_LO, Nieuwbouw/Kapitaallasten/Kmi30_LO[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Kji20_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kji20_LO, Nieuwbouw/Kapitaallasten/Kji20_LO[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Kmi20_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kmi20_LO, Nieuwbouw/Kapitaallasten/Kmi20_LO[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Kji15_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kji15_LO, Nieuwbouw/Kapitaallasten/Kji15_LO[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Kmi15_LO (..) := union_data(.., Bestaand/Kapitaallasten/Kmi15_LO, Nieuwbouw/Kapitaallasten/Kmi15_LO[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Kji_gv   (..) := union_data(.., Bestaand/Kapitaallasten/Kji_gv,   Nieuwbouw/Kapitaallasten/Kji_gv  [EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Kmi_gv   (..) := union_data(.., Bestaand/Kapitaallasten/Kmi_gv,   Nieuwbouw/Kapitaallasten/Kmi_gv  [EchtNieuw/nr_OrgEntity]);
 
 				attribute<Eur_yr> Kji_LTAS (..) := union_data(.., Bestaand/Kapitaallasten/Kji_LTAS, Nieuwbouw/Kapitaallasten/Kji_LTAS);
 				attribute<Eur_yr> Kmi_LTAS (..) := union_data(.., Bestaand/Kapitaallasten/Kmi_LTAS, Nieuwbouw/Kapitaallasten/Kmi_LTAS);
 
 				//Subsidies
-				attribute<Eur_yr> Oji_s_LO_30 (..) := union_data(.., Bestaand/Kapitaallasten/Oji_s_LO_30, Nieuwbouw/Kapitaallasten/Oji_s_LO_30);
-				attribute<Eur_yr> Oji_s_LO_20 (..) := union_data(.., Bestaand/Kapitaallasten/Oji_s_LO_20, Nieuwbouw/Kapitaallasten/Oji_s_LO_20);
-				attribute<Eur_yr> Oji_s_LO_15 (..) := union_data(.., Bestaand/Kapitaallasten/Oji_s_LO_15, Nieuwbouw/Kapitaallasten/Oji_s_LO_15);
-				attribute<Eur_yr> Oji_s_gv    (..) := union_data(.., Bestaand/Kapitaallasten/Oji_s_gv,    Nieuwbouw/Kapitaallasten/Oji_s_gv);
+				attribute<Eur_yr> Oji_s_LO_30 (..) := union_data(.., Bestaand/Kapitaallasten/Oji_s_LO_30, Nieuwbouw/Kapitaallasten/Oji_s_LO_30[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Oji_s_LO_20 (..) := union_data(.., Bestaand/Kapitaallasten/Oji_s_LO_20, Nieuwbouw/Kapitaallasten/Oji_s_LO_20[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Oji_s_LO_15 (..) := union_data(.., Bestaand/Kapitaallasten/Oji_s_LO_15, Nieuwbouw/Kapitaallasten/Oji_s_LO_15[EchtNieuw/nr_OrgEntity]);
+				attribute<Eur_yr> Oji_s_gv    (..) := union_data(.., Bestaand/Kapitaallasten/Oji_s_gv,    Nieuwbouw/Kapitaallasten/Oji_s_gv   [EchtNieuw/nr_OrgEntity]);
 			}
 			container Criteria;
 		}

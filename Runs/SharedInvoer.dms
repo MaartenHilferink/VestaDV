@@ -14,7 +14,16 @@
 container SharedInvoer
 {
 	// Gemeentes als selectie: 'NL' or a set of municipality codes, 
-		parameter<string> StudieGebied: ['NL'];
+	// parameter<string> StudieGebied: ['NL'];
+	parameter<string> RES_StudieGebied_NHZ     : ['RESNoordHollandZuid']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
+	parameter<string> RES_StudieGebied_TW      : ['RESTwente']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
+	parameter<string> RES_StudieGebied_AMF     : ['RESAmersfoort']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
+	parameter<string> RES_StudieGebied_U10_U16 : ['RESU10_U16']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
+	parameter<string> StudieGebied_NHZ     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_NHZ, Geography/RegioIndelingen/Energieregio/name)];
+	parameter<string> StudieGebied_TW      := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_TW, Geography/RegioIndelingen/Energieregio/name)];
+	parameter<string> StudieGebied_AMF     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_AMF, Geography/RegioIndelingen/Energieregio/name)];
+	parameter<string> StudieGebied_U10_U16 := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_U10_U16, Geography/RegioIndelingen/Energieregio/name)];
+	
 //		parameter<string> StudieGebied: ['GM1507'];
 //		parameter<string> StudieGebied: ['GM0402'];  // Hilversum
 //		parameter<string> StudieGebied: ['GM0344'];  // Utrecht
@@ -47,6 +56,4 @@ container SharedInvoer
 	
 	parameter<units/m3> MaxVolume_H2 := 1500000000[units/m3]; //Invoer maximale beschikbaarheid H2 in m3 aardgasequivalent
 	parameter<units/m3> MaxVolume_GG := 1500000000[units/m3]; //Invoer maximale beschikbaarheid GG in m3 aardgasequivalent
-	
-
 }

@@ -11,8 +11,8 @@
 //                                                                                                           //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-container Havenstad
-{
+container Referentie
+{ 
 	parameter<string> Variantcode := 'Ref2030';
 	#include <%projDir%/model/Units.dms>
 	#include <%projDir%/model/Geography.dms>
@@ -22,7 +22,7 @@ container Havenstad
 	// Waarschijnlijk moet de eerste rekenstap wel verwijzen naar het eerste zichtjaar en moeten volgende rekenstappen niet naar eerdere jaren verwijzen.	
 	unit<uint8> rekenstap: nrofrows = 5
 	{
-		attribute<units/yr_uint16> Jaar  : [2010, 2020, 2030, 2040, 2050];
+		attribute<units/yr_uint16> Jaar  : [2019, 2030, 2030, 2050, 2050];
 		
 		// bij label en name kun je eigen rekenstappen opgeven. Deze namen moeten overeen komen met:
 		// - namen van subitems van in Invoer/SpecifiekeInstellingen
@@ -31,52 +31,49 @@ container Havenstad
 	}
 	
 	#include <%projDir%/runs/SharedInvoer.dms>
-	container Invoer: Using = "Units"
+	
+	container Invoer := SharedInvoer, Using = "Units"
 	{
-		// Gemeentes als selectie: 'NL' or a set of municipality codes, 
-//		parameter<string> StudieGebied: ['NL'];
-//		parameter<string> StudieGebied: ['GM0344'];  // Utrecht
-//		parameter<string> StudieGebied: ['GM0034'];  // Alkmaar
-//		parameter<string> StudieGebied: ['GM0088'];  // Schiermonnikoog, geen warmtebronnen
-//		parameter<string> StudieGebied: ['GM0448'];  // Texel, 1 warmtebron
-//		parameter<string> StudieGebied: ['GM0453,GM0375,GM0396'];
-
-		// OR RES als selectie
-//		parameter<string> RES_StudieGebied : ['RESU10_U16'];
-		parameter<string> RES_StudieGebied : ['RESNoordHollandZuid']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
-		parameter<string> StudieGebied     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied, Geography/RegioIndelingen/Energieregio/name)];
+		// parameter<string> RES_StudieGebied_NHZ     : ['RESNoordHollandZuid']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
+		// parameter<string> RES_StudieGebied_TW      : ['RESTwente']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
+		// parameter<string> RES_StudieGebied_AMF     : ['RESAmersfoort']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
+		// parameter<string> RES_StudieGebied_U10_U16 : ['RESU10_U16']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
+		// parameter<string> StudieGebied_NHZ     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_NHZ, Geography/RegioIndelingen/Energieregio/name)];
+		// parameter<string> StudieGebied_TW      := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_TW, Geography/RegioIndelingen/Energieregio/name)];
+		// parameter<string> StudieGebied_AMF     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_AMF, Geography/RegioIndelingen/Energieregio/name)];
+		// parameter<string> StudieGebied_U10_U16 := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_U10_U16, Geography/RegioIndelingen/Energieregio/name)];
 		
 		// Include Invoer and defaults settings section, similar for each run
 		#include <%projDir%/model/RuimtelijkeData.dms>
 		#include <%projDir%/model/Kengetallen.dms>
-		
 		#include <%projDir%/model/EnergiePrijzen.dms>
 
 		container DefaultInstellingen
 		{
 			#include <%projDir%/Runs/DefaultSettings/Basis.dms>
 			#include <%projDir%/Runs/DefaultSettings/Rekenstap.dms>		
+			#include <%projDir%/Runs/DefaultSettings/Leidraad.dms>
 		}
 		
-		container SpecifiekeInstellingen := DefaultInstellingen/Basis
+		container SpecifiekeInstellingen := DefaultInstellingen/Leidraad
 		{
 			parameter<string> prijzenbron := '20200812_Energieprijzen_KEV2019', Descr = "Energieprijzen in het basispad van de Klimaat en Energie Verkenning 2019 (PBL)";
-//			parameter<bool> HasStartingArcSet := true; .// TODO
+			// parameter<bool> HasStartingArcSet := true;
 			
 			unit<uint8> BsBase := Classifications/BebouwingsSectorBase;
 			attribute<bool> BS_isActive(BsBase) : [ true, true, false];
+			parameter<bool> BC_doNieuwbouw := TRUE;
 			
-			parameter<string> NieuwbouwInputTemplate := 'EsdlNieuwbouw';
-			parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-tijdelijk.esdl';
-			parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-tijdelijk.esdl';
+			parameter<string> NieuwbouwInputTemplate  := 'EsdlNieuwbouw';
+			parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-input-VESTA.esdl';
+			parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-input-VESTA.esdl';
 
-			
 			container StartJaar := DefaultInstellingen/Basis;
 			
 			// Per rekenstap kun je hier specifieke instelling overrulen. De lijst van rekenstappen wordt gedefinieerd bij rekenstap
-			container R1_2020 := DefaultInstellingen/Rekenstap/Stap_1;
+			container R1_2030 := DefaultInstellingen/Rekenstap/Stap_1;
 			container R2_2030 := DefaultInstellingen/Rekenstap/Stap_2;
-			container R3_2040 := DefaultInstellingen/Rekenstap/Stap_1;
+			container R3_2050 := DefaultInstellingen/Rekenstap/Stap_1;
 			container R4_2050 := DefaultInstellingen/Rekenstap/Stap_2;
 		}
 	}
@@ -85,6 +82,7 @@ container Havenstad
 	#include <%projDir%/model/BeginSituatie.dms>
 	#include <%projDir%/model/TussenResultaten.dms>
 	#include <%projDir%/model/Resultaten.dms>
+	#include <%projDir%/model/LeidraadResultaten.dms>
 	#include <%projDir%/model/ConfigSettings.dms>
 	#include <%projDir%/model/ExportSettings.dms>
 }

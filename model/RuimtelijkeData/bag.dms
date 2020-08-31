@@ -169,6 +169,7 @@ container BAG: url="%sourceDataProjDir%/BAG/20190114_actualisatie_BAG_FvdM.txt"
 					? '_' + toev
 					: ''
 				);
+			attribute<Classifications/schillabel>   schillabel_rel   := rjoin(adres_key, Energielabel/data/Values, Energielabel/data/schillabel_rel);
 			attribute<Classifications/energielabel> energielabel_rel := rjoin(adres_key, Energielabel/data/Values, Energielabel/data/energielabel_rel);
 		}
 	}
@@ -191,6 +192,7 @@ container BAG: url="%sourceDataProjDir%/BAG/20190114_actualisatie_BAG_FvdM.txt"
 		attribute<rdc_meter>                              geometry                   := import/vbo/geometry[nr_OrgEntity];
 		attribute<string>                                 postcode                   := rjoin(import/vbo/nummeraanduiding_id[nr_OrgEntity], import/nummeraanduiding/identificatie, import/nummeraanduiding/postcode);
 		attribute<Classifications/energielabel>           energielabel_rel           := rjoin(import/vbo/nummeraanduiding_id[nr_OrgEntity], import/nummeraanduiding/identificatie, import/nummeraanduiding/energielabel_rel);
+		attribute<Classifications/schillabel>             schillabel_rel             := rjoin(import/vbo/nummeraanduiding_id[nr_OrgEntity], import/nummeraanduiding/identificatie, import/nummeraanduiding/schillabel_rel);
 
 		attribute<Units/m2>                               oppervlakte                := import/vbo/oppervlak_filters/wonen[nr_OrgEntity];
 		attribute<string>                                 pand_id                    := import/vbo/pand_id[nr_OrgEntity];
