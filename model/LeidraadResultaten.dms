@@ -775,7 +775,7 @@ container LeidraadResultaten: using = "Model"
 									: MakeDefined(R_AardG * nrAansluitinging/BioWKK,0[nrAsl]))[nrAsl];
 					
 						attribute<nrAsl> A23_Aansl_H2 (PlanRegio) :=
-							round((Statisch/IsUitgesloten || !GroenGas)
+							round(Statisch/IsUitgesloten
 									? 0[nrAsl]
 									: MakeDefined(R_AardG * nrAansluitinging/WaterstofHR,0[nrAsl]))[nrAsl];
 					}
