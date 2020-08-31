@@ -52,6 +52,7 @@ container Referentie
 		{
 			#include <%projDir%/Runs/DefaultSettings/Basis.dms>
 			#include <%projDir%/Runs/DefaultSettings/Rekenstap.dms>		
+			#include <%projDir%/Runs/DefaultSettings/Rekenstap_Doeniks.dms>
 			#include <%projDir%/Runs/DefaultSettings/Leidraad.dms>
 		}
 		
@@ -71,10 +72,10 @@ container Referentie
 			container StartJaar := DefaultInstellingen/Basis;
 			
 			// Per rekenstap kun je hier specifieke instelling overrulen. De lijst van rekenstappen wordt gedefinieerd bij rekenstap
-			container R1_2030 := DefaultInstellingen/Rekenstap/Stap_1;
-			container R2_2030 := DefaultInstellingen/Rekenstap/Stap_2;
-			container R3_2050 := DefaultInstellingen/Rekenstap/Stap_1;
-			container R4_2050 := DefaultInstellingen/Rekenstap/Stap_2;
+			container R1_2030 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
+			container R2_2030 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
+			container R3_2050 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
+			container R4_2050 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
 		}
 	}
 

@@ -194,10 +194,11 @@ container LeidraadResultaten: using = "Model"
 					parameter<string> OutputFolder_str := ='OutputFolder_'+regio_naam;
 					
 					unit<uint32> list_PerPlanRegio          := SubItem_PropValues(Regio_selectie,'name');
-					container export_PerPlanRegio           := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Regio_selectie, AsList(list_PerPlanRegio/name, ';') , OutputFolder_str+'/PerPlanRegio_ESDL.csv');
+					container export_PerPlanRegio           := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Regio_selectie, replace(AsList(list_PerPlanRegio/name, ';'), 'Geometry;','') , OutputFolder_str+'/PerPlanRegio_ESDL.csv');
 					
 					unit<uint32> Regio_selectie := =RegioSelectie_str
 					{
+						attribute<dpoint>       Geometry(poly)              := PerBebouwingsSector/Woning/PerPlanRegio/Geometry[nr_OrgEntity];
 						attribute<String>       BU_CODE                     := PerBebouwingsSector/Woning/PerPlanRegio/BU_CODE[nr_OrgEntity];
 						attribute<String>       I01_buurtcode               := PerBebouwingsSector/Woning/PerPlanRegio/I01_buurtcode[nr_OrgEntity];
 						attribute<String>       I02_buurtnaam               := PerBebouwingsSector/Woning/PerPlanRegio/I02_buurtnaam[nr_OrgEntity];
