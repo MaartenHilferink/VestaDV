@@ -98,13 +98,14 @@ template EsdlNieuwbouw
 				replace_value(
 					UpperCase(asset/residentialBuildingType[nr_OrgEntity])
 				,	'APPARTEMENTENCOMPLEX', 'APPARTEMENT'
+				,	'', 'APPARTEMENT'
 				)
 			,	UpperCase(Classifications/WoningtypeNieuwbouw/name)
 			);
 		
 		attribute<Float64> AggregationCount := MakeDefined(Float64(asset/AggregationCount)[nr_OrgEntity], 1.0);
 		
-		attribute<uint8>   Bouwlagen  := value(asset/numberOfFloors[nr_OrgEntity], uint8);
+		attribute<uint8>   Bouwlagen  := MakeDefined(value(asset/numberOfFloors[nr_OrgEntity], uint8), 4b); // use 4 as default when missing. 
 		attribute<uint32>  Bouwjaar   := value(asset/buildingYear[nr_OrgEntity], uint32);
 		
 		attribute<Classifications/WoningtypeNieuwbouw> Woningtype :=
