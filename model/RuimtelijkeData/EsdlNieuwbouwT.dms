@@ -122,7 +122,10 @@ template EsdlNieuwbouw
 		unit<uint32> Geometry := Parsed_Nieuwbouw/area/asset/asset/Geometry;
 		attribute<.> Geometry_Parent_rel (Geometry) := value(Geometry/Parent_rel, .);
 		
-		attribute<Classifications/BebouwingsComponentBase> BebouwingsComponentBase_rel := const(Classifications/BebouwingsComponentBase/V/NieuwbouwWoning, .); // TODO ESDL: selecteer obv GebruiksDoel
+		attribute<Classifications/BebouwingsComponentBase> BebouwingsComponentBase_rel := 
+				type == 'RESIDENTIAL'
+				?	Classifications/BebouwingsComponentBase/V/NieuwbouwWoning
+				:	Classifications/BebouwingsComponentBase/V/NieuwbouwUtil;
 	
 		attribute<rdc_meter>  point_rd_direct := LatLongWgs842RD(
 			point(
@@ -188,7 +191,7 @@ template EsdlNieuwbouw
 			unit<uint8> BebouwingsTypeDomein := ='Classifications/'+Classifications/BebouwingsComponentBase/TypeName[BebouwingsComponentBase_par];
 			unit<uint8> ModelObjectKeyDomein := combine_uint8(BebouwingsTypeDomein, Classifications/BouwJaar);
 
-			attribute<nrAsl>                              nrAansluitingen_i  := BouwObject/nr_aansl   [nr_OrgEntity];
+			attribute<nrAsl>                              nrAansluitingen_i  := MakeDefined(BouwObject/nr_aansl   [nr_OrgEntity], 1[nrAsl]);
 			attribute<m2>                                 Oppervlakte_i      := BouwObject/oppervlakte[nr_OrgEntity];
 			
 			//initial state
