@@ -212,7 +212,8 @@ template EsdlNieuwbouw
 			attribute<Geography/rdc_meter>                Point              := BouwObject/point_rd   [nr_OrgEntity];
 			attribute<Invoer/RuimtelijkeData/StudieGebied/buurt> buurt_rel   := point_in_polygon(point, Invoer/RuimtelijkeData/StudieGebied/buurt/geometry );
 			attribute<BebouwingsTypeDomein>               BebouwingsType     := Gebouw/WoningType[BouwObject/Gebouw_rel[nr_OrgEntity]];
-			attribute<Classifications/BouwJaar>           Bouwjaar           := classify(10000i-int32(Gebouw/Bouwjaar[BouwObject/Gebouw_rel[nr_OrgEntity]]), 10000i-int32(Classifications/BouwJaar/ClassBreak));
+			attribute<int32>                              BouwJaar_int32     := min_elem(int32(Gebouw/Bouwjaar[BouwObject/Gebouw_rel[nr_OrgEntity]]), max(int32(Classifications/BouwJaar/ClassBreak)));
+			attribute<Classifications/BouwJaar>           Bouwjaar           := classify(10000i-BouwJaar_int32, 10000i-int32(Classifications/BouwJaar/ClassBreak));
 			attribute<ModelObjectKeyDomein>               ModelObjectKey     := combine_data(ModelObjectKeyDomein, BebouwingsType, BouwJaar);
 
 			attribute<pand_asl>                           pand_aandeel       := BouwObject/pand_aandeel[nr_OrgEntity];

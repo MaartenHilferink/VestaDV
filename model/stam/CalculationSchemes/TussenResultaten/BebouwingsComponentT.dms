@@ -162,7 +162,7 @@ template BebouwingsComponentT
 		}
 		
 		container InstallatiePerProduct := for_each_nedv(Classifications/Product/name
-		, 'PrevObject/InstallatiePerProduct/'+Classifications/Product/name+'[PrevObject_rel]'
+		, 'MakeDefined(PrevObject/InstallatiePerProduct/'+Classifications/Product/name+'[PrevObject_rel], Classifications/Installatie/V/geen)'
 		, BO
 		, Classifications/Installatie
 		)
