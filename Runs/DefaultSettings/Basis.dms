@@ -23,9 +23,9 @@ container Basis
 	container Rapportage
 	{
 		unit<uint32> Regio := = 
-			(Invoer/RuimtelijkeData/StudieGebied == 'NL') //voor mogelijke waarden zie Invoer/StudieGebied 
-			? 'Geography/RegioIndelingen/Energieregio' 
-			: (#Invoer/RuimtelijkeData/StudieGebied/Gemeente == 1)
+//			(Invoer/RuimtelijkeData/StudieGebied == 'NL') //voor mogelijke waarden zie Invoer/StudieGebied 
+//			? 'Geography/RegioIndelingen/Energieregio' :
+				(#Invoer/RuimtelijkeData/StudieGebied/Gemeente == 1)
 				? 'Invoer/RuimtelijkeData/StudieGebied/buurt'
 				: 'Invoer/RuimtelijkeData/StudieGebied/gemeente';
 

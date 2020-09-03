@@ -212,6 +212,7 @@ container Classifications: Using = "Units", KeepData = "True", IsHidden = "True"
 		attribute<string>       filename_Nieuwbouw     : ['kantoren', 'winkels', 'groothandel', 'autohandel'              , 'verpleging'              , 'ziekenhuis'  , 'onderwijs', 'horeca' , 'overig'                 ], isHidden = "True";
 		attribute<string>       wlo_filename_Nieuwbouw : ['kantoor' , 'winkel' , ''           , ''                        , 'verpleging_verzorging'   , ''            , 'onderwijs', 'horeca' , 'overig_dienstverlening' ], isHidden = "True";
 		attribute<string>       excel_code             := Label_key, isHidden = "True";
+		attribute<string>       ESDL_code              : ['OFFICE', 'SHOPPING', 'WHOLESALE', 'autohandel', 'HEALTHCARE', 'ziekenhuis'  , 'EDUCATION', 'HOTEL' , 'OTHER'];
 		attribute<int16>        SymbolIndex            : [41,54,241,49,67,213,107,246,171], DialogType = "SymbolIndex", isHidden = "True";
 		attribute<string>       name                   := label, isHidden = "True";
 		attribute<string>       resterendFactorName    := name;

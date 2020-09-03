@@ -91,6 +91,7 @@ template EsdlNieuwbouw
 		{
 			attribute<.> Gebouw_rel (Geometry) := invert(Gebouw/nr_OrgEntity)[asset/Geometry/asset_rel[nr_OrgEntity]];
 		}
+		attribute<string> Name := asset/Name[nr_OrgEntity];
 		attribute<rdc_meter>  point_rd := asset/point_rd[nr_OrgEntity];
 		
 		attribute<Classifications/WoningtypeNieuwbouw> Woningtype_rel := 
@@ -102,7 +103,6 @@ template EsdlNieuwbouw
 				)
 			,	UpperCase(Classifications/WoningtypeNieuwbouw/name)
 			);
-		
 		attribute<Float64> AggregationCount := MakeDefined(Float64(asset/AggregationCount)[nr_OrgEntity], 1.0);
 		
 		attribute<uint8>   Bouwlagen  := MakeDefined(value(asset/numberOfFloors[nr_OrgEntity], uint8), 4b); // use 4 as default when missing. 
@@ -121,6 +121,7 @@ template EsdlNieuwbouw
 		
 		unit<uint32> Geometry := Parsed_Nieuwbouw/area/asset/asset/Geometry;
 		attribute<.> Geometry_Parent_rel (Geometry) := value(Geometry/Parent_rel, .);
+		
 		
 		attribute<Classifications/BebouwingsComponentBase> BebouwingsComponentBase_rel := 
 				type == 'RESIDENTIAL'
@@ -142,6 +143,7 @@ template EsdlNieuwbouw
 		
 		// WoningType == APPARTEMENT en IsDefined(Bouwlagen) -> FlatTot4 of Flat5ofmeer
 		attribute<Classifications/WoningtypeNieuwbouw> Woningtype_rel := Gebouw/WoningType_rel[gebouw_rel];
+		attribute<Classifications/UtiltypeNieuwbouw> UtilType_rel := rlookup(uppercase(Parsed_Nieuwbouw/area/asset/asset/type), uppercase(Classifications/UtiltypeNieuwbouw/ESDL_code));
 		
 		// Oppervlakte
 		attribute<pand_asl>   pand_aandeel := value(1.0, nrPand) / value(Gebouw/Bouwlagen[gebouw_rel], nrAsl);
@@ -205,13 +207,17 @@ template EsdlNieuwbouw
 				attribute<Classifications/Installatie> Dak (..) := const(Classifications/Installatie/V/geen, ..); //TODO_OV
 			}
 			attribute<Classifications/AfgifteSysteem> AfgifteSysteem_rel := const(Classifications/AfgifteSysteem/V/geen, .);
-			attribute<uint32>                         AfnameGebied_rel   := const(0/0, .);
-//REMOVE			attribute<Classifications/GebouwOptie>    GebouwOptie_rel    := const(Classifications/GebouwOptie_rel/V/geen, .); // REMOVE, OBSOLETE, vervangen door Schillabel_rel, InstallatiePerProduct en GebiedsOptie
-			
+			attribute<uint32>                         AfnameGebied_rel   := const(0/0, .);		
 			
 			attribute<Geography/rdc_meter>                Point              := BouwObject/point_rd   [nr_OrgEntity];
 			attribute<Invoer/RuimtelijkeData/StudieGebied/buurt> buurt_rel   := point_in_polygon(point, Invoer/RuimtelijkeData/StudieGebied/buurt/geometry );
-			attribute<BebouwingsTypeDomein>               BebouwingsType     := Gebouw/WoningType[BouwObject/Gebouw_rel[nr_OrgEntity]];
+			
+			attribute<BebouwingsTypeDomein>               BebouwingsType     := 
+				=(BebouwingsComponentBase_par == Classifications/BebouwingsComponentBase/V/BestaandeWoning ||
+				BebouwingsComponentBase_par == Classifications/BebouwingsComponentBase/V/NieuwbouwWoning)		
+				?	'BouwObject/WoningType_rel[nr_OrgEntity]'
+				:	'BouwObject/UtilType_rel[nr_OrgEntity]';
+				
 			attribute<int32>                              BouwJaar_int32     := min_elem(int32(Gebouw/Bouwjaar[BouwObject/Gebouw_rel[nr_OrgEntity]]), max(int32(Classifications/BouwJaar/ClassBreak)));
 			attribute<Classifications/BouwJaar>           Bouwjaar           := classify(10000i-BouwJaar_int32, 10000i-int32(Classifications/BouwJaar/ClassBreak));
 			attribute<ModelObjectKeyDomein>               ModelObjectKey     := combine_data(ModelObjectKeyDomein, BebouwingsType, BouwJaar);
