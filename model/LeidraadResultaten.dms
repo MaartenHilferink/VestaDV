@@ -22,9 +22,9 @@ container LeidraadResultaten: using = "Model"
 			// parameter<string> Last_Rekenstap := 'StartJaar';
 			// parameter<string> RunName        := 'StartJaar';
 			
-			unit<uint8> ReportPeriods : nrofrows = 2
+			unit<uint8> ReportPeriods : nrofrows = 3
 			{
-				attribute<string> name_src  : ['StartJaar','LastRekenstap'];
+				attribute<string> name_src  : ['StartJaar', 'Ref2030', 'LastRekenstap'];
 				attribute<string> name      := replace(name_src, 'LastRekenstap', Last_Rekenstap);
 				attribute<string> name_expl := replace(name_src, 'LastRekenstap', Last_Rekenstap_Expl);
 			}
@@ -68,6 +68,8 @@ container LeidraadResultaten: using = "Model"
 			parameter<string> Generate_PerPlanRegio_Havenstad_LastPeriod           := ='PerRekenstap/'+Settings/Last_Rekenstap+'/PerStudyArea/Havenstad/export_PerPlanRegio/result';
 			parameter<string> Generate_PerPlanRegio_Hengelo_LastPeriod             := ='PerRekenstap/'+Settings/Last_Rekenstap+'/PerStudyArea/Hengelo/export_PerPlanRegio/result';
 			parameter<string> Generate_PerPlanRegio_GooiEnVechtstreek_LastPeriod   := ='PerRekenstap/'+Settings/Last_Rekenstap+'/PerStudyArea/GooiEnVechtstreek/export_PerPlanRegio/result';
+			
+			parameter<string> Generate_Havenstad_All := ='add('+asItemList('PerRekenstap/'+Settings/ReportPeriods/name+'/PerStudyArea/Havenstad/export_PerPlanRegio/result')+')';
 
 			container PerRekenstap := 
 				for_each_ne(
