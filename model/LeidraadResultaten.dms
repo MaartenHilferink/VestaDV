@@ -114,24 +114,24 @@ container LeidraadResultaten: using = "Model"
 						attribute<m2>           I13_opp_utiliteit               (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/Util/Hoofdindicatoren/Table/oppervlakte, 0[m2])';
 						attribute<string>       Uitgesloten                     (Planregio) := ='LeidraadResultaten/'+ReportRekenstap+'/PlanregioResults/Statisch/table/I13_Uitgesloten';
 				
-						attribute<GJ_yr_WEQ>    H01_Vraag_Totaal                (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H01_Vraag_totaal, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H02_Vraag_Ruimteverwarming      (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H02_Vraag_RV, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H03_Vraag_Tapwater              (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H03_Vraag_TW, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H04_Vraag_Ventilatie            (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H04_Vraag_Vent, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H05_Vraag_Koude                 (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H05_Vraag_K, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H06_Vraag_Apparaten             (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H06_Vraag_App, 0[GJ_yr_WEQ])';
+						attribute<GJ_yr>        H01_Vraag_Totaal                (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H01_Vraag_totaal, 0[GJ_yr])';
+						attribute<GJ_yr>        H02_Vraag_Ruimteverwarming      (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H02_Vraag_RV, 0[GJ_yr])';
+						attribute<GJ_yr>        H03_Vraag_Tapwater              (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H03_Vraag_TW, 0[GJ_yr])';
+						attribute<GJ_yr>        H04_Vraag_Ventilatie            (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H04_Vraag_Vent, 0[GJ_yr])';
+						attribute<GJ_yr>        H05_Vraag_Koude                 (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H05_Vraag_K, 0[GJ_yr])';
+						attribute<GJ_yr>        H06_Vraag_Apparaten             (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H06_Vraag_App, 0[GJ_yr])';
 						attribute<GJ_yr_ha>     H07_Vraag_perhectare            (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H07_Vraag_tot_ha, 0[GJ_yr_ha])';
-						attribute<GJ_yr_WEQ>    H08_Input_Totaal                (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H08_Input_Totaal, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H09_Input_Aardgas               (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H09_Input_Aardgas, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H10_Input_Duurzaamgas           (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H10_Input_Duurzaamgas, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H11_Input_Elektriciteit         (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H11_Input_Elektriciteit, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H12_Input_MTwarmte              (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H12_Input_MTwarmtebronnen, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H13_Input_LTwarmte              (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H13_Input_LTwarmtebronnen, 0[GJ_yr_WEQ])';
-						attribute<GJ_yr_WEQ>    H14_Saldo_Omgevingswarmte       (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H14_Saldo_Omgevingswarmte, 0[GJ_yr_WEQ])';
+						attribute<GJ_yr>        H08_Input_Totaal                (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H08_Input_Totaal, 0[GJ_yr])';
+						attribute<GJ_yr>        H09_Input_Aardgas               (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H09_Input_Aardgas, 0[GJ_yr])';
+						attribute<GJ_yr>        H10_Input_Duurzaamgas           (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H10_Input_Duurzaamgas, 0[GJ_yr])';
+						attribute<GJ_yr>        H11_Input_Elektriciteit         (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H11_Input_Elektriciteit, 0[GJ_yr])';
+						attribute<GJ_yr>        H12_Input_MTwarmte              (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H12_Input_MTwarmtebronnen, 0[GJ_yr])';
+						attribute<GJ_yr>        H13_Input_LTwarmte              (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H13_Input_LTwarmtebronnen, 0[GJ_yr])';
+						attribute<GJ_yr>        H14_Saldo_Omgevingswarmte       (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H14_Saldo_Omgevingswarmte, 0[GJ_yr])';
 						attribute<ton_yr>       H15_CO2_uitstoot                (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H15_CO2_uitstoot, 0[ton_yr])';
 						attribute<Eur_yr>       H16_Nat_meerkost                (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H16_Nat_meerkost, 0[Eur_yr])';
 						attribute<Eur_ton>      H17_Nat_meerkost_CO2            (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H17_Nat_meerkost_CO2, 0[Eur_ton])';
-						attribute<Eur_yr_WEQ>   H18_Nat_meerkost_WEQ            (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H18_Nat_meerkost_WEQ, 0[Eur_yr_WEQ])';
+						attribute<Eur_yr>       H18_Nat_meerkost_WEQ            (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H18_Nat_meerkost_WEQ, 0[Eur_yr])';
 						attribute<Eur_m3>       H19_Waarde_hernieuwbaar_gas     (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H19_Waarde_hernieuwbaar_gas, 0[Eur_m3])';
 						
 						attribute<nrAsl>        A01_Aansl_aardgas               (PlanRegio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Aansluitingen/Table/A01_Aansl_aardgas , 0[nrAsl])';
@@ -217,24 +217,24 @@ container LeidraadResultaten: using = "Model"
 						attribute<m2>           I13_opp_utiliteit           := PerBebouwingsSector/Woning/PerPlanRegio/I13_opp_utiliteit[nr_OrgEntity];
 						attribute<string>       Uitgesloten                 := PerBebouwingsSector/Woning/PerPlanRegio/Uitgesloten[nr_OrgEntity];
 
-						attribute<GJ_yr_WEQ>    Woning_H01_Vraag_Totaal            := PerBebouwingsSector/Woning/PerPlanRegio/H01_Vraag_totaal[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H02_Vraag_Ruimteverwarming  := PerBebouwingsSector/Woning/PerPlanRegio/H02_Vraag_Ruimteverwarming[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H03_Vraag_Tapwater          := PerBebouwingsSector/Woning/PerPlanRegio/H03_Vraag_Tapwater[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H04_Vraag_Ventilatie        := PerBebouwingsSector/Woning/PerPlanRegio/H04_Vraag_Ventilatie[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H05_Vraag_Koude             := PerBebouwingsSector/Woning/PerPlanRegio/H05_Vraag_Koude[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H06_Vraag_Apparaten         := PerBebouwingsSector/Woning/PerPlanRegio/H06_Vraag_Apparaten[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H01_Vraag_Totaal            := PerBebouwingsSector/Woning/PerPlanRegio/H01_Vraag_totaal[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H02_Vraag_Ruimteverwarming  := PerBebouwingsSector/Woning/PerPlanRegio/H02_Vraag_Ruimteverwarming[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H03_Vraag_Tapwater          := PerBebouwingsSector/Woning/PerPlanRegio/H03_Vraag_Tapwater[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H04_Vraag_Ventilatie        := PerBebouwingsSector/Woning/PerPlanRegio/H04_Vraag_Ventilatie[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H05_Vraag_Koude             := PerBebouwingsSector/Woning/PerPlanRegio/H05_Vraag_Koude[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H06_Vraag_Apparaten         := PerBebouwingsSector/Woning/PerPlanRegio/H06_Vraag_Apparaten[nr_OrgEntity];
 						attribute<GJ_yr_ha>     Woning_H07_Vraag_perhectare        := PerBebouwingsSector/Woning/PerPlanRegio/H07_Vraag_perhectare[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H08_Input_Totaal            := PerBebouwingsSector/Woning/PerPlanRegio/H08_Input_Totaal[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H09_Input_Aardgas           := PerBebouwingsSector/Woning/PerPlanRegio/H09_Input_Aardgas[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H10_Input_Duurzaamgas       := PerBebouwingsSector/Woning/PerPlanRegio/H10_Input_Duurzaamgas[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H11_Input_Elektriciteit     := PerBebouwingsSector/Woning/PerPlanRegio/H11_Input_Elektriciteit[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H12_Input_MTwarmte          := PerBebouwingsSector/Woning/PerPlanRegio/H12_Input_MTwarmte[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H13_Input_LTwarmte          := PerBebouwingsSector/Woning/PerPlanRegio/H13_Input_LTwarmte[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Woning_H14_Saldo_Omgevingswarmte   := PerBebouwingsSector/Woning/PerPlanRegio/H14_Saldo_Omgevingswarmte[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H08_Input_Totaal            := PerBebouwingsSector/Woning/PerPlanRegio/H08_Input_Totaal[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H09_Input_Aardgas           := PerBebouwingsSector/Woning/PerPlanRegio/H09_Input_Aardgas[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H10_Input_Duurzaamgas       := PerBebouwingsSector/Woning/PerPlanRegio/H10_Input_Duurzaamgas[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H11_Input_Elektriciteit     := PerBebouwingsSector/Woning/PerPlanRegio/H11_Input_Elektriciteit[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H12_Input_MTwarmte          := PerBebouwingsSector/Woning/PerPlanRegio/H12_Input_MTwarmte[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H13_Input_LTwarmte          := PerBebouwingsSector/Woning/PerPlanRegio/H13_Input_LTwarmte[nr_OrgEntity];
+						attribute<GJ_yr>        Woning_H14_Saldo_Omgevingswarmte   := PerBebouwingsSector/Woning/PerPlanRegio/H14_Saldo_Omgevingswarmte[nr_OrgEntity];
 						attribute<ton_yr>       Woning_H15_CO2_uitstoot            := PerBebouwingsSector/Woning/PerPlanRegio/H15_CO2_uitstoot[nr_OrgEntity];
 						attribute<Eur_yr>       Woning_H16_Nat_meerkost            := PerBebouwingsSector/Woning/PerPlanRegio/H16_Nat_meerkost[nr_OrgEntity];
 						attribute<Eur_ton>      Woning_H17_Nat_meerkost_CO2        := PerBebouwingsSector/Woning/PerPlanRegio/H17_Nat_meerkost_CO2[nr_OrgEntity];
-						attribute<Eur_yr_WEQ>   Woning_H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Woning/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
+						attribute<Eur_yr>       Woning_H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Woning/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
 						attribute<Eur_m3>       Woning_H19_Waarde_hernieuwbaar_gas := PerBebouwingsSector/Woning/PerPlanRegio/H19_Waarde_hernieuwbaar_gas[nr_OrgEntity];
 						
 						attribute<nrAsl>        Woning_A01_Aansl_aardgas           := PerBebouwingsSector/Woning/PerPlanRegio/A01_Aansl_aardgas[nr_OrgEntity];
@@ -266,24 +266,24 @@ container LeidraadResultaten: using = "Model"
 						attribute<nrAsl>        Woning_A34_Aansl_LabelE            := PerBebouwingsSector/Woning/PerPlanRegio/A34_Aansl_LabelE[nr_OrgEntity];
 						attribute<nrAsl>        Woning_A35_Aansl_LabelF            := PerBebouwingsSector/Woning/PerPlanRegio/A35_Aansl_LabelF[nr_OrgEntity];
 						
-						attribute<GJ_yr_WEQ>    Util_H01_Vraag_Totaal            := PerBebouwingsSector/Util/PerPlanRegio/H01_Vraag_Totaal[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H02_Vraag_Ruimteverwarming  := PerBebouwingsSector/Util/PerPlanRegio/H02_Vraag_Ruimteverwarming[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H03_Vraag_Tapwater          := PerBebouwingsSector/Util/PerPlanRegio/H03_Vraag_Tapwater[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H04_Vraag_Ventilatie        := PerBebouwingsSector/Util/PerPlanRegio/H04_Vraag_Ventilatie[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H05_Vraag_Koude             := PerBebouwingsSector/Util/PerPlanRegio/H05_Vraag_Koude[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H06_Vraag_Apparaten         := PerBebouwingsSector/Util/PerPlanRegio/H06_Vraag_Apparaten[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H01_Vraag_Totaal            := PerBebouwingsSector/Util/PerPlanRegio/H01_Vraag_Totaal[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H02_Vraag_Ruimteverwarming  := PerBebouwingsSector/Util/PerPlanRegio/H02_Vraag_Ruimteverwarming[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H03_Vraag_Tapwater          := PerBebouwingsSector/Util/PerPlanRegio/H03_Vraag_Tapwater[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H04_Vraag_Ventilatie        := PerBebouwingsSector/Util/PerPlanRegio/H04_Vraag_Ventilatie[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H05_Vraag_Koude             := PerBebouwingsSector/Util/PerPlanRegio/H05_Vraag_Koude[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H06_Vraag_Apparaten         := PerBebouwingsSector/Util/PerPlanRegio/H06_Vraag_Apparaten[nr_OrgEntity];
 						attribute<GJ_yr_ha>     Util_H07_Vraag_perhectare        := PerBebouwingsSector/Util/PerPlanRegio/H07_Vraag_perhectare[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H08_Input_Totaal            := PerBebouwingsSector/Util/PerPlanRegio/H08_Input_Totaal[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H09_Input_Aardgas           := PerBebouwingsSector/Util/PerPlanRegio/H09_Input_Aardgas[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H10_Input_Duurzaamgas       := PerBebouwingsSector/Util/PerPlanRegio/H10_Input_Duurzaamgas[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H11_Input_Elektriciteit     := PerBebouwingsSector/Util/PerPlanRegio/H11_Input_Elektriciteit[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H12_Input_MTwarmte          := PerBebouwingsSector/Util/PerPlanRegio/H12_Input_MTwarmte[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H13_Input_LTwarmte          := PerBebouwingsSector/Util/PerPlanRegio/H13_Input_LTwarmte[nr_OrgEntity];
-						attribute<GJ_yr_WEQ>    Util_H14_Saldo_Omgevingswarmte   := PerBebouwingsSector/Util/PerPlanRegio/H14_Saldo_Omgevingswarmte[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H08_Input_Totaal            := PerBebouwingsSector/Util/PerPlanRegio/H08_Input_Totaal[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H09_Input_Aardgas           := PerBebouwingsSector/Util/PerPlanRegio/H09_Input_Aardgas[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H10_Input_Duurzaamgas       := PerBebouwingsSector/Util/PerPlanRegio/H10_Input_Duurzaamgas[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H11_Input_Elektriciteit     := PerBebouwingsSector/Util/PerPlanRegio/H11_Input_Elektriciteit[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H12_Input_MTwarmte          := PerBebouwingsSector/Util/PerPlanRegio/H12_Input_MTwarmte[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H13_Input_LTwarmte          := PerBebouwingsSector/Util/PerPlanRegio/H13_Input_LTwarmte[nr_OrgEntity];
+						attribute<GJ_yr>        Util_H14_Saldo_Omgevingswarmte   := PerBebouwingsSector/Util/PerPlanRegio/H14_Saldo_Omgevingswarmte[nr_OrgEntity];
 						attribute<ton_yr>       Util_H15_CO2_uitstoot            := PerBebouwingsSector/Util/PerPlanRegio/H15_CO2_uitstoot[nr_OrgEntity];
 						attribute<Eur_yr>       Util_H16_Nat_meerkost            := PerBebouwingsSector/Util/PerPlanRegio/H16_Nat_meerkost[nr_OrgEntity];
 						attribute<Eur_ton>      Util_H17_Nat_meerkost_CO2        := PerBebouwingsSector/Util/PerPlanRegio/H17_Nat_meerkost_CO2[nr_OrgEntity];
-						attribute<Eur_yr_WEQ>   Util_H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Util/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
+						attribute<Eur_yr>       Util_H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Util/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
 						attribute<Eur_m3>       Util_H19_Waarde_hernieuwbaar_gas := PerBebouwingsSector/Util/PerPlanRegio/H19_Waarde_hernieuwbaar_gas[nr_OrgEntity];
 						
 						attribute<nrAsl>        Util_A01_Aansl_aardgas           := PerBebouwingsSector/Util/PerPlanRegio/A01_Aansl_aardgas[nr_OrgEntity];
@@ -529,12 +529,12 @@ container LeidraadResultaten: using = "Model"
 						{
 							attribute<string>    BU_CODE              := Statisch/table/I01_buurtcode;
 							attribute<string>    V01_Strategievariant := const(Variantcode, Planregio);
-							attribute<GJ_yr_WEQ> H01_vraag_totaal     := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H01_vraag_totaal  / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H02_Vraag_RV         := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H02_Vraag_RV      / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H03_Vraag_TW         := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H03_Vraag_TW      / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H04_Vraag_Vent       := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H04_Vraag_Vent    / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H05_Vraag_K          := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H05_Vraag_K       / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H06_Vraag_App        := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H06_Vraag_App     / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
+							attribute<GJ_yr> H01_vraag_totaal     := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H01_vraag_totaal  , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H02_Vraag_RV         := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H02_Vraag_RV      , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H03_Vraag_TW         := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H03_Vraag_TW      , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H04_Vraag_Vent       := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H04_Vraag_Vent    , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H05_Vraag_K          := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H05_Vraag_K       , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H06_Vraag_App        := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H06_Vraag_App     , 0[GJ_yr]))[GJ_yr];
 
 							attribute<GJ_yr_ha>  H07_vraag_tot_ha := IsOngeldig
 								? (0/0)[GJ_yr_ha]
@@ -546,13 +546,13 @@ container LeidraadResultaten: using = "Model"
 											,0[GJ_yr_ha])
 								)[GJ_yr_ha];
 
-							attribute<GJ_yr_WEQ> H08_input_totaal          := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H08_input_totaal          / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H09_input_aardgas         := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H09_input_aardgas         / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H10_input_duurzaamgas     := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H10_input_duurzaamgas     / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H11_input_elektriciteit   := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H11_input_elektriciteit   / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H12_input_MTwarmtebronnen := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H12_input_MTwarmtebronnen / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H13_input_LTwarmtebronnen := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H13_input_LTwarmtebronnen / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
-							attribute<GJ_yr_WEQ> H14_saldo_omgevingswarmte := IsOngeldig ? (0/0)[GJ_yr_WEQ] : round(MakeDefined(extensief/H14_saldo_omgevingswarmte / nrWEQ, 0[GJ_yr_WEQ]))[GJ_yr_WEQ];
+							attribute<GJ_yr> H08_input_totaal          := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H08_input_totaal          , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H09_input_aardgas         := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H09_input_aardgas         , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H10_input_duurzaamgas     := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H10_input_duurzaamgas     , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H11_input_elektriciteit   := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H11_input_elektriciteit   , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H12_input_MTwarmtebronnen := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H12_input_MTwarmtebronnen , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H13_input_LTwarmtebronnen := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H13_input_LTwarmtebronnen , 0[GJ_yr]))[GJ_yr];
+							attribute<GJ_yr> H14_saldo_omgevingswarmte := IsOngeldig ? (0/0)[GJ_yr] : round(MakeDefined(extensief/H14_saldo_omgevingswarmte , 0[GJ_yr]))[GJ_yr];
 
 							attribute<ton_yr> H15_CO2_uitstoot := IsOngeldig
 								? (0/0)[ton_yr]
@@ -584,15 +584,15 @@ container LeidraadResultaten: using = "Model"
 											,0[Eur_ton])
 								)[Eur_ton];
 							
-							attribute<Eur_yr_WEQ> H18_Nat_meerkost_WEQ := IsOngeldig
-								? (0/0)[Eur_yr_WEQ]
+							attribute<Eur_yr> H18_Nat_meerkost_WEQ := IsOngeldig
+								? (0/0)[Eur_yr]
 								: round(
 									IsUitgesloten_Stap0_Referentie
-										? 0[Eur_yr_WEQ]
+										? 0[Eur_yr]
 										: MakeDefined(
-											 (extensief/H16_Nat_meerkost / nrWEQ) //nationale meerkosten per vermeden ton CO2
-											,0[Eur_yr_WEQ])
-								)[Eur_yr_WEQ];
+											 (extensief/H16_Nat_meerkost) //nationale meerkosten per vermeden ton CO2
+											,0[Eur_yr])
+								)[Eur_yr];
 
 							attribute<Eur_m3> H19_waarde_hernieuwbaar_gas          := const(0[Eur_m3] , PlanRegio);
 							attribute<string> H20_beschikbaarheid_hernieuwbaar_gas := const('onbekend', PlanRegio);
