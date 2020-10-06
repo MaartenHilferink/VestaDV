@@ -1,12 +1,11 @@
 heads/MONDAINE2
 On branch MONDAINE2
-Your branch is up to date with 'origin/MONDAINE2'.
+Your branch is ahead of 'origin/MONDAINE2' by 2 commits.
+  (use "git push" to publish your local commits)
 
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
   (use "git restore <file>..." to discard changes in working directory)
-	modified:   Runs/path/set.bat
-	modified:   SubWCRevData.str
 	modified:   git.txt
 
 no changes added to commit (use "git add" and/or "git commit -a")
