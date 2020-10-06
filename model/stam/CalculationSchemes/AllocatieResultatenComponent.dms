@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                      //
-//                   (C) VESTA 2019 - Planbureau voor de Leefomgeving                   //
+//                   (C) VESTA 2020 - Planbureau voor de Leefomgeving                   //
 //                                                                                      //
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,8 +24,10 @@ template AllocatieResultatenComponent
 		container   GebouwOpties  := BebouwingsComponent_UpRef/GebouwOpties;
 		unit<uint8> BcGebouwOptie := BebouwingsComponent_UpRef/BcGebouwOptie;
 
-		attribute<BcGebouwOptie> GebouwOptie_rel  := BO_base/GebouwOptie_rel;
-		attribute<string>        GebouwOptie_name := BcGebouwOptie/name[GebouwOptie_rel];
+		attribute<BcGebouwOptie>              GebouwOptie_rel  := BO_base/GebouwOptie_rel;
+		attribute<string>                     GebouwOptie_name := BcGebouwOptie/name[GebouwOptie_rel];
+		attribute<Classifications/Schillabel> Schillabel_rel   := ='merge(GebouwOptie_rel, Classifications/Schillabel, '+AsItemList('GebouwOpties/'+BcGebouwOptie/name+'/Schillabel_rel')+')';
+
 		// attribute<Classifications/schillabel> Schillabel_rel := BebouwingsComponenten/BestaandeWoning/BebouwingsObjectMetGebouwOptie/SchilLabel_rel;
 		
 		container BemeterdeGebouwInput_rel :=  for_each_nedv(Classifications/Product/name
@@ -115,6 +117,7 @@ template AllocatieResultatenComponent
 			attribute<Eur> Ki20_LO (BO) := ='merge(GebouwOptie_rel, Eur, ' + AsItemList('GebouwOpties/' + BcGebouwOptie/name + '/Ki20_LO')+')';
 			attribute<Eur> Ki15_LO (BO) := ='merge(GebouwOptie_rel, Eur, ' + AsItemList('GebouwOpties/' + BcGebouwOptie/name + '/Ki15_LO')+')';
 			attribute<Eur> Ki_GV   (BO) := ='merge(GebouwOptie_rel, Eur, ' + AsItemList('GebouwOpties/' + BcGebouwOptie/name + '/Ki_GV')+')';
+			attribute<Eur> Ki_LTAS (BO) := ='merge(GebouwOptie_rel, Eur, ' + AsItemList('GebouwOpties/' + BcGebouwOptie/name + '/Ki_LTAS')+')';
 
 			//Subsidies
 			attribute<Eur> Oi_s_LO_30 (BO) := ='merge(GebouwOptie_rel, Eur, ' + AsItemList('GebouwOpties/' + BcGebouwOptie/name + '/Oi30_s_LO')+')';
