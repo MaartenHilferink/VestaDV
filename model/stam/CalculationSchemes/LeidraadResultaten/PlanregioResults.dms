@@ -304,15 +304,15 @@ container PlanregioResults
 						 NationaleKosten/TotaalUitstoot/Delta_nat_kosten //nationale meerkosten per woningequivalent
 						,0[Eur_yr]);
 						
-			attribute<kW> H21_CapaciteitsvraagE := 
-				isStap0  
-					? /Invoer/RuimtelijkeData/infra/per_buurt/input_capaciteit_buurt
-					: IsOngeldig ? (0/0)[kW] :
-						(Statisch/IsUitgesloten || isStap0)
-							? 0[kW]
-							: MakeDefined(
-								 /TussenResultaten/StartJaar/AllocatieResultaten/BestaandeWoning/CapaciteitsvraagE
-								,0[kW]);
+			// attribute<kW> H21_CapaciteitsvraagE := 
+				// isStap0  
+					// ? /Invoer/RuimtelijkeData/infra/per_buurt/input_capaciteit_buurt
+					// : IsOngeldig ? (0/0)[kW] :
+						// (Statisch/IsUitgesloten || isStap0)
+							// ? 0[kW]
+							// : MakeDefined(
+								 // /TussenResultaten/StartJaar/AllocatieResultaten/BestaandeWoning/CapaciteitsvraagE
+								// ,0[kW]);
 		}
 
 		unit<uint32> table := extensief
@@ -387,15 +387,15 @@ container PlanregioResults
 			attribute<Eur_m3> H19_waarde_hernieuwbaar_gas          := const(0[Eur_m3] , PlanRegio);
 			attribute<string> H20_beschikbaarheid_hernieuwbaar_gas := const('onbekend', PlanRegio);
 			
-			attribute<kW> H21_CapaciteitsvraagE := IsOngeldig
-				? (0/0)[kW]
-				: round(
-					IsUitgesloten_Stap0_Referentie
-						? 0[kW]
-						: MakeDefined(
-							 extensief/H21_CapaciteitsvraagE
-							,0[kW])
-				)[kW];
+			// attribute<kW> H21_CapaciteitsvraagE := IsOngeldig
+				// ? (0/0)[kW]
+				// : round(
+					// IsUitgesloten_Stap0_Referentie
+						// ? 0[kW]
+						// : MakeDefined(
+							 // extensief/H21_CapaciteitsvraagE
+							// ,0[kW])
+				// )[kW];
 		}
 
 		parameter<string> RefExpr := isStap0 ? 'Ref_2019_' : isReferentie ? 'Ref_2030_' : '%configName%/';

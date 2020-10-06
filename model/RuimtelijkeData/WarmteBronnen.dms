@@ -117,6 +117,7 @@ container WarmteBronnen
 				, DialogData = "point"
 			{
 				attribute<units/yr_uint16>       ingebruik        := WarmteBronnen/ingebruik[nr_OrgEntity];
+				attribute<uint32>                bron_id          := WarmteBronnen/nr[nr_OrgEntity][uint32];
 				attribute<string>                bron_naam        := WarmteBronnen/bron_naam[nr_OrgEntity], DialogType = "labelText";
 				attribute<string>                label            := WarmteBronnen/label[nr_OrgEntity], DialogType = "labelText";
 				attribute<MetaData/TypeInfoList> TypeInfoList_rel := WarmteBronnen/TypeInfoList_rel[nr_OrgEntity];

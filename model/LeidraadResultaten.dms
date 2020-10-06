@@ -4,14 +4,35 @@
 //                                                                                      //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-container LeidraadResultaten: using = "Model"
-{    
+container LeidraadResultaten: using = "Model;Geography"
+{     
 	container Exports
 	{ 
 		unit<uint32> PlanRegio           := Invoer/SpecifiekeInstellingen/PlanRegio;
 		unit<uint32> BestaandeWoningen   := /Invoer/RuimtelijkeData/Bebouwing/Impl/BestaandeWoning;
 		unit<uint32> BestaandeUtil       := /Invoer/RuimtelijkeData/Bebouwing/Impl/BestaandeUtil;
 		unit<uint32> BebouwingsObject    := /Invoer/RuimtelijkeData/Bebouwing/Impl/BestaandeWoning;
+		
+		container Warmtebronnen := 
+			for_each_ne(
+				Classifications/Rekenstap/name
+				, 'WarmteBronnenT('+Quote(Classifications/Rekenstap/name)+')'
+			);
+		
+		template WarmteBronnenT
+		{
+			parameter<string> RekenstapName;
+
+			parameter<classifications/Rekenstap> Rekenstap_rel := rlookup(RekenstapName, classifications/Rekenstap/name);
+			parameter<units/yr_uint16>           Jaar          := classifications/Rekenstap/jaar[Rekenstap_rel];
+			parameter<units/yr_uint16>           ZichtJaar     := Classifications/ZichtJaar/Jaar[classify(Jaar, Classifications/ZichtJaar/Jaar)];
+			
+			unit<uint32> PerRekenstap := = '/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen'
+			{
+				attribute<rdc_meter>     point        := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point';
+				attribute<MW>            MWth_max     := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/MWth_max';
+			} 
+		}
 		
 		container Settings
 		{
@@ -805,6 +826,7 @@ container LeidraadResultaten: using = "Model"
 				}
 				}
 			}
+			
 		}
 	}
 	
