@@ -27,7 +27,7 @@ container S3b_B_LT30_70
 		// bij label en name kun je eigen rekenstappen opgeven. Deze namen moeten overeen komen met:
 		// - namen van subitems van in Invoer/SpecifiekeInstellingen
 		attribute<string>          label := string(id(.))+'_'+string(Jaar);
-		attribute<string>          name  := id(.) == 0b ? 'StartJaar' : 'R' + label; 
+		attribute<string>          name  : ['StartJaar','Ref2030','R2_2030','R3_2030','Ref2050'];
 	}
 	
 	#include <%projDir%/runs/SharedInvoer.dms>
@@ -68,11 +68,11 @@ container S3b_B_LT30_70
 			container StartJaar := DefaultInstellingen/Basis;
 			
 			// Per rekenstap kun je hier specifieke instelling overrulen. De lijst van rekenstappen wordt gedefinieerd bij rekenstap
-			container R1_2030 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
+			container Ref2030 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
 			container R2_2030 := DefaultInstellingen/Rekenstap_GroenGasB/Stap_1;
 			container R3_2030 := DefaultInstellingen/Rekenstap_AllesB_LT30_70/Stap_1;
 			
-			container R4_2050 := DefaultInstellingen/Rekenstap_Doeniks/Stap_2050;
+			container Ref2050 := DefaultInstellingen/Rekenstap_Doeniks/Stap_2050;
 		}
 	}
 
