@@ -134,6 +134,8 @@ container LeidraadResultaten: using = "Model"
 						attribute<Eur_yr>       H18_Nat_meerkost_WEQ            (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H18_Nat_meerkost_WEQ, 0[Eur_yr])';
 						attribute<Eur_m3>       H19_Waarde_hernieuwbaar_gas     (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H19_Waarde_hernieuwbaar_gas, 0[Eur_m3])';
 						
+						attribute<kW>           H21_CapaciteitsvraagE           (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H21_CapaciteitsvraagE, 0[kW])';
+						
 						attribute<nrAsl>        A01_Aansl_aardgas               (PlanRegio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Aansluitingen/Table/A01_Aansl_aardgas , 0[nrAsl])';
 						attribute<nrAsl>        A02_Aansl_eWP                   (PlanRegio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Aansluitingen/Table/A02_Aansl_eWP , 0[nrAsl])';
 						attribute<nrAsl>        A03_Aansl_MT                    (PlanRegio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Aansluitingen/Table/A03_Aansl_MT , 0[nrAsl])';
@@ -237,6 +239,8 @@ container LeidraadResultaten: using = "Model"
 						attribute<Eur_yr>       Woning_H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Woning/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
 						attribute<Eur_m3>       Woning_H19_Waarde_hernieuwbaar_gas := PerBebouwingsSector/Woning/PerPlanRegio/H19_Waarde_hernieuwbaar_gas[nr_OrgEntity];
 						
+						attribute<kW>           Woning_H21_CapaciteitsvraagE        := PerBebouwingsSector/Woning/PerPlanRegio/H21_CapaciteitsvraagE[nr_OrgEntity];
+						
 						attribute<nrAsl>        Woning_A01_Aansl_aardgas           := PerBebouwingsSector/Woning/PerPlanRegio/A01_Aansl_aardgas[nr_OrgEntity];
 						attribute<nrAsl>        Woning_A02_Aansl_eWP               := PerBebouwingsSector/Woning/PerPlanRegio/A02_Aansl_eWP[nr_OrgEntity];
 						attribute<nrAsl>        Woning_A03_Aansl_MT                := PerBebouwingsSector/Woning/PerPlanRegio/A03_Aansl_MT[nr_OrgEntity];
@@ -285,6 +289,8 @@ container LeidraadResultaten: using = "Model"
 						attribute<Eur_ton>      Util_H17_Nat_meerkost_CO2        := PerBebouwingsSector/Util/PerPlanRegio/H17_Nat_meerkost_CO2[nr_OrgEntity];
 						attribute<Eur_yr>       Util_H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Util/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
 						attribute<Eur_m3>       Util_H19_Waarde_hernieuwbaar_gas := PerBebouwingsSector/Util/PerPlanRegio/H19_Waarde_hernieuwbaar_gas[nr_OrgEntity];
+						
+						attribute<kW>           Util_H21_CapaciteitsvraagE        := PerBebouwingsSector/Util/PerPlanRegio/H21_CapaciteitsvraagE[nr_OrgEntity];
 						
 						attribute<nrAsl>        Util_A01_Aansl_aardgas           := PerBebouwingsSector/Util/PerPlanRegio/A01_Aansl_aardgas[nr_OrgEntity];
 						attribute<nrAsl>        Util_A02_Aansl_eWP               := PerBebouwingsSector/Util/PerPlanRegio/A02_Aansl_eWP[nr_OrgEntity];
@@ -523,6 +529,12 @@ container LeidraadResultaten: using = "Model"
 									: MakeDefined(
 										 NationaleKosten/TotaalUitstoot/Delta_nat_kosten //nationale meerkosten per woningequivalent
 										,0[Eur_yr]);
+										
+							attribute<kW> H21_CapaciteitsvraagE := = 'IsOngeldig 
+								? (0/0)[kW] 
+								: (Statisch/IsUitgesloten || isStap0)
+									? MakeDefined(Invoer/RuimtelijkeData/infra/per_buurt/input_capaciteit_buurt,0[kW])
+									: add('+AsItemList('MakeDefined(/TussenResultaten/StartJaar/AllocatieResultaten/'+BebouwingsDomein/name+'/CapaciteitsvraagE,0[kW])')+')';
 						}
 
 						unit<uint32> table := extensief
@@ -597,7 +609,15 @@ container LeidraadResultaten: using = "Model"
 							attribute<Eur_m3> H19_waarde_hernieuwbaar_gas          := const(0[Eur_m3] , PlanRegio);
 							attribute<string> H20_beschikbaarheid_hernieuwbaar_gas := const('onbekend', PlanRegio);
 							
-										
+							attribute<kW> H21_CapaciteitsvraagE := IsOngeldig
+								? (0/0)[kW]
+								: round(
+									IsUitgesloten_Stap0_Referentie
+										? 0[kW]
+										: MakeDefined(
+											 (extensief/H21_CapaciteitsvraagE)
+											,0[kW])
+								)[kW];
 							
 							attribute<m2>    Oppervlakte    := ='add('+AsItemList('sum(bebouwing/'+BebouwingsDomein/name+'/Oppervlakte, bebouwing/'+BebouwingsDomein/name+'/PlanRegio_rel)')+')';
 							// attribute<m2>    Oppervlakte_Util    := BebouwingsSector == 'Util' 
