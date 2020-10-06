@@ -307,7 +307,9 @@ template LtWarmtenetImpl
 		
 		attribute<MW> P_aanbod_primair := BronCluster/P_warmte_primair [BronCluster_rel] * 0.001[MW / kW];
 		attribute<MW> P_afname_primair := Gebied/secundairnet/P_bronnet[BronCluster_rel];
-		attribute<MW> P_restcap_primair := P_aanbod_primair - P_afname_primair;
+		attribute<MW> P_restcap_primair:= P_aanbod_primair - P_afname_primair;
+		
+		attribute<Ratio> capaciteit_benuttingsfactor := P_afname_primair / P_aanbod_primair;
 
 		// feature selectie
 		unit<uint32> BronClusterFeature := BronCluster/Feature;
@@ -391,6 +393,8 @@ template LtWarmtenetImpl
 			unit<uint32> bron := BeginStatus/LtWarmte/bron 
 			{
 				attribute<bool> NuToegewezen := IsDefined(RendabelCluster/per_bronSrc);
+				attribute<Ratio> capaciteit_benuttingsfactor := RendabelCluster/capaciteit_benuttingsfactor[RendabelCluster/per_bronSrc];
+				
 				attribute<bool> Toegewezen   := BeginStatus/LtWarmte/bron/Toegewezen || NuToegewezen;
 
 				unit<uint32>    PrevClusterSet := BeginStatus/LtWarmte/bron/CumulativeClusterSet;
