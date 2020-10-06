@@ -304,6 +304,10 @@ template LtWarmtenetImpl
 		attribute<.> per_UnitedCandidates(UnitedCandidates) := RendabelCluster_per_BronCluster[BronCluster/per_UnitedCandidates]; // relatie van BebouwingsObjecten naar geselecteerde bron-clusters
 
 		attribute<Eur_yr> Rentabiliteit := Gebied/Rentabiliteit[BronCluster_rel];
+		
+		attribute<MW> P_aanbod_primair := BronCluster/P_warmte_primair [BronCluster_rel] * 0.001[MW / kW];
+		attribute<MW> P_afname_primair := Gebied/secundairnet/P_bronnet[BronCluster_rel];
+		attribute<MW> P_restcap_primair := P_aanbod_primair - P_afname_primair;
 
 		// feature selectie
 		unit<uint32> BronClusterFeature := BronCluster/Feature;
