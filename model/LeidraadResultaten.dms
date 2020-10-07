@@ -13,26 +13,30 @@ container LeidraadResultaten: using = "Model;Geography"
 		unit<uint32> BestaandeUtil       := /Invoer/RuimtelijkeData/Bebouwing/Impl/BestaandeUtil;
 		unit<uint32> BebouwingsObject    := /Invoer/RuimtelijkeData/Bebouwing/Impl/BestaandeWoning;
 		
+		unit<uint8> WarmteBronRelevanteRekenstappen := subset(Rekenstap/IsWarmteBronRelevant)
+		{
+			attribute<units/yr_uint16> Jaar  := Rekenstap/Jaar[nr_OrgEntity];
+			attribute<string>          label := Rekenstap/label[nr_OrgEntity];
+			attribute<string>          name  := Rekenstap/name[nr_OrgEntity];
+		}
+
 		container Warmtebronnen := 
 			for_each_ne(
-				Classifications/Rekenstap/name
-				, 'WarmteBronnenT('+Quote(Classifications/Rekenstap/name)+')'
+				WarmteBronRelevanteRekenstappen/name
+				, 'WarmteBronnenT('+Quote(WarmteBronRelevanteRekenstappen/name)+')'
 			);
 		
 		template WarmteBronnenT
 		{
 			parameter<string> RekenstapName;
 
-			parameter<classifications/Rekenstap> Rekenstap_rel := rlookup(RekenstapName, classifications/Rekenstap/name);
-			parameter<units/yr_uint16>           Jaar          := classifications/Rekenstap/jaar[Rekenstap_rel];
-			parameter<units/yr_uint16>           ZichtJaar     := Classifications/ZichtJaar/Jaar[classify(Jaar, Classifications/ZichtJaar/Jaar)];
-			
 			unit<uint32> PerRekenstap := = '/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen'
 			{
-				attribute<string>     bron_naam      := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/bron_naam';
-				attribute<uint32>     x_coord        := ='pointcol(/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point)[uint32]';
-				attribute<uint32>     y_coord        := ='pointrow(/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point)[uint32]';
-				attribute<MW>         MWth_max       := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/MWth_max';
+				attribute<string>     bron_naam                   := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/bron_naam';
+				attribute<uint32>     x_coord                     := ='pointcol(/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point)[uint32]';
+				attribute<uint32>     y_coord                     := ='pointrow(/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point)[uint32]';
+				attribute<MW>         MWth_max                    := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/MWth_max';
+				attribute<Ratio>      capaciteit_benuttingsfactor := = '/TussenResultaten/'+RekenstapName+'/GebiedsAllocatie/Lt30_70/impl/results/LtWarmte/bron/capaciteit_benuttingsfactor';
 			} 
 			
 			parameter<string> RunName_src := Exports/Settings/RunName == 'StartJaar' 
