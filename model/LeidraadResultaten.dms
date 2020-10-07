@@ -29,9 +29,18 @@ container LeidraadResultaten: using = "Model;Geography"
 			
 			unit<uint32> PerRekenstap := = '/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen'
 			{
-				attribute<rdc_meter>     point        := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point';
-				attribute<MW>            MWth_max     := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/MWth_max';
+				attribute<string>     bron_naam      := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/bron_naam';
+				attribute<uint32>     x_coord        := ='pointcol(/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point)[uint32]';
+				attribute<uint32>     y_coord        := ='pointrow(/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point)[uint32]';
+				attribute<MW>         MWth_max       := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/MWth_max';
 			} 
+			
+			parameter<string> RunName_src := Exports/Settings/RunName == 'StartJaar' 
+												? 'StartJaar'
+												: Exports/Settings/RunName;
+			parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/Warmtebronnen/'+RunName_src+'/'+RekenstapName;
+			unit<uint32>      list_PerRekenstap   := SubItem_PropValues(PerRekenstap,'name');
+			container         export_PerPlanRegio := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(PerRekenstap, replace(AsList(list_PerRekenstap/name, ';'), 'Geometry;','') , OutputFolder_str+'/Warmtebronnen_PerPlanRegio_ESDL.csv');
 		}
 		
 		container Settings

@@ -130,13 +130,15 @@ container WarmteBronnen
 				attribute<Eur_kW>                Ki_kW_max        := WarmteBronnen/Ki_kW_max[nr_OrgEntity];
 				attribute<_yr>                   Rj_Onderhoud     := WarmteBronnen/Rj_Onderhoud[nr_OrgEntity];
 				attribute<MW>                    MWth_max         := WarmteBronnen/MWth_max[nr_OrgEntity];
-				attribute<Eur_GJ>                K_GJ             := = 'WarmteBronnen/K_GJ/' +RekenstapName+'[nr_OrgEntity]';
-				attribute<Eur_GJ>                Km_GJ            := = 'WarmteBronnen/Km_GJ/'+RekenstapName+'[nr_OrgEntity]';
+				attribute<Eur_GJ>                K_GJ             := ='WarmteBronnen/K_GJ/' +RekenstapName+'[nr_OrgEntity]';
+				attribute<Eur_GJ>                Km_GJ            := ='WarmteBronnen/Km_GJ/'+RekenstapName+'[nr_OrgEntity]';
 				attribute<kg_GJ>                 CO2_GJ           := ='WarmteBronnen/CO2_'+string(ZichtJaar)+'[nr_OrgEntity]';
 				attribute<G_GJ>                  NOx_GJ           := ='WarmteBronnen/NOx_'+string(ZichtJaar)+'[nr_OrgEntity]';
 				attribute<G_GJ>                  SO2_GJ           := ='WarmteBronnen/SO2_'+string(ZichtJaar)+'[nr_OrgEntity]';
 				attribute<G_GJ>                  VOS_GJ           := ='WarmteBronnen/VOS_'+string(ZichtJaar)+'[nr_OrgEntity]';
 				attribute<G_GJ>                  TS_GJ            := ='WarmteBronnen/TS_' +string(ZichtJaar)+'[nr_OrgEntity]';
+				
+				attribute<Bronnen>               unique_rel       := rlookup(point, Bronnen/point);
 			}
 
 			unit<uint32> Bronnen := unique(BronElementen/point)
@@ -144,7 +146,7 @@ container WarmteBronnen
 			,	DialogData = "point"
 			{
 				attribute<string>                label                             := AsItemList(BronElementen/label, per_BronElementen), DialogType = "labelText";
-
+				attribute<string>                bron_naam                         := asList(BronElementen/bron_naam, ', ', BronElementen/unique_rel);
 				attribute<.>                     per_BronElementen (BronElementen) := rlookup(BronElementen/point, Values);
 				attribute<MetaData/TypeInfoList> TypeInfoList_rel                  := modus_weighted(BronElementen/TypeInfoList_rel, BronElementen/MWth_max, per_BronElementen);
 
