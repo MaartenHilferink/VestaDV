@@ -412,7 +412,7 @@ container WarmteBronnen
 			attribute<Eur_GJ>  E_GJ      := const(0[Eur_GJ], .)                                        , Descr = "";
 		}
 		
-		unit<uint32> data
+		unit<uint32> data_csv
 		:	StorageName     = "%SourceDataProjDir%/aanbod/puntbronnen/20200311_Puntbronnen_LT.csv"
 		,	StorageType     = "gdal.vect"
 		,	DialogType      = "Map"
@@ -438,52 +438,18 @@ container WarmteBronnen
 			attribute<Eur_kW>    Ki_kW_max   := makedefined(Uitkoppel_max[Eur_kw] , value(Categorie/Ki_kW_max[Categorie_rel], Eur / kW));
 			attribute<Eur_GJ>    K_GJ        := makedefined(Productiekosten[Eur_GJ] , value(Categorie/K_GJ[Categorie_rel], Eur / GJ));
 
-			attribute<ratio>     P_vol       := makedefined(volfactor[percent] / 100[percent], Categorie/bron_vol[Categorie_rel] / 100[percent]);
-			attribute<ratio>     P_cap       := makedefined(capfactor[percent] / 100[percent], Categorie/bron_cap[Categorie_rel] / 100[percent]);
+			attribute<ratio>     Bron_vol       := makedefined(volfactor[percent] / 100[percent], Categorie/bron_vol[Categorie_rel] / 100[percent]);
+			attribute<ratio>     Bron_cap       := makedefined(capfactor[percent] / 100[percent], Categorie/bron_cap[Categorie_rel] / 100[percent]);
 
 			attribute<string>    label           := nr, DialogType = "labelText";
 			attribute<float64>   SymbolWorldSize := sqrt(MWth_max * 100000[1 / MW]), DialogType = "SymbolWorldSize";
 			parameter<int16>     SymbolIndex     := 44s, DialogType = "SymbolIndex";
 		}
-
-// 		unit<uint32> LTbronnen_capaciteit
-// 		:	StorageName     = "%sourceDataProjDir%/aanbod/puntbronnen/20190612_LT_puntbronnen.shp"
-// 		,	StorageType     = "gdal.vect"
-// 		,	StorageReadOnly = "True"
-// 		,	DialogType      = "Map"
-// 		,	DialogData      = "Geometry"
-// 		,	Source          = "CE-Delft"
-// 		{
-// 			attribute<rdc_meter>	Geometry;
-// 			attribute<rdc_meter>	point := Geometry;
-// 			
-// 			attribute<string> Type_bron;			
-// 			attribute<unique_categorie> unique_categorie_rel := rlookup(type_bron, unique_categorie/values);
-// 			attribute<../categorie> categorie_rel := unique_categorie/categorie_rel[unique_categorie_rel];
-
-// 			attribute<string>	bron_naam;
-// 			attribute<string>	label := bron_naam;
-// 			attribute<string>	volfactor;
-// 			attribute<string>	capfactor;
-// 			attribute<string>	tempniv; 
-// 			attribute<string>	uitk_min_e;
-// 			attribute<string>	uitk_max_e;
-// 			attribute<string>	wp_euro_gj;
-// 			attribute<string>	MWth_max;
-// 			
-// 			attribute<Celsius>	T_bron			:= float64(tempniv)[Celsius]; 
-// 			attribute<Eur_kW>	Ki_KW_min		:= float64(uitk_min_e)[Eur_kW];
-// 			attribute<Eur_kW>	Ki_KW_max		:= float64(uitk_max_e)[Eur_kW];
-// 			attribute<Eur_GJ>	K_GJ			:= float64(wp_euro_gj)[Eur_GJ];
-// 			attribute<percent>	bron_vol	 	:= float64(volfactor)[percent];
-// 			attribute<percent>	bron_cap 		:= float64(capfactor)[percent];
-// 			attribute<MW>		MWth_max_f 		:= float64(MWth_max)[MW];
-// 		}
 		
-// 		unit<uint32> unique_categorie := unique(data/categorie_rel)
-// 		{
-// 			attribute<categorie> categorie_rel := rlookup(values, categorie/code);
-// 		}
+		#include<ESDL_LTBronnen.dms>
+		
+		unit<uint32> data := =SpecifiekeInstellingen/LeesWarmtebronnenUitESDL ? 'ESDL_LTBronnen/Bronnen' : 'data_csv';
+		
 		unit<uint32> bron_src := data 
 		,	DialogType = "Map"
 		,	DialogData = "point"
@@ -493,21 +459,12 @@ container WarmteBronnen
 			attribute<yr_uint16> ingebruik     := data/ingebruik;
 			attribute<yr_uint16> uitgebruik    := data/ingebruik;
 			attribute<categorie> Categorie_rel := data/Categorie_rel;
-
-			//invoerwaardes
-// 			attribute<MW>			MWth_max_spec	:=	LTbronnen_capaciteit/MWth_max_f;
-// 			attribute<percent>		Bron_vol_spec	:=	LTbronnen_capaciteit/bron_vol;
-// 			attribute<percent>		Bron_cap_spec	:=	LTbronnen_capaciteit/bron_cap;
-// 			attribute<Celsius>		T_bron_spec		:=	LTbronnen_capaciteit/T_bron;
-
-// 			attribute<Eur_kW>		Ki_kW_min_spec	:=	LTbronnen_capaciteit/Ki_kW_min;
-// 			attribute<Eur_kW>		Ki_kW_max_spec	:=	LTbronnen_capaciteit/Ki_kW_max;
-// 			attribute<Eur_GJ>		K_GJ_spec		:=	LTbronnen_capaciteit/K_GJ;
+			attribute<string>    Bron_naam     := data/bron_naam;
 
 			//aangevulde waardes met kentallen wanneer geen invoerwaarde is opgegeven
 			attribute<MW>      MWth_max := data/MWth_max;
-			attribute<ratio>   Bron_vol := data/P_vol;
-			attribute<ratio>   Bron_cap := data/P_cap;
+			attribute<ratio>   Bron_vol := data/Bron_vol;
+			attribute<ratio>   Bron_cap := data/Bron_cap;
 			attribute<Celsius> T_bron   := data/T_bron;
 			attribute<kW>      P_ow_max := MWth_max * 1000[kW / MW];
 
@@ -527,6 +484,7 @@ container WarmteBronnen
 		, DialogType = "map"
 		{
 			attribute<rdc_meter> point         := bron_src/point[nr_OrgEntity];
+			attribute<string>    Bron_naam     := bron_src/bron_naam[nr_OrgEntity];
 			attribute<string>    label         := bron_src/label[nr_OrgEntity];
 			attribute<yr_uint16> ingebruik     := bron_src/ingebruik[nr_OrgEntity];
 			attribute<yr_uint16> uitgebruik    := bron_src/uitgebruik[nr_OrgEntity];

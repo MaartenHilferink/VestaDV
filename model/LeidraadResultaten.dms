@@ -3,7 +3,7 @@
 //                   (C) VESTA 2020 - Planbureau voor de Leefomgeving                   //
 //                                                                                      //
 //////////////////////////////////////////////////////////////////////////////////////////
-
+ 
 container LeidraadResultaten: using = "Model;Geography"
 {     
 	container Exports
@@ -30,22 +30,32 @@ container LeidraadResultaten: using = "Model;Geography"
 		{
 			parameter<string> RekenstapName;
 
-			unit<uint32> PerRekenstap := = '/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron'
+
+			unit<uint32> PerRekenstap := Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron
 			{
-				attribute<string>     bron_naam                   := ='/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/bron_naam';
-				attribute<rdc_meter>  geometry                    := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point;
-				attribute<float32>    x_coord                     := ='pointcol(RD2LatLongWgs84(/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point,dpoint))[float32]';
-				attribute<float32>    y_coord                     := ='pointrow(RD2LatLongWgs84(/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point,dpoint))[float32]';
-				attribute<MW>         MWth_max                    := ='/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/MWth_max';
+				attribute<string>     bron_naam                   := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/bron_naam;
+				attribute<string>     label                       := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/label;
+				// attribute<rdc_meter>  geometry                    := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point;
+				attribute<float32>    x_coord                     := pointcol(RD2LatLongWgs84(/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point,dpoint))[float32];
+				attribute<float32>    y_coord                     := pointrow(RD2LatLongWgs84(/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point,dpoint))[float32];
+				
+				attribute<yr_uint16>  ingebruik                   := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/ingebruik;
+				attribute<yr_uint16>  uitgebruik                  := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/uitgebruik;
+				attribute<Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/Categorie>  Categorie_rel               := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Categorie_rel;
+				attribute<MW>         MWth_max                    := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/MWth_max;
+				attribute<ratio>      Bron_vol                    := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Bron_vol;
+				attribute<ratio>      Bron_cap                    := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Bron_cap;
+				attribute<Celsius>    T_bron                      := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/T_bron;
+				attribute<kW>         P_ow_max                    := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/P_ow_max;
+				attribute<Eur_kW>     Ki_kW_min                   := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Ki_kW_min;
+				attribute<Eur_kW>     Ki_kW_max                   := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Ki_kW_max;
+				attribute<Eur_GJ>     K_GJ                        := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/K_GJ;
 				attribute<Ratio>      capaciteit_benuttingsfactor := ='MakeDefined(/TussenResultaten/'+RekenstapName+'/GebiedsAllocatie/Lt30_70/impl/results/LtWarmte/bron/capaciteit_benuttingsfactor,0[Ratio])';
-				attribute<uint32>     Afnamegebied_rel            := /TussenResultaten/R3_2030/GebiedsAllocatie/Lt30_70/impl/AllObjects/BronCluster_rel[TussenResultaten/R3_2030/GebiedsAllocatie/Lt30_70/impl/RendabelCluster/per_bronSrc];
-				
-				
-				
-				unit<uint32> GroterDanZero := subset(capaciteit_benuttingsfactor > 0[ratio])
-				{
-					attribute<rdc_meter>  geometry := ../geometry[nr_OrgEntity];
-				}
+
+				// unit<uint32> GroterDanZero := subset(capaciteit_benuttingsfactor > 0[ratio])
+				// {
+					// attribute<rdc_meter>  geometry := ../geometry[nr_OrgEntity];
+				// }
 			} 
 			
 			parameter<string> RunName_src := Exports/Settings/RunName == 'StartJaar' 

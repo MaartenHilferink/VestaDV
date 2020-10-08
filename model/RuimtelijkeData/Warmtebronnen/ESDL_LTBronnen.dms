@@ -1,0 +1,92 @@
+container ESDL_LTBronnen
+{  
+	container LT_warmtebronnen_Schema
+	{
+		unit<uint32> area
+		{
+			attribute<string> id;
+			attribute<string> name;
+			
+			unit<uint32> area
+			{
+			}
+			
+			unit<uint32> asset // ResidualHeatSource
+			{
+				attribute<string> xsi_type;
+				attribute<string> id;
+				attribute<string> power;
+				attribute<string> name;
+				
+				unit<uint32> geometry
+				{
+					attribute<string> CRS;
+					attribute<string> lat;
+					attribute<string> lon;
+				}
+				
+				unit<uint32> KPI
+				{
+					attribute<string> value;
+					attribute<string> name;
+				}
+			}
+		}
+	}
+
+	parameter<string> ESDL_Warmtebronnen: StorageName = "=SpecifiekeInstellingen/WarmtebronnenEsdlPath", StorageType = "str";
+		
+	container Parsed_Warmtebronnen := parse_xml(ESDL_Warmtebronnen, LT_warmtebronnen_Schema);
+	
+	unit<uint32> Read_Bronnen := Parsed_Warmtebronnen/area/asset
+	, FreeData = "false"
+	, DialogData = "point"
+	, DialogType = "map" 
+	{
+		attribute<rdc_meter>  point         := LatLongWgs842RD(point(value(first(Geometry/lat, Geometry/bron_rel), float64),value(first(Geometry/lon, Geometry/bron_rel), float64),dpoint), rdc_meter);
+		attribute<string>     Bron_naam     := Parsed_Warmtebronnen/area/asset/name;
+		attribute<string>     label         :=       KPI/value[invert(KPI/name == 'label'         ? convert(KPI/parent_rel,.) : value(0/0, .))];
+		attribute<yr_uint16>  ingebruik     := value(KPI/value[invert(KPI/name == 'ingebruik'     ? convert(KPI/parent_rel,.) : value(0/0, .))],yr_uint16);
+		attribute<yr_uint16>  uitgebruik    := value(KPI/value[invert(KPI/name == 'uitgebruik'    ? convert(KPI/parent_rel,.) : value(0/0, .))],yr_uint16);
+		attribute<Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/categorie>    Categorie_rel := value(KPI/value[invert(KPI/name == 'categorie_rel' ? convert(KPI/parent_rel,.) : value(0/0, .))],Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/categorie);
+		attribute<MW>         MWth_max      := value(KPI/value[invert(KPI/name == 'mwth_max'      ? convert(KPI/parent_rel,.) : value(0/0, .))],MW);
+		attribute<ratio>      Bron_vol      := value(KPI/value[invert(KPI/name == 'bron_vol'      ? convert(KPI/parent_rel,.) : value(0/0, .))],ratio);
+		attribute<ratio>      Bron_cap      := value(KPI/value[invert(KPI/name == 'bron_cap'      ? convert(KPI/parent_rel,.) : value(0/0, .))],ratio);
+		attribute<Celsius>    T_bron        := value(KPI/value[invert(KPI/name == 'T_bron'        ? convert(KPI/parent_rel,.) : value(0/0, .))],Celsius);
+		attribute<kW>         P_ow_max      := value(KPI/value[invert(KPI/name == 'P_ow_max'      ? convert(KPI/parent_rel,.) : value(0/0, .))],kW);
+		attribute<Eur_kW>     Ki_kW_min     := value(KPI/value[invert(KPI/name == 'Ki_kW_min'     ? convert(KPI/parent_rel,.) : value(0/0, .))],Eur_kW);
+		attribute<Eur_kW>     Ki_kW_max     := convert(KPI/value[invert(KPI/name == 'Ki_kW_max'     ? convert(KPI/parent_rel,.) : value(0/0, .))],Eur_kW);
+		attribute<Eur_GJ>     K_GJ          := value(KPI/value[invert(KPI/name == 'K_GJ'          ? convert(KPI/parent_rel,.) : value(0/0, .))],Eur_GJ);
+		attribute<bool>       IsBron        := IsDefined(point);
+		
+		unit<uint32> KPI := Parsed_Warmtebronnen/area/asset/KPI
+		{
+			attribute<..>     bron_rel := value(KPI/Parent_rel, ..);
+		}
+		unit<uint32> Geometry := Parsed_Warmtebronnen/area/asset/Geometry
+		{
+			attribute<..> bron_rel := value(Geometry/Parent_rel, ..);
+		}
+	}
+	
+	unit<uint32> Bronnen := subset(Read_Bronnen/IsBron)
+	, DialogData = "point"
+	, DialogType = "map" 
+	{
+		attribute<rdc_meter>  point         := Read_Bronnen/point[nr_OrgEntity];
+		attribute<string>     Bron_naam     := Read_Bronnen/Bron_naam[nr_OrgEntity];
+		attribute<string>     label         := Read_Bronnen/label[nr_OrgEntity];
+		attribute<yr_uint16>  ingebruik     := Read_Bronnen/ingebruik[nr_OrgEntity];
+		attribute<yr_uint16>  uitgebruik    := Read_Bronnen/uitgebruik[nr_OrgEntity];
+		attribute<Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/categorie>    Categorie_rel := Read_Bronnen/Categorie_rel[nr_OrgEntity];
+		attribute<MW>         MWth_max      := Read_Bronnen/MWth_max[nr_OrgEntity];
+		attribute<ratio>      Bron_vol      := Read_Bronnen/Bron_vol[nr_OrgEntity];
+		attribute<ratio>      Bron_cap      := Read_Bronnen/Bron_cap[nr_OrgEntity];
+		attribute<Celsius>    T_bron        := Read_Bronnen/T_bron[nr_OrgEntity];
+		attribute<kW>         P_ow_max      := Read_Bronnen/P_ow_max[nr_OrgEntity];
+		attribute<Eur_kW>     Ki_kW_min     := Read_Bronnen/Ki_kW_min[nr_OrgEntity];
+		attribute<Eur_kW>     Ki_kW_max     := Read_Bronnen/Ki_kW_max[nr_OrgEntity];
+		attribute<Eur_GJ>     K_GJ          := Read_Bronnen/K_GJ[nr_OrgEntity];
+	}
+
+}
