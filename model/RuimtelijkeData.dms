@@ -11,39 +11,71 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 container RuimtelijkeData: Using = "Units;Geography;Model", FreeData = "False"
-{
+{  
 	container Studiegebied
 	{
 		container impl
 		{
-			unit<uint32> selected1 := range(uint32, 0, strcount(Invoer/StudieGebied_NHZ, ',') + 1 )
-			{
-				attribute<string> values := ReadArray(lowercase(trim(Invoer/StudieGebied_NHZ)), ., string, 0);
-			}
-			unit<uint32> selected2 := range(uint32, 0, strcount(Invoer/StudieGebied_TW, ',') + 1 )
-			{
-				attribute<string> values := ReadArray(lowercase(trim(Invoer/StudieGebied_TW)), ., string, 0);
-			}
-			unit<uint32> selected3 := range(uint32, 0, strcount(Invoer/StudieGebied_AMF, ',') + 1 )
-			{
-				attribute<string> values := ReadArray(lowercase(trim(Invoer/StudieGebied_AMF)), ., string, 0);
-			}
-			unit<uint32> selected4 := range(uint32, 0, strcount(Invoer/StudieGebied_U10_U16, ',') + 1 )
-			{
-				attribute<string> values := ReadArray(lowercase(trim(Invoer/StudieGebied_U10_U16)), ., string, 0);
-			}
-			unit<uint32> selected := union_unit(selected1,selected2,selected3,selected4)
-			{
-				attribute<string> values := union_data(., selected1/values, selected2/values, selected3/values, selected4/values);
-			}
-		}
-		attribute<bool> selected_per_gemeente (RegioIndelingen/gemeente) := impl/selected/values[0] = 'nl'
-			? const(true, RegioIndelingen/gemeente)
-			: IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/selected/values));
+			parameter<string> RES_StudieGebied_NHZ     : ['RESNoordHollandZuid'];
+			parameter<string> RES_StudieGebied_TW      : ['RESTwente']; 
+			parameter<string> RES_StudieGebied_AMF     : ['RESAmersfoort']; 
+			parameter<string> RES_StudieGebied_U10_U16 : ['RESU10_U16'];
+			parameter<string> StudieGebied_NHZ         := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_NHZ, Geography/RegioIndelingen/Energieregio/name)];
+			parameter<string> StudieGebied_TW          := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_TW, Geography/RegioIndelingen/Energieregio/name)];
+			parameter<string> StudieGebied_AMF         := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_AMF, Geography/RegioIndelingen/Energieregio/name)];
+			parameter<string> StudieGebied_U10_U16     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_U10_U16, Geography/RegioIndelingen/Energieregio/name)];
 		
-		attribute<bool> selected_per_buurt (RegioIndelingen/buurt) := impl/selected/values[0] = 'nl'
-			? const(true, RegioIndelingen/buurt)
-			: IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/selected/values));
+			unit<uint32> Selected_StudieGebied_NHZ := range(uint32, 0, strcount(StudieGebied_NHZ, ',') + 1 ) //Noord Holland Zuid
+			{
+				attribute<string> values := ReadArray(lowercase(trim(StudieGebied_NHZ)), ., string, 0);
+			}
+			unit<uint32> Selected_StudieGebied_TW := range(uint32, 0, strcount(StudieGebied_TW, ',') + 1 ) //Twente
+			{
+				attribute<string> values := ReadArray(lowercase(trim(StudieGebied_TW)), ., string, 0);
+			}
+			unit<uint32> Selected_StudieGebied_AMF := range(uint32, 0, strcount(StudieGebied_AMF, ',') + 1 ) //Amersfoort
+			{
+				attribute<string> values := ReadArray(lowercase(trim(StudieGebied_AMF)), ., string, 0);
+			}
+			unit<uint32> Selected_StudieGebied_U10_U16 := range(uint32, 0, strcount(StudieGebied_U10_U16, ',') + 1 ) //Utrecht
+			{
+				attribute<string> values := ReadArray(lowercase(trim(StudieGebied_U10_U16)), ., string, 0);
+			}
+			unit<uint32> Selected_StudieGebied_GenV := union_unit(Selected_StudieGebied_AMF,Selected_StudieGebied_U10_U16)
+			{
+				attribute<string> values := union_data(., Selected_StudieGebied_AMF/values, Selected_StudieGebied_U10_U16/values);
+			}
+			unit<uint32> Selected_MONDAINE := union_unit(Selected_StudieGebied_NHZ,Selected_StudieGebied_TW,Selected_StudieGebied_GenV) 
+			{
+				attribute<string> values := union_data(., Selected_StudieGebied_NHZ/values, Selected_StudieGebied_TW/values, Selected_StudieGebied_GenV/values);
+			}
+		}	
+		
+		attribute<bool> selected_per_gemeente (RegioIndelingen/gemeente) := 
+			invoer/studiegebied == 'NL'
+				? const(true, RegioIndelingen/gemeente)
+				: invoer/studiegebied == 'RESNoordHollandZuid'
+					? IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_NHZ/values))
+					: invoer/studiegebied == 'RESTwente'
+						? IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_TW/values))
+						: invoer/studiegebied == 'RESGooienVechtstreek'
+							? IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_GenV/values))
+							: invoer/studiegebied == 'MONDAINE'
+								? IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_MONDAINE/values))
+								: const(false, RegioIndelingen/gemeente);
+		
+		attribute<bool> selected_per_buurt (RegioIndelingen/buurt) := 
+			invoer/studiegebied == 'NL'
+				? const(true, RegioIndelingen/buurt)
+				: invoer/studiegebied == 'RESNoordHollandZuid'
+					? IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_NHZ/values))
+					: invoer/studiegebied == 'RESTwente'
+						? IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_TW/values))
+						: invoer/studiegebied == 'RESGooienVechtstreek'
+							? IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_GenV/values))
+							: invoer/studiegebied == 'MONDAINE'
+								? IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_MONDAINE/values))
+								: const(false, RegioIndelingen/buurt);
 
 		attribute<bool> selected_per_m100 (Geography/rdc_grids/m100 ) := selected_per_gemeente[Geography/RegioIndelingen/gemeente/per_m100];
 

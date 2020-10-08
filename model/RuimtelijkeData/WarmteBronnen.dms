@@ -484,7 +484,7 @@ container WarmteBronnen
 // 		{
 // 			attribute<categorie> categorie_rel := rlookup(values, categorie/code);
 // 		}
-		unit<uint32> bron := data 
+		unit<uint32> bron_src := data 
 		,	DialogType = "Map"
 		,	DialogData = "point"
 		{
@@ -514,6 +514,31 @@ container WarmteBronnen
 			attribute<Eur_kW> Ki_kW_min := data/Ki_KW_min;
 			attribute<Eur_kW> Ki_kW_max := data/Ki_KW_max;
 			attribute<Eur_GJ> K_GJ      := data/K_GJ;
+			
+			attribute<Geography/RegioIndelingen/gemeente> gem_rel     := point_in_polygon(point, Geography/RegioIndelingen/gemeente/Geometry);
+		}
+		
+		unit<uint32> bron := SubSet(
+			Invoer/RuimtelijkeData/StudieGebied/selected_per_gemeente[bron_src/gem_rel]                    // ruimtelijke selectie
+			&& bron_src/T_bron <= 30[celsius] //temperatuurselectie
+			&& bron_src/MWth_max > 0[mw] // capaciteitselectie
+			)
+		, DialogData = "point"
+		, DialogType = "map"
+		{
+			attribute<rdc_meter> point         := bron_src/point[nr_OrgEntity];
+			attribute<string>    label         := bron_src/label[nr_OrgEntity];
+			attribute<yr_uint16> ingebruik     := bron_src/ingebruik[nr_OrgEntity];
+			attribute<yr_uint16> uitgebruik    := bron_src/uitgebruik[nr_OrgEntity];
+			attribute<categorie> Categorie_rel := bron_src/Categorie_rel[nr_OrgEntity];
+			attribute<MW>        MWth_max      := bron_src/MWth_max[nr_OrgEntity];
+			attribute<ratio>     Bron_vol      := bron_src/Bron_vol[nr_OrgEntity];
+			attribute<ratio>     Bron_cap      := bron_src/Bron_cap[nr_OrgEntity];
+			attribute<Celsius>   T_bron        := bron_src/T_bron[nr_OrgEntity];
+			attribute<kW>        P_ow_max      := bron_src/P_ow_max[nr_OrgEntity];
+			attribute<Eur_kW>    Ki_kW_min     := bron_src/Ki_KW_min[nr_OrgEntity];
+			attribute<Eur_kW>    Ki_kW_max     := bron_src/Ki_KW_max[nr_OrgEntity];
+			attribute<Eur_GJ>    K_GJ          := bron_src/K_GJ[nr_OrgEntity];
 		}
 	}
 

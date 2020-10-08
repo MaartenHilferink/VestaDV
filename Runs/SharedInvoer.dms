@@ -13,40 +13,8 @@
 
 container SharedInvoer
 {
-	// Gemeentes als selectie: 'NL' or a set of municipality codes, 
-	// parameter<string> StudieGebied: ['NL'];
-	parameter<string> RES_StudieGebied_NHZ     : ['RESNoordHollandZuid']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
-	parameter<string> RES_StudieGebied_TW      : ['RESTwente']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
-	parameter<string> RES_StudieGebied_AMF     : ['RESAmersfoort']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
-	parameter<string> RES_StudieGebied_U10_U16 : ['RESU10_U16']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
-	parameter<string> StudieGebied_NHZ     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_NHZ, Geography/RegioIndelingen/Energieregio/name)];
-	parameter<string> StudieGebied_TW      := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_TW, Geography/RegioIndelingen/Energieregio/name)];
-	parameter<string> StudieGebied_AMF     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_AMF, Geography/RegioIndelingen/Energieregio/name)];
-	parameter<string> StudieGebied_U10_U16 := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_U10_U16, Geography/RegioIndelingen/Energieregio/name)];
+	parameter<string> StudieGebied          : ['RESNoordHollandZuid']; //'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
 	
-//		parameter<string> StudieGebied: ['GM1507'];
-//		parameter<string> StudieGebied: ['GM0402'];  // Hilversum
-//		parameter<string> StudieGebied: ['GM0344'];  // Utrecht
-//		parameter<string> StudieGebied: ['GM1581'];  // Utrechtse Heuvelrug
-//		parameter<string> StudieGebied: ['GM0439'];  // Purmerend
-//		parameter<string> StudieGebied: ['GM0153'];  // Enschede
-//		parameter<string> StudieGebied: ['GM0599'];  // Rotterdam
-//		parameter<string> StudieGebied: ['GM0034'];  // Almere
-//		parameter<string> StudieGebied: ['GM0050'];  // Zeewolde
-//		parameter<string> StudieGebied: ['GM0321'];  // Houten
-
-//		parameter<string> StudieGebied: ['GM0503'];
-
-//		parameter<string> StudieGebied: ['GM0402,GM0344,GM1581,GM0439,GM0153,GM0599,GM0034,GM0050,GM0321'];
-
-	// Of RES als selectie
-//		parameter<string> RES_StudieGebied : ['RESTwente'];
-//		parameter<string> RES_StudieGebied : ['RESDrechtsteden'];
-//		parameter<string> RES_StudieGebied : ['RESRotterdamDenHaag'];
-//		parameter<string> RES_StudieGebied : ['RESU10_U16'];
-//		parameter<string> RES_StudieGebied : ['RESNoordHollandZuid']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
-//		parameter<string> StudieGebied     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied, Geography/RegioIndelingen/Energieregio/name)];
-
 	parameter<bool> G01_aan := false; // G01_Nat_meerkost_CO2_Kost_Reductie_Hoog = Leercurves maximaal optimistisch
 	parameter<bool> G02_aan := false; // G02_Nat_meerkost_CO2_Kost_Reductie_Laag = Leercurves maximaal pessimistisch
 	parameter<bool> G03_aan := false; // G03_Nat_meerkost_CO2_En_Prijzen_Laag    = Energieprijzen laagste inschatting

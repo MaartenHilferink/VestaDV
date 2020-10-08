@@ -30,13 +30,22 @@ container LeidraadResultaten: using = "Model;Geography"
 		{
 			parameter<string> RekenstapName;
 
-			unit<uint32> PerRekenstap := = '/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen'
+			unit<uint32> PerRekenstap := = '/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron'
 			{
-				attribute<string>     bron_naam                   := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/bron_naam';
-				attribute<uint32>     x_coord                     := ='pointcol(/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point)[uint32]';
-				attribute<uint32>     y_coord                     := ='pointrow(/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point)[uint32]';
-				attribute<MW>         MWth_max                    := ='/Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/MWth_max';
-				attribute<Ratio>      capaciteit_benuttingsfactor := = '/TussenResultaten/'+RekenstapName+'/GebiedsAllocatie/Lt30_70/impl/results/LtWarmte/bron/capaciteit_benuttingsfactor';
+				attribute<string>     bron_naam                   := ='/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/bron_naam';
+				attribute<rdc_meter>  geometry                    := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point;
+				attribute<float32>    x_coord                     := ='pointcol(RD2LatLongWgs84(/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point,dpoint))[float32]';
+				attribute<float32>    y_coord                     := ='pointrow(RD2LatLongWgs84(/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point,dpoint))[float32]';
+				attribute<MW>         MWth_max                    := ='/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/MWth_max';
+				attribute<Ratio>      capaciteit_benuttingsfactor := ='MakeDefined(/TussenResultaten/'+RekenstapName+'/GebiedsAllocatie/Lt30_70/impl/results/LtWarmte/bron/capaciteit_benuttingsfactor,0[Ratio])';
+				attribute<uint32>     Afnamegebied_rel            := /TussenResultaten/R3_2030/GebiedsAllocatie/Lt30_70/impl/AllObjects/BronCluster_rel[TussenResultaten/R3_2030/GebiedsAllocatie/Lt30_70/impl/RendabelCluster/per_bronSrc];
+				
+				
+				
+				unit<uint32> GroterDanZero := subset(capaciteit_benuttingsfactor > 0[ratio])
+				{
+					attribute<rdc_meter>  geometry := ../geometry[nr_OrgEntity];
+				}
 			} 
 			
 			parameter<string> RunName_src := Exports/Settings/RunName == 'StartJaar' 
@@ -44,7 +53,7 @@ container LeidraadResultaten: using = "Model;Geography"
 												: Exports/Settings/RunName;
 			parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/Warmtebronnen/'+RunName_src+'/'+RekenstapName;
 			unit<uint32>      list_PerRekenstap   := SubItem_PropValues(PerRekenstap,'name');
-			container         export_PerPlanRegio := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(PerRekenstap, replace(AsList(list_PerRekenstap/name, ';'), 'Geometry;','') , OutputFolder_str+'/Warmtebronnen_PerPlanRegio_ESDL.csv');
+			container         export_PerRekenstap := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(PerRekenstap, replace(AsList(list_PerRekenstap/name, ';'), 'Geometry;','') , OutputFolder_str+'/Warmtebronnen_PerPlanRegio_ESDL.csv');
 		}
 		
 		container Settings
@@ -83,6 +92,18 @@ container LeidraadResultaten: using = "Model;Geography"
 			{
 				attribute<string> values := ReadArray(trim(Settings/StudieGebied_Hengelo), ., String, 0);
 			}
+			
+			parameter<string> RegioSelectie_Buurt_str      := 'subset('+AsList('PlanRegio/BU_CODE == ' +quote(selected_Havenstad/values), ' || ')+')';
+			parameter<string> RegioSelectie_Gemeente_str   := 'subset('+AsList('PlanRegio/GM_CODE == ' +quote(selected_GooiEnVechtstreek/values), ' || ')+')';
+			
+			unit<uint32> Regio1 := =RegioSelectie_Buurt_str
+			{
+				attribute<rdc_meter> Geometery (poly) := PlanRegio/geometry[nr_OrgEntity];
+			}
+			
+			parameter<string> RegioSelectie_str            := regio_naam == 'Havenstad'
+																? RegioSelectie_Buurt_str
+																: RegioSelectie_Gemeente_str;
 			
 			unit<uint8> StudyAreas : nrofrows = 3
 			{
