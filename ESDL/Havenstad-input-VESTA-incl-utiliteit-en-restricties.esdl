@@ -7,6 +7,7 @@
     <measure xsi:type="esdl:Measure" name="HWPw" id="HWPw"/>
     <measure xsi:type="esdl:Measure" name="HWPu" id="HWPu"/>
     <measure xsi:type="esdl:Measure" name="HWP_A" id="HWP_A"/>
+    <measure xsi:type="esdl:Measure" name="Lage Temperatuur 30c opgeplust tot 70c" id="Lt30_70"/>
   </measures>
   <instance xsi:type="esdl:Instance" id="a5b914d4-f738-41ea-98f7-1b722084062b" name="Havenstad">
     <area xsi:type="esdl:Area" id="b29b9f29-afd9-46fb-93ef-ca5e6f1dc263">
@@ -720,6 +721,7 @@
         <measures xsi:type="esdl:Measures">
           <measure xsi:type="esdl:MeasureReference" reference="HWPw" id="6caaa7c2-2073-48b6-b11e-6d598809f4b1"/>
           <measure xsi:type="esdl:MeasureReference" reference="HWPu" id="24cea1b3-c33e-45ca-8184-3c323137927f"/>
+          <measure xsi:type="esdl:MeasureReference" reference="Lt30_70"/>
         </measures>
       </area>
       <area xsi:type="esdl:Area" name="Sloterdijk I Zuid" id="3e13a511-1042-480e-8bf0-d2c120271abc">
@@ -902,6 +904,7 @@
         </asset>
         <measures xsi:type="esdl:Measures">
           <measure xsi:type="esdl:MeasureReference" reference="HWP_A" id="07ea0ed1-b153-45bb-b28d-d3cf9705bed9"/>
+          <measure xsi:type="esdl:MeasureReference" reference="Lt30_70"/>
         </measures>
       </area>
       <area xsi:type="esdl:Area" name="Cornelis Douwes 0-1" id="edebaa57-5662-4c24-af23-8704c377c9d3">
