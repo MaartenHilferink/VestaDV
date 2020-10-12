@@ -223,12 +223,12 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        A22_Aansl_MT_BioWKK             (PlanRegio) := ='LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Aansluitingen/Extra_aansluitingen/A22_Aansl_MT_BioWKK';
 						attribute<nrAsl>        A23_Aansl_H2                    (PlanRegio) := ='LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Aansluitingen/Extra_aansluitingen/A23_Aansl_H2';
 						
-						attribute<nrAsl>        A30_Aansl_LabelA                (PlanRegio) := Schillabels/Totaal/A;
-						attribute<nrAsl>        A31_Aansl_LabelB                (PlanRegio) := Schillabels/Totaal/B;
-						attribute<nrAsl>        A32_Aansl_LabelC                (PlanRegio) := Schillabels/Totaal/C;
-						attribute<nrAsl>        A33_Aansl_LabelD                (PlanRegio) := Schillabels/Totaal/D;
-						attribute<nrAsl>        A34_Aansl_LabelE                (PlanRegio) := Schillabels/Totaal/E;
-						attribute<nrAsl>        A35_Aansl_LabelF                (PlanRegio) := Schillabels/Totaal/F;
+						attribute<nrAsl>        A30_Aansl_LabelA                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/A + Schillabels/Nieuwbouw'+BebouwingsSector+'/A';
+						attribute<nrAsl>        A31_Aansl_LabelB                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/B + Schillabels/Nieuwbouw'+BebouwingsSector+'/B';
+						attribute<nrAsl>        A32_Aansl_LabelC                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/C + Schillabels/Nieuwbouw'+BebouwingsSector+'/C';
+						attribute<nrAsl>        A33_Aansl_LabelD                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/D + Schillabels/Nieuwbouw'+BebouwingsSector+'/D';
+						attribute<nrAsl>        A34_Aansl_LabelE                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/E + Schillabels/Nieuwbouw'+BebouwingsSector+'/E';
+						attribute<nrAsl>        A35_Aansl_LabelF                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/F + Schillabels/Nieuwbouw'+BebouwingsSector+'/F';
 					}
 				}
 				
@@ -379,12 +379,12 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_A22_Aansl_MT_BioWKK         := PerBebouwingsSector/Util/PerPlanRegio/A22_Aansl_MT_BioWKK[nr_OrgEntity];
 						attribute<nrAsl>        Util_A23_Aansl_H2                := PerBebouwingsSector/Util/PerPlanRegio/A23_Aansl_H2[nr_OrgEntity];
 						
-						// attribute<nrAsl>        Util_A30_Aansl_LabelA            := PerBebouwingsSector/Util/PerPlanRegio/A30_Aansl_LabelA[nr_OrgEntity];
-						// attribute<nrAsl>        Util_A31_Aansl_LabelB            := PerBebouwingsSector/Util/PerPlanRegio/A31_Aansl_LabelB[nr_OrgEntity];
-						// attribute<nrAsl>        Util_A32_Aansl_LabelC            := PerBebouwingsSector/Util/PerPlanRegio/A32_Aansl_LabelC[nr_OrgEntity];
-						// attribute<nrAsl>        Util_A33_Aansl_LabelD            := PerBebouwingsSector/Util/PerPlanRegio/A33_Aansl_LabelD[nr_OrgEntity];
-						// attribute<nrAsl>        Util_A34_Aansl_LabelE            := PerBebouwingsSector/Util/PerPlanRegio/A34_Aansl_LabelE[nr_OrgEntity];
-						// attribute<nrAsl>        Util_A35_Aansl_LabelF            := PerBebouwingsSector/Util/PerPlanRegio/A35_Aansl_LabelF[nr_OrgEntity];
+						attribute<nrAsl>        Util_A30_Aansl_LabelA            := PerBebouwingsSector/Util/PerPlanRegio/A30_Aansl_LabelA[nr_OrgEntity];
+						attribute<nrAsl>        Util_A31_Aansl_LabelB            := PerBebouwingsSector/Util/PerPlanRegio/A31_Aansl_LabelB[nr_OrgEntity];
+						attribute<nrAsl>        Util_A32_Aansl_LabelC            := PerBebouwingsSector/Util/PerPlanRegio/A32_Aansl_LabelC[nr_OrgEntity];
+						attribute<nrAsl>        Util_A33_Aansl_LabelD            := PerBebouwingsSector/Util/PerPlanRegio/A33_Aansl_LabelD[nr_OrgEntity];
+						attribute<nrAsl>        Util_A34_Aansl_LabelE            := PerBebouwingsSector/Util/PerPlanRegio/A34_Aansl_LabelE[nr_OrgEntity];
+						attribute<nrAsl>        Util_A35_Aansl_LabelF            := PerBebouwingsSector/Util/PerPlanRegio/A35_Aansl_LabelF[nr_OrgEntity];
 					}
 				}
 			
@@ -401,6 +401,22 @@ container LeidraadResultaten: using = "Model;Geography"
 						for_each_nedv(
 							  Classifications/schillabel/name
 							, 'sum(float64(/TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwWoning/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwWoning/BO/nrAansluitingen, /TussenResultaten/'+ReportRekenstap_expl+'/StateNaAllocatie/Bebouwing/NieuwbouwWoning/PlanRegio_rel)'
+							, Invoer/DefaultInstellingen/Basis/PlanRegio
+							, nrAsl
+						);
+						
+					container BestaandeUtil := 
+						for_each_nedv(
+							  Classifications/schillabel/name
+							, 'sum(float64(/TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/BestaandeUtil/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/BestaandeUtil/BO/nrAansluitingen, /TussenResultaten/'+ReportRekenstap_expl+'/StateNaAllocatie/Bebouwing/BestaandeUtil/PlanRegio_rel)'
+							, Invoer/DefaultInstellingen/Basis/PlanRegio
+							, nrAsl
+						);
+						
+					container NieuwbouwUtil := 
+						for_each_nedv(
+							  Classifications/schillabel/name
+							, 'sum(float64(/TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwUtil/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwUtil/BO/nrAansluitingen, /TussenResultaten/'+ReportRekenstap_expl+'/StateNaAllocatie/Bebouwing/NieuwbouwUtil/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						);
