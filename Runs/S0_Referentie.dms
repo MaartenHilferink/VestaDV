@@ -28,21 +28,18 @@ container Referentie
 		// - namen van subitems van in Invoer/SpecifiekeInstellingen
 		attribute<string>          label := string(id(.))+'_'+string(Jaar);
 		attribute<string>          name  := id(.) == 0b ? 'StartJaar' : 'R' + label; 
+		attribute<bool>            IsWarmteBronRelevant := const(true, .);
+		
+		unit<uint8> uq_years := unique(Jaar)
+		{
+			attribute<string> last_step := last(../name, ../jaar);
+		}
 	}
 	
 	#include <%projDir%/runs/SharedInvoer.dms>
 	
 	container Invoer := SharedInvoer, Using = "Units"
 	{
-		// parameter<string> RES_StudieGebied_NHZ     : ['RESNoordHollandZuid']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
-		// parameter<string> RES_StudieGebied_TW      : ['RESTwente']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
-		// parameter<string> RES_StudieGebied_AMF     : ['RESAmersfoort']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
-		// parameter<string> RES_StudieGebied_U10_U16 : ['RESU10_U16']; // Deze RES geeft problemen wegens doorsnijding van bestaande warmtenetten.
-		// parameter<string> StudieGebied_NHZ     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_NHZ, Geography/RegioIndelingen/Energieregio/name)];
-		// parameter<string> StudieGebied_TW      := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_TW, Geography/RegioIndelingen/Energieregio/name)];
-		// parameter<string> StudieGebied_AMF     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_AMF, Geography/RegioIndelingen/Energieregio/name)];
-		// parameter<string> StudieGebied_U10_U16 := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_U10_U16, Geography/RegioIndelingen/Energieregio/name)];
-		
 		// Include Invoer and defaults settings section, similar for each run
 		#include <%projDir%/model/RuimtelijkeData.dms>
 		#include <%projDir%/model/Kengetallen.dms>
@@ -68,7 +65,10 @@ container Referentie
 			parameter<string> NieuwbouwInputTemplate  := 'EsdlNieuwbouw';
 			parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
 			parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
-
+			
+			parameter<bool>   LeesWarmtebronnenUitESDL  := FALSE;
+			parameter<string> WarmtebronnenEsdlPath   := '%ProjDir%/ESDL/S3b_B_LT30_70_Havenstad.esdl';
+			
 			container StartJaar := DefaultInstellingen/Basis;
 			
 			// Per rekenstap kun je hier specifieke instelling overrulen. De lijst van rekenstappen wordt gedefinieerd bij rekenstap

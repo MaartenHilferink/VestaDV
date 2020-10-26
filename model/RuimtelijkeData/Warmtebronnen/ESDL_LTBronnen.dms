@@ -49,10 +49,10 @@ container ESDL_LTBronnen
 		attribute<yr_uint16>  ingebruik     := value(KPI/value[invert(KPI/name == 'ingebruik'     ? convert(KPI/parent_rel,.) : value(0/0, .))],yr_uint16);
 		attribute<yr_uint16>  uitgebruik    := value(KPI/value[invert(KPI/name == 'uitgebruik'    ? convert(KPI/parent_rel,.) : value(0/0, .))],yr_uint16);
 		attribute<Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/categorie>    Categorie_rel := value(KPI/value[invert(KPI/name == 'categorie_rel' ? convert(KPI/parent_rel,.) : value(0/0, .))],Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/categorie);
-		attribute<MW>         MWth_max      := value(KPI/value[invert(KPI/name == 'mwth_max'      ? convert(KPI/parent_rel,.) : value(0/0, .))],MW);
-		attribute<ratio>      Bron_vol      := value(KPI/value[invert(KPI/name == 'bron_vol'      ? convert(KPI/parent_rel,.) : value(0/0, .))],ratio);
-		attribute<ratio>      Bron_cap      := value(KPI/value[invert(KPI/name == 'bron_cap'      ? convert(KPI/parent_rel,.) : value(0/0, .))],ratio);
-		attribute<Celsius>    T_bron        := value(KPI/value[invert(KPI/name == 'T_bron'        ? convert(KPI/parent_rel,.) : value(0/0, .))],Celsius);
+		attribute<MW>         MWth_max      := value(KPI/value[invert(KPI/name == 'mwth_max'      ? convert(KPI/parent_rel,.) : value(0/0, .))],MW), Descr = "Maximale capaciteit waarvoor de bron kan worden ingezet";
+		attribute<ratio>      Bron_vol      := value(KPI/value[invert(KPI/name == 'bron_vol'      ? convert(KPI/parent_rel,.) : value(0/0, .))],ratio), Descr = "Aandeel op secundair netvolume dat de bron voor rekening kan nemen";
+		attribute<ratio>      Bron_cap      := value(KPI/value[invert(KPI/name == 'bron_cap'      ? convert(KPI/parent_rel,.) : value(0/0, .))],ratio), Descr = "Aandeel op secundaire netcapaciteit dat de bron voor rekening kan nemen";
+		attribute<Celsius>    T_bron        := value(KPI/value[invert(KPI/name == 'T_bron'        ? convert(KPI/parent_rel,.) : value(0/0, .))],Celsius), Descr = "Temperatuur welke de bron maximaal kan leveren zonder hulpvoorziening";
 		attribute<kW>         P_ow_max      := value(KPI/value[invert(KPI/name == 'P_ow_max'      ? convert(KPI/parent_rel,.) : value(0/0, .))],kW);
 		attribute<Eur_kW>     Ki_kW_min     := value(KPI/value[invert(KPI/name == 'Ki_kW_min'     ? convert(KPI/parent_rel,.) : value(0/0, .))],Eur_kW);
 		attribute<Eur_kW>     Ki_kW_max     := convert(KPI/value[invert(KPI/name == 'Ki_kW_max'     ? convert(KPI/parent_rel,.) : value(0/0, .))],Eur_kW);

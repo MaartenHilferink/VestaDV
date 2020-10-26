@@ -489,15 +489,16 @@ container WarmteBronnen
 			attribute<yr_uint16> ingebruik     := bron_src/ingebruik[nr_OrgEntity];
 			attribute<yr_uint16> uitgebruik    := bron_src/uitgebruik[nr_OrgEntity];
 			attribute<categorie> Categorie_rel := bron_src/Categorie_rel[nr_OrgEntity];
-			attribute<MW>        MWth_max      := bron_src/MWth_max[nr_OrgEntity];
-			attribute<ratio>     Bron_vol      := bron_src/Bron_vol[nr_OrgEntity];
-			attribute<ratio>     Bron_cap      := bron_src/Bron_cap[nr_OrgEntity];
-			attribute<Celsius>   T_bron        := bron_src/T_bron[nr_OrgEntity];
+			attribute<MW>        MWth_max      := bron_src/MWth_max[nr_OrgEntity], Descr = "Maximale capaciteit waarvoor de bron kan worden ingezet";
+			attribute<ratio>     Bron_vol      := bron_src/Bron_vol[nr_OrgEntity], Descr = "Aandeel op secundair netvolume dat de bron voor rekening kan nemen";
+			attribute<ratio>     Bron_cap      := bron_src/Bron_cap[nr_OrgEntity], Descr = "Aandeel op secundaire netcapaciteit dat de bron voor rekening kan nemen";
+			attribute<Celsius>   T_bron        := bron_src/T_bron[nr_OrgEntity], Descr = "Temperatuur welke de bron maximaal kan leveren zonder hulpvoorziening";
 			attribute<kW>        P_ow_max      := bron_src/P_ow_max[nr_OrgEntity];
 			attribute<Eur_kW>    Ki_kW_min     := bron_src/Ki_KW_min[nr_OrgEntity];
 			attribute<Eur_kW>    Ki_kW_max     := bron_src/Ki_KW_max[nr_OrgEntity];
 			attribute<Eur_GJ>    K_GJ          := bron_src/K_GJ[nr_OrgEntity];
 		}
+
 	}
 
 	container Gas: Descr = "Gasleidingennet beheersgebied Stedin"

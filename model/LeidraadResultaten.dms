@@ -124,17 +124,18 @@ container LeidraadResultaten: using = "Model;Geography"
 
 		container ESDL
 		{
-			parameter<string> Generate_PerPlanRegio_StartJaar  := Generate_PerPlanRegio_GooiEnVechtstreek_StartJaar + Generate_PerPlanRegio_Hengelo_StartJaar + Generate_PerPlanRegio_Havenstad_StartJaar;
-			parameter<string> Generate_PerPlanRegio_LastPeriod := Generate_PerPlanRegio_GooiEnVechtstreek_LastPeriod + Generate_PerPlanRegio_Hengelo_LastPeriod + Generate_PerPlanRegio_Havenstad_LastPeriod;
+			// parameter<string> Generate_PerPlanRegio_StartJaar  := Generate_PerPlanRegio_GooiEnVechtstreek_StartJaar + Generate_PerPlanRegio_Hengelo_StartJaar + Generate_PerPlanRegio_Havenstad_StartJaar;
+			// parameter<string> Generate_PerPlanRegio_LastPeriod := Generate_PerPlanRegio_GooiEnVechtstreek_LastPeriod + Generate_PerPlanRegio_Hengelo_LastPeriod + Generate_PerPlanRegio_Havenstad_LastPeriod;
 
 			parameter<string> Generate_PerPlanRegio_Havenstad_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/Havenstad/export_PerPlanRegio/result;
-			parameter<string> Generate_PerPlanRegio_Hengelo_StartJaar              := PerRekenstap/StartJaar/PerStudyArea/Hengelo/export_PerPlanRegio/result;
-			parameter<string> Generate_PerPlanRegio_GooiEnVechtstreek_StartJaar    := PerRekenstap/StartJaar/PerStudyArea/GooiEnVechtstreek/export_PerPlanRegio/result;
+			// parameter<string> Generate_PerPlanRegio_Hengelo_StartJaar              := PerRekenstap/StartJaar/PerStudyArea/Hengelo/export_PerPlanRegio/result;
+			// parameter<string> Generate_PerPlanRegio_GooiEnVechtstreek_StartJaar    := PerRekenstap/StartJaar/PerStudyArea/GooiEnVechtstreek/export_PerPlanRegio/result;
 			parameter<string> Generate_PerPlanRegio_Havenstad_LastPeriod           := ='PerRekenstap/'+Settings/Last_Rekenstap+'/PerStudyArea/Havenstad/export_PerPlanRegio/result';
-			parameter<string> Generate_PerPlanRegio_Hengelo_LastPeriod             := ='PerRekenstap/'+Settings/Last_Rekenstap+'/PerStudyArea/Hengelo/export_PerPlanRegio/result';
-			parameter<string> Generate_PerPlanRegio_GooiEnVechtstreek_LastPeriod   := ='PerRekenstap/'+Settings/Last_Rekenstap+'/PerStudyArea/GooiEnVechtstreek/export_PerPlanRegio/result';
+			// parameter<string> Generate_PerPlanRegio_Hengelo_LastPeriod             := ='PerRekenstap/'+Settings/Last_Rekenstap+'/PerStudyArea/Hengelo/export_PerPlanRegio/result';
+			// parameter<string> Generate_PerPlanRegio_GooiEnVechtstreek_LastPeriod   := ='PerRekenstap/'+Settings/Last_Rekenstap+'/PerStudyArea/GooiEnVechtstreek/export_PerPlanRegio/result';
 			
-			parameter<string> Generate_Havenstad_All := ='add('+asItemList('PerRekenstap/'+Settings/ReportPeriods/name+'/PerStudyArea/Havenstad/export_PerPlanRegio/result')+')';
+			// parameter<string> Generate_Havenstad_All := ='add('+asItemList('PerRekenstap/'+Settings/ReportPeriods/name+'/PerStudyArea/Havenstad/export_PerPlanRegio/result')+',/LeidraadResultaten/Exports/WarmteBronnen/R3_2030/export_PerRekenstap/Result)';
+			// parameter<string> Generate_Havenstad_All := ='add('+asItemList('PerRekenstap/'+Settings/ReportPeriods/name+'/PerStudyArea/Havenstad/export_PerPlanRegio/result')+')';
 
 			container PerRekenstap := 
 				for_each_ne(
@@ -298,10 +299,6 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<GJ_yr>        Woning_H12_Input_MTwarmte          := PerBebouwingsSector/Woning/PerPlanRegio/H12_Input_MTwarmte[nr_OrgEntity];
 						attribute<GJ_yr>        Woning_H13_Input_LTwarmte          := PerBebouwingsSector/Woning/PerPlanRegio/H13_Input_LTwarmte[nr_OrgEntity];
 						attribute<GJ_yr>        Woning_H14_Saldo_Omgevingswarmte   := PerBebouwingsSector/Woning/PerPlanRegio/H14_Saldo_Omgevingswarmte[nr_OrgEntity];
-						attribute<ton_yr>       Woning_H15_CO2_uitstoot            := PerBebouwingsSector/Woning/PerPlanRegio/H15_CO2_uitstoot[nr_OrgEntity];
-						attribute<Eur_yr>       Woning_H16_Nat_meerkost            := PerBebouwingsSector/Woning/PerPlanRegio/H16_Nat_meerkost[nr_OrgEntity];
-						attribute<Eur_ton>      Woning_H17_Nat_meerkost_CO2        := PerBebouwingsSector/Woning/PerPlanRegio/H17_Nat_meerkost_CO2[nr_OrgEntity];
-						attribute<Eur_yr>       Woning_H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Woning/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
 						attribute<Eur_m3>       Woning_H19_Waarde_hernieuwbaar_gas := PerBebouwingsSector/Woning/PerPlanRegio/H19_Waarde_hernieuwbaar_gas[nr_OrgEntity];
 						
 						attribute<kW>           Woning_H21_CapaciteitsvraagE        := PerBebouwingsSector/Woning/PerPlanRegio/H21_CapaciteitsvraagE[nr_OrgEntity];
@@ -349,10 +346,6 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<GJ_yr>        Util_H12_Input_MTwarmte          := PerBebouwingsSector/Util/PerPlanRegio/H12_Input_MTwarmte[nr_OrgEntity];
 						attribute<GJ_yr>        Util_H13_Input_LTwarmte          := PerBebouwingsSector/Util/PerPlanRegio/H13_Input_LTwarmte[nr_OrgEntity];
 						attribute<GJ_yr>        Util_H14_Saldo_Omgevingswarmte   := PerBebouwingsSector/Util/PerPlanRegio/H14_Saldo_Omgevingswarmte[nr_OrgEntity];
-						attribute<ton_yr>       Util_H15_CO2_uitstoot            := PerBebouwingsSector/Util/PerPlanRegio/H15_CO2_uitstoot[nr_OrgEntity];
-						attribute<Eur_yr>       Util_H16_Nat_meerkost            := PerBebouwingsSector/Util/PerPlanRegio/H16_Nat_meerkost[nr_OrgEntity];
-						attribute<Eur_ton>      Util_H17_Nat_meerkost_CO2        := PerBebouwingsSector/Util/PerPlanRegio/H17_Nat_meerkost_CO2[nr_OrgEntity];
-						attribute<Eur_yr>       Util_H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Util/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
 						attribute<Eur_m3>       Util_H19_Waarde_hernieuwbaar_gas := PerBebouwingsSector/Util/PerPlanRegio/H19_Waarde_hernieuwbaar_gas[nr_OrgEntity];
 						
 						attribute<kW>           Util_H21_CapaciteitsvraagE        := PerBebouwingsSector/Util/PerPlanRegio/H21_CapaciteitsvraagE[nr_OrgEntity];
@@ -385,6 +378,11 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_A33_Aansl_LabelD            := PerBebouwingsSector/Util/PerPlanRegio/A33_Aansl_LabelD[nr_OrgEntity];
 						attribute<nrAsl>        Util_A34_Aansl_LabelE            := PerBebouwingsSector/Util/PerPlanRegio/A34_Aansl_LabelE[nr_OrgEntity];
 						attribute<nrAsl>        Util_A35_Aansl_LabelF            := PerBebouwingsSector/Util/PerPlanRegio/A35_Aansl_LabelF[nr_OrgEntity];
+						
+						attribute<ton_yr>       H15_CO2_uitstoot            := PerBebouwingsSector/Woning/PerPlanRegio/H15_CO2_uitstoot[nr_OrgEntity];
+						attribute<Eur_yr>       H16_Nat_meerkost            := PerBebouwingsSector/Woning/PerPlanRegio/H16_Nat_meerkost[nr_OrgEntity];
+						attribute<Eur_ton>      H17_Nat_meerkost_CO2        := PerBebouwingsSector/Woning/PerPlanRegio/H17_Nat_meerkost_CO2[nr_OrgEntity];
+						attribute<Eur_yr>       H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Woning/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
 					}
 				}
 			
