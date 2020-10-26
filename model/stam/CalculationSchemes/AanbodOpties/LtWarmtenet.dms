@@ -175,8 +175,22 @@ template LtWarmtenetImpl
 		+	Classifications/WoningUtilComponent/name
 	);
 
-	parameter<string> geschiktExpr := 'BO/Schillabel_ref <= Classifications/energielabel/V/labelE';
-	container CandidateSets := for_each_ne(WkoComponent/name, replace('LtData(bebouwing/@WC, bcData/@WC, ''@WC'', T_sec, false, '+Quote(geschiktExpr)+')', '@WC', WkoComponent/name));
+
+	parameter<bool> IsFlippable := = (/Invoer/SpecifiekeInstellingen/NieuwbouwInputTemplate == 'EsdlNieuwbouw') 
+		? 'IsDefined(rlookup(WarmteOptie_rel, /Invoer/RuimtelijkeData/Bebouwing/impl/Nieuwbouw/KiesbareMeasure/WarmteOptie_rel))' 
+		: 'false';
+	
+	parameter<string> flipAan_expr := IsFlippable
+	?	'/Invoer/RuimtelijkeData/Bebouwing/impl/Nieuwbouw/EsdlBuurt_Measure/Toegestaan['
+			'combine_data(/Invoer/RuimtelijkeData/Bebouwing/impl/Nieuwbouw/EsdlBuurt_Measure'
+			',  rjoin(right(BO/code, 36), /Invoer/RuimtelijkeData/Bebouwing/impl/Nieuwbouw/BouwObject/id, /Invoer/RuimtelijkeData/Bebouwing/impl/Nieuwbouw/BouwObject/EsdlBuurt_rel)'
+			',  rlookup(WarmteOptie_rel, /Invoer/RuimtelijkeData/Bebouwing/impl/Nieuwbouw/KiesbareMeasure/WarmteOptie_rel) '
+			')'
+		']'
+	:	'';
+	attribute<string> flipAanComponent_expr(WkoComponent) := WkoComponent/isNieuwbouw ? flipAan_expr : '';
+	
+	container CandidateSets := for_each_ne(WkoComponent/name, replace('LtData(bebouwing/@WC, bcData/@WC, ''@WC'', T_sec, false, '+Quote(flipAanComponent_expr)+')', '@WC', WkoComponent/name));
 	
 	//samenvoeging bestaande woningen, nieuwbouwwoningen, bestaande utiliteit, nieuwbouwutiliteit
 	unit <uint32> UnitedCandidates := ='union_unit('+AsItemList('CandidateSets/'+WkoComponent/name+'/AllowedObjects')+')'
