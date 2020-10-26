@@ -13,7 +13,7 @@
 
 container jaarlijks: Using = "Units;Geography", KeepData = "True", isHidden = "True"
 {
-	unit<uint32> mutatieSchema: nrofrows = 57
+	unit<uint32> mutatieSchema: nrofrows = 63
 	{
 		parameter<uint32> nrAttr := 5;
 		unit<uint32> Elements := Range(uint32, 0, nrAttr * #.)
@@ -139,6 +139,31 @@ container jaarlijks: Using = "Units;Geography", KeepData = "True", isHidden = "T
 					''
 
 		// ===== Lokale opwekking: eigenaar investeringen
+			,	'@BC@30j', 'KL_e', '@BC/Eigenaar',
+					'Allocatie/@BC@/BO/Kapitaallasten/Kji30_LO',
+					PRR
+
+			,	'@BTW@30j', 'KL_e', '@BTW@/Eigenaar', 
+					'Allocatie/@BTW@/BO/Kapitaallasten/Kji30_LO * '+VAT_F,
+					'Allocatie/@BTW@/BO/PlanRegio_rel'
+
+			,	'@BC@20j', 'KL_e', '@BC/Eigenaar',
+					'Allocatie/@BC@/BO/Kapitaallasten/Kji20_LO',
+					PRR
+
+			,	'@BTW@20j', 'KL_e', '@BTW@/Eigenaar', 
+					'Allocatie/@BTW@/BO/Kapitaallasten/Kji20_LO * '+VAT_F,
+					'Allocatie/@BTW@/BO/PlanRegio_rel'
+
+			,	'@BC@15j', 'KL_e', '@BC/Eigenaar',
+					'Bebouwing/@BC@/Kapitaallasten/Kji15_LO',
+					PRR
+
+			,	'@BTW@15j', 'KL_e', '@BTW@/Eigenaar', 
+					'Allocatie/@BTW@/BO/Kapitaallasten/Kji15_LO * '+VAT_F,
+					'Allocatie/@BTW@/BO/PlanRegio_rel'
+
+//
 			,	'@BC@30j', 'LokaleOpwekking', 'KL_e', 
 					'Allocatie/@BC@/BO/Kapitaallasten/Kmi30_LO',
 					PRR
