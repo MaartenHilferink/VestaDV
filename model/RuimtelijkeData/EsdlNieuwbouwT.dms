@@ -16,6 +16,10 @@ template EsdlNieuwbouw
 {
 	container VestaBebouwingsComponentSchema
 	{
+		unit<uint32> measure {
+			attribute<string> id;
+			attribute<string> name;
+		}
 		unit<uint32> area
 		{
 			attribute<string> id;
@@ -64,12 +68,37 @@ template EsdlNieuwbouw
 					
 				}
 			}
+			unit<uint32> measure {
+				attribute<string> reference;
+			}
 		}
 	}
 	
 	parameter<string> ESDL_Nieuwbouw: StorageName = "=SpecifiekeInstellingen/NieuwbouwWoningEsdlPath", StorageType = "str";
 		
 	container Parsed_Nieuwbouw:= parse_xml(ESDL_Nieuwbouw, VestaBebouwingsComponentSchema);
+	
+	unit<uint32> KiesbareMeasure := Parsed_Nieuwbouw/measure
+	{
+		attribute<Classifications/WarmteOptie> WarmteOptie_rel := rlookup(uppercase(id), uppercase(Classifications/WarmteOptie/name));
+	}
+	unit<uint32> EsdlBuurt := Parsed_Nieuwbouw/area
+	{
+		unit<uint32> Measure := Parsed_Nieuwbouw/area/Measure
+		{
+			attribute<EsdlBuurt> Buurt_rel := value(Parent_rel, EsdlBuurt);
+			attribute<KiesbareMeasure> KiesbareMeasure_rel := rlookup(reference, KiesbareMeasure/id);
+			attribute<EsdlBuurt_Measure> EsdlBuurt_Measure_rel := combine_data(EsdlBuurt_Measure, Buurt_rel, KiesbareMeasure_rel);
+		}
+		attribute<bool> HasMeasure := any(const(true, Measure), Measure/Buurt_rel);
+	}
+	unit<uint32> EsdlBuurt_Measure := combine(EsdlBuurt, KiesbareMeasure)
+	{
+		attribute<EsdlBuurt> Buurt_rel := nr_1;
+		attribute<KiesbareMeasure> Measure_rel := nr_2;
+		
+		attribute<bool> Toegestaan := any(const(true, EsdlBuurt/Measure), EsdlBuurt/Measure/EsdlBuurt_Measure_rel) || not(EsdlBuurt/HasMeasure[Buurt_rel]);
+	}
 	
 	unit<uint32> asset := Parsed_Nieuwbouw/area/asset, FreeData = "false", DialogData = "point_rd", DialogType = "map"  // TODO ESDL: subset(xsi::type == 'Building') NEE: BuildingUnit 
 	{
@@ -83,9 +112,11 @@ template EsdlNieuwbouw
 			,	value(first(Geometry/lon, Geometry/asset_rel), float64)
 			,	dpoint)
 		, rdc_meter);
+		
+		attribute<EsdlBuurt> EsdlBuurt_rel := value(Parent_rel, EsdlBuurt);
 	}
 	
-	unit<uint32> Gebouw    := subset(asset/xsi_type == "esdl:Building"), FreeData = "false", DialogData = "point_rd", DialogType = "map"  // TODO ESDL: subset(xsi::type == 'Building') NEE: BuildingUnit 
+	unit<uint32> Gebouw := subset(asset/xsi_type == "esdl:Building"), FreeData = "false", DialogData = "point_rd", DialogType = "map"  // TODO ESDL: subset(xsi::type == 'Building') NEE: BuildingUnit 
 	{
 		unit<uint32> Geometry := Subset(IsDefined(invert(nr_OrgEntity)[asset/Geometry/Parent_rel]))
 		{
@@ -113,11 +144,14 @@ template EsdlNieuwbouw
 			&& IsDefined(Bouwlagen) && Bouwlagen > 0b 
 		?	Bouwlagen > 4b ? Classifications/WoningtypeNieuwbouw/V/Flat5 : Classifications/WoningtypeNieuwbouw/V/FlatTot4
 		:	WoningType_rel;
+		
+		attribute<EsdlBuurt> EsdlBuurt_rel := asset/EsdlBuurt_rel[nr_OrgEntity];
 	}
 	
 	unit<uint32> BouwObject:= Parsed_Nieuwbouw/area/asset/asset, FreeData = "false", DialogData = "point_rd", DialogType = "map"  // TODO ESDL: subset(xsi::type == 'Building') NEE: BuildingUnit 
 	{
 		attribute<Gebouw> Gebouw_rel := value(Parent_rel, Gebouw);
+		attribute<EsdlBuurt> EsdlBuurt_rel := Gebouw/EsdlBuurt_rel[Gebouw_rel];
 		
 		unit<uint32> Geometry := Parsed_Nieuwbouw/area/asset/asset/Geometry;
 		attribute<.> Geometry_Parent_rel (Geometry) := value(Geometry/Parent_rel, .);
@@ -148,6 +182,16 @@ template EsdlNieuwbouw
 		// Oppervlakte
 		attribute<pand_asl>   pand_aandeel := value(1.0, nrPand) / value(Gebouw/Bouwlagen[gebouw_rel], nrAsl);
 		// Gebouwoptie danwel pakket Installaties voor RuimteVerwarming( basis, piek), Koude(basis, piek), Tapwater(basis, piek)		
+		
+		unit<uint32> BouwObject_Measure := combine(BouwObject, KiesbareMeasure)
+		{
+			attribute<BouwObject> BouwObject_rel := nr_1;
+			attribute<EsdlBuurt> EsdlBuurt_rel := BouwObject/EsdlBuurt_rel[nr_1];
+			attribute<KiesbareMeasure> Measure_rel := nr_2;
+			
+			attribute<bool> Toegestaan := EsdlBuurt_Measure/Toegestaan[combine_data(EsdlBuurt_Measure, EsdlBuurt_rel, Measure_rel)];
+		}
+	
 	}
 	
 	unit<uint32> Gebouw_optie := Parsed_Nieuwbouw/area/asset/asset, FreeData = "false", DialogData = "point_rd", DialogType = "map"
