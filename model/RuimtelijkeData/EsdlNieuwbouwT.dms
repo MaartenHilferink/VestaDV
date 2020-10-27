@@ -47,6 +47,7 @@ template EsdlNieuwbouw
 					attribute<string> CRS;
 					attribute<string> lat;
 					attribute<string> lon;
+//					attribute<dpoint> ll := point(float64(lat), float64(lon)); // DEBUG issue 1396
 				}
 				
 				unit<uint32> asset // VBO
@@ -191,29 +192,7 @@ template EsdlNieuwbouw
 			
 			attribute<bool> Toegestaan := EsdlBuurt_Measure/Toegestaan[combine_data(EsdlBuurt_Measure, EsdlBuurt_rel, Measure_rel)];
 		}
-	
 	}
-	
-	unit<uint32> Gebouw_optie := Parsed_Nieuwbouw/area/asset/asset, FreeData = "false", DialogData = "point_rd", DialogType = "map"
-	{
-		unit<uint32> Geometry := Parsed_Nieuwbouw/area/asset/asset/Geometry;
-		attribute<.> Geometry_Parent_rel (Geometry) := value(Geometry/Parent_rel, .);
-		
-		attribute<Gebouw> Gebouw_rel := value(Parent_rel, Gebouw);
-		
-		attribute<rdc_meter>  point_rd_this := LatLongWgs842RD(
-			point(
-				value(first(Geometry/lat, Geometry_Parent_rel), float64)
-			,	value(first(Geometry/lon, Geometry_Parent_rel), float64)
-			,	dpoint)
-		, rdc_meter);
-		attribute<rdc_meter>  point_rd := MakeDefined(point_rd_this, Gebouw/point_rd[Gebouw_rel]);
-		
-		attribute<string>     id   := Parsed_Nieuwbouw/area/asset/asset/id;
-		attribute<string>     name := Parsed_Nieuwbouw/area/asset/asset/name;
-		attribute<string>     type := Parsed_Nieuwbouw/area/asset/asset/type;		
-	}
-
 	template SelectT
 	{
 		parameter<uint32> zichtjaar;

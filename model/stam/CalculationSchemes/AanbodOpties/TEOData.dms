@@ -58,11 +58,10 @@ template TEOData
 		}
 		
 		attribute<bool>		KanGebiedsOptie (BO)	:=	Classifications/WarmteOptie/KanGebiedsOptie[BO/WarmteOptie_rel];
-		attribute<bool>		LocatieOK		(BO)	:=	InWKOContour && bron/dist <= Kengetallen/Constanten/L_max_TEObron;
-		
+		attribute<bool>		LocatieOK		(BO)	:=	InWKOContour && bron/dist <= Kengetallen/Constanten/L_max_TEObron;	
 		attribute<bool>     E_of_Beter      (BO)    :=  =Voorkeuren/Afweging/LTversusWP ? 'const(true, BO)' : 'BO/SchillabelOrDefault_rel <= Classifications/Schillabel/V/E';
-			
 	}
+	
 	attribute<bool>			Geschikt			(BO)	:=	SelectCandidates/LocatieOK && SelectCandidates/E_of_Beter && SelectCandidates/KanGebiedsOptie;
 	parameter<classifications/gebruiksgrootteklasse> ow_gebruiksgrootteklasse_rel := last(id(Prijzen_elec));
 	
@@ -176,9 +175,8 @@ template TEOData
 	
 	//selectie van geschikte kandidaten uit alle bebouwingsobjecten op basis van rentabiliteit en geselecteerde criteria
 	attribute<bool>		RentabiliteitsAfweging	(BO)	:=	Contributiemarge > 0[Eur_yr],															Descr = "heeft dit bebouwingsobject individueel een positieve aansluitmarge, ja of nee";
-	attribute<bool>		MarginaleAfweging		(BO)	:=	geschikt && RentabiliteitsAfweging;
-	attribute<bool>		WasAllocated			(BO)	:=	not(SelectCandidates/kanGebiedsOptie);
-	attribute<bool>		Toegestaan				(BO)	:=	MarginaleAfweging && !WasAllocated;
+	attribute<bool>		MarginaleAfweging		(BO)	:=	RentabiliteitsAfweging;
+	attribute<bool>		Toegestaan				(BO)	:=	MarginaleAfweging && geschikt;
 
 	unit<uint32>		AllowedObjects	:=	Subset(Toegestaan)
 	{
