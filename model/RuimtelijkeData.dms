@@ -98,7 +98,7 @@ container RuimtelijkeData: Using = "Units;Geography;Model", FreeData = "False"
 		{
 			attribute<string>                                  name                := BU_code;
 			parameter<string>                                  RegioNaam           := 'Buurt';
-
+			
 			attribute<rdc_meter>                               geometry (poly)     := RegioIndelingen/buurt/geometry[nr_OrgEntity];
 			attribute<string>                                  BU_code             := RegioIndelingen/buurt/BU_CODE[nr_OrgEntity];
 			attribute<string>                                  BU_NAAM             := RegioIndelingen/buurt/BU_NAAM[nr_OrgEntity];

@@ -56,6 +56,7 @@ template RestWarmte
 
 	attribute<bool> GebruikBron (Bronnen) := P_Bron >= Bronnen/MWth_min;
 
+	attribute<float64> capaciteit_benuttingsfactor (Bronnen) := 1d - LastState/MWth_capaciteit / Bronnen/MWTh_max;
 	attribute<bool> RentabiliteitsAfweging (PlanRegio) := GebruikBron[LastState/CurrBron] && LastState/GebruikRestWarmte;
 
 	attribute<bool> OldGebruik             (PlanRegio) := IsDefined(BeginStatus/PlanRegioWarmteAllocatie_REMOVE); // een optie (deze of andere) was al in gebruik

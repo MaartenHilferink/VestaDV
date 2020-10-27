@@ -1,11 +1,11 @@
-//////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                      //
-//                   (C) VESTA 2020 - Planbureau voor de Leefomgeving                   //
-//                                                                                      //
-//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+                                                                                     
+                  // (C) VESTA 2020 - Planbureau voor de Leefomgeving                   //
+                                                                                     
+//////////////////////////////////////////////////////////////////////////////////////
  
 container LeidraadResultaten: using = "Model;Geography"
-{     
+{        
 	container Exports
 	{ 
 		unit<uint32> PlanRegio           := Invoer/SpecifiekeInstellingen/PlanRegio;
@@ -20,13 +20,53 @@ container LeidraadResultaten: using = "Model;Geography"
 			attribute<string>          name  := Rekenstap/name[nr_OrgEntity];
 		}
 
-		container Warmtebronnen := 
+		container HTwarmteBronnen := 
 			for_each_ne(
 				WarmteBronRelevanteRekenstappen/name
-				, 'WarmteBronnenT('+Quote(WarmteBronRelevanteRekenstappen/name)+')'
+				, 'HTwarmteBronnenT('+Quote(WarmteBronRelevanteRekenstappen/name)+')'
 			);
 		
-		template WarmteBronnenT
+		template HTwarmteBronnenT
+		{
+			parameter<string> RekenstapName;
+
+
+			unit<uint32> PerRekenstap := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen'
+			{
+				attribute<string>     bron_naam                   := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/bron_naam';
+				attribute<string>     label                       := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/label';
+				attribute<rdc_meter>  geometry                    := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point';
+				attribute<float32>    x_coord                     := pointcol(RD2LatLongWgs84(geometry,dpoint))[float32];
+				attribute<float32>    y_coord                     := pointrow(RD2LatLongWgs84(geometry,dpoint))[float32];
+				
+				attribute<yr_uint16>  ingebruik                   := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/ingebruik';
+				attribute<yr_uint16>  uitgebruik                  := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/uitgebruik';
+				attribute<MW>         MWth_max                    := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/MWth_max';
+				attribute<ratio>      Bron_vol                    := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/P_vol';
+				attribute<ratio>      Bron_cap                    := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/P_cap';
+				attribute<Celsius>    T_bron                      := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/T_bron';
+				// attribute<kW>         P_ow_max                    := /Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/bron/P_ow_max;
+				attribute<Eur_kW>     Ki_kW_min                   := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Ki_kW_min';
+				attribute<Eur_kW>     Ki_kW_max                   := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Ki_kW_max';
+				attribute<Eur_GJ>     K_GJ                        := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/K_GJ';
+				attribute<Ratio>      capaciteit_benuttingsfactor := ='MakeDefined(/TussenResultaten/'+RekenstapName+'/GebiedsAllocatie/Restwarmte/capaciteit_benuttingsfactor,0[Ratio])';
+			} 
+			
+			parameter<string> RunName_src := Exports/Settings/RunName == 'StartJaar' 
+												? 'StartJaar'
+												: Exports/Settings/RunName;
+			parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/Warmtebronnen/'+RunName_src+'/HTwarmte/'+RekenstapName;
+			unit<uint32>      list_PerRekenstap   := SubItem_PropValues(PerRekenstap,'name');
+			container         export_PerRekenstap := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(PerRekenstap, replace(AsList(list_PerRekenstap/name, ';'), 'Geometry;','') , OutputFolder_str+'/Warmtebronnen_PerPlanRegio_ESDL.csv');
+		}
+		
+		container LTwarmteBronnen := 
+			for_each_ne(
+				WarmteBronRelevanteRekenstappen/name
+				, 'LTwarmteBronnenT('+Quote(WarmteBronRelevanteRekenstappen/name)+')'
+			);
+		
+		template LTwarmteBronnenT
 		{
 			parameter<string> RekenstapName;
 
@@ -51,11 +91,25 @@ container LeidraadResultaten: using = "Model;Geography"
 				attribute<Eur_kW>     Ki_kW_max                   := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Ki_kW_max;
 				attribute<Eur_GJ>     K_GJ                        := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/K_GJ;
 				attribute<Ratio>      capaciteit_benuttingsfactor := ='MakeDefined(/TussenResultaten/'+RekenstapName+'/GebiedsAllocatie/Lt30_70/impl/results/LtWarmte/bron/capaciteit_benuttingsfactor,0[Ratio])';
+				attribute<bool>       IsGebruiktInHavenstad       := IsDefined(rlookup(Cluster_rel_perBron, Studiegebied_subset/cluster_rel));
+				
+				
+				
+				unit<uint32> Clusters := /TussenResultaten/R3_2030/GebiedsAllocatie/Lt30_70/impl/results/LtWarmte/bron/CumulativeClusterSet;
+				attribute<uint32> Cluster_rel_perBron                    := Clusters/per_bron, StoreData = "true";
+				// attribute<string> Cluster_rel_perPlanregio (PlanRegio)   := TussenResultaten/R3_2030/AllocatieResultaten/AfnamegebiedenPerPlanregioReport, StoreData = "true";
+				
+				unit<uint32> Studiegebied_subset := subset(IsDefined(rlookup(TussenResultaten/R3_2030/AllocatieResultaten/ObjectResults/planregio_rel, /LeidraadResultaten/Exports/Settings/Regio1/nr_OrgEntity)))
+				{
+					attribute<uint32> Cluster_rel    := TussenResultaten/R3_2030/AllocatieResultaten/ObjectResults/afnamegebied_rel[nr_OrgEntity];
+				}
+				
+				attribute<bool>   IsStudiegebied (Planregio)             := Settings/IsStudiegebied;
 
-				// unit<uint32> GroterDanZero := subset(capaciteit_benuttingsfactor > 0[ratio])
-				// {
-					// attribute<rdc_meter>  geometry := ../geometry[nr_OrgEntity];
-				// }
+				attribute<uint32>   Clusters_in_Studiegebied  (Clusters) := rlookup(LeidraadResultaten/Exports/Settings/Regio1/nr_OrgEntity, Cluster_rel_perPlanregio[uint32]);
+				// Buurt ID's in Havenstad: LeidraadResultaten/Exports/Settings/Regio1/nr_OrgEntity
+
+
 			} 
 			
 			parameter<string> RunName_src := Exports/Settings/RunName == 'StartJaar' 
@@ -106,14 +160,16 @@ container LeidraadResultaten: using = "Model;Geography"
 			parameter<string> RegioSelectie_Buurt_str      := 'subset('+AsList('PlanRegio/BU_CODE == ' +quote(selected_Havenstad/values), ' || ')+')';
 			parameter<string> RegioSelectie_Gemeente_str   := 'subset('+AsList('PlanRegio/GM_CODE == ' +quote(selected_GooiEnVechtstreek/values), ' || ')+')';
 			
+			attribute<bool> IsStudiegebied (PlanRegio) := IsDefined(rlookup(PlanRegio/BU_CODE, selected_Havenstad/values));
+			
 			unit<uint32> Regio1 := =RegioSelectie_Buurt_str
 			{
 				attribute<rdc_meter> Geometery (poly) := PlanRegio/geometry[nr_OrgEntity];
 			}
 			
-			parameter<string> RegioSelectie_str            := regio_naam == 'Havenstad'
-																? RegioSelectie_Buurt_str
-																: RegioSelectie_Gemeente_str;
+			// parameter<string> RegioSelectie_str            := regio_naam == 'Havenstad'
+																// ? RegioSelectie_Buurt_str
+																// : RegioSelectie_Gemeente_str;
 			
 			unit<uint8> StudyAreas : nrofrows = 3
 			{
@@ -145,10 +201,10 @@ container LeidraadResultaten: using = "Model;Geography"
 			
 			Template PerRekenstap_T
 			{
-				//
+				
 				parameter<string> ReportRekenstap;
 				parameter<string> ReportRekenstap_expl;
-				//
+				
 			
 				container PerBebouwingsSector := 
 					for_each_ne(
@@ -158,9 +214,9 @@ container LeidraadResultaten: using = "Model;Geography"
 				
 				Template Bereken_PerPlanRegio_T
 				{
-					//
+					
 					parameter<string> BebouwingsSector;
-					//
+					
 					
 					Unit<uint32>  PerPlanRegio := PlanRegio, using = "Settings"
 					{
@@ -436,9 +492,9 @@ container LeidraadResultaten: using = "Model;Geography"
 				
 				Template Bereken_ESDL_content_T
 				{
-					//
+					
 					parameter<string> BebouwingsSector;
-					//
+					
 					
 					parameter<string> BebouwingsDomein_str := BebouwingsSector == 'Woning' 
 																? 'Classifications/WoningComponent'
@@ -951,8 +1007,8 @@ container LeidraadResultaten: using = "Model;Geography"
 				(1.0 - StartJaar/PlanregioResults/GroenGasFactor) * (StartJaar/EnergyResults/CO2/gebouwen/Totaal_ex_app
 				+ StartJaar/EnergyResults/CO2/GebiedsOpties/totaal) / 1000[kg_yr / ton_yr];
 				
-//				  StartJaar/EnergyResults/CO2/gebouwen/Aardgas/totaal / 1000.0[kg_yr / ton_yr]
-//				+ StartJaar/EnergyResults/CO2/GebiedsOpties/totaal    / 1000.0[kg_yr / ton_yr];
+				  // StartJaar/EnergyResults/CO2/gebouwen/Aardgas/totaal / 1000.0[kg_yr / ton_yr]
+				// + StartJaar/EnergyResults/CO2/GebiedsOpties/totaal    / 1000.0[kg_yr / ton_yr];
 		}
 	}
 	container Ref2030        := CalculationSchemes/LeidraadResultaten(Classifications/Rekenstap/name[uint8(1)])
@@ -1022,7 +1078,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			attribute<ton_yr> Orig_CO2_ton (Planregio) := Ref2030/PlanregioResults/NationaleKosten/TotaalUitstoot/New_CO2_ton;
 		}
 
-		//TEST
+		// TEST
 		container Warmtebestaand := Ref2030/WarmteBestaand
 		{
 			attribute<ratio>  R_StadV         (PlanRegio) := Invoer/RuimtelijkeData/StudieGebied/buurt/R_StadV;
@@ -1031,7 +1087,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			attribute<GJ_yr>  V_elek_w        (PlanRegio) := R_StadV * sum(..../TussenResultaten/R2_2030/AllocatieResultaten/BestaandeWoning/metervraag/Elektriciteit, bebouwing/BestaandeWoning/PlanRegio_rel);
 			attribute<GJ_yr>  V_elek_u        (PlanRegio) := R_StadV * sum(..../TussenResultaten/R2_2030/AllocatieResultaten/BestaandeUtil/metervraag/Elektriciteit, bebouwing/BestaandeUtil/PlanRegio_rel);
 
-			//attribute<GJ_yr>  V_ow_warmte     (PlanRegio) := R_StadV * ..../TussenResultaten/R2_2030/GebiedsAllocatie/RestWarmte/KostenBaten/KostenD/V_warmte;
+			// attribute<GJ_yr>  V_ow_warmte     (PlanRegio) := R_StadV * ..../TussenResultaten/R2_2030/GebiedsAllocatie/RestWarmte/KostenBaten/KostenD/V_warmte;
 
 			attribute<GJ_yr>  V_ow_warmte     (PlanRegio) :=
 				  R_StadV * /TussenResultaten/R2_2030/GebiedsAllocatie/RestWarmte/KostenBaten/KostenD/V_WarmteVraag
@@ -1043,6 +1099,6 @@ container LeidraadResultaten: using = "Model;Geography"
 			attribute<Eur_yr> Kj_wd_gas       (PlanRegio) := R_StadV * (1d - GebiedsAllocatie/RestWarmte/results/RestWarmte/P_vol)          * /TussenResultaten/R2_2030/GebiedsAllocatie/RestWarmte/KostenBaten/KostenD/Bijstook/Km_wd_gas;
 			attribute<Eur_yr> Kj_wd_elek      (PlanRegio) := R_StadV * ..../TussenResultaten/R2_2030/GebiedsAllocatie/RestWarmte/KostenBaten/KostenD/SecundairNet/Km_wd_elek;
 		}
-		//TEST
+		// TEST
 	}
 }

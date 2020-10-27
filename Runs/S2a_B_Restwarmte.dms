@@ -28,7 +28,7 @@ container S2a_B_Restwarmte
 		// - namen van subitems van in Invoer/SpecifiekeInstellingen
 		attribute<string>          label := string(id(.))+'_'+string(Jaar);
 		attribute<string>          name  := id(.) == 0b ? 'StartJaar' : 'R' + label; 
-		attribute<bool>            IsWarmteBronRelevant := const(false, .);
+		attribute<bool>            IsWarmteBronRelevant := const(true, .);
 		
 		unit<uint8> uq_years := unique(Jaar)
 		{
