@@ -13,7 +13,7 @@
 
 container SharedInvoer
 {
-	parameter<string> StudieGebied          : ['RESNoordHollandZuid']; //'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
+	parameter<string> StudieGebied          : ['RESTwente']; //'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
 //	parameter<string> StudieGebied          : ['NL']; //'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
 	
 	parameter<bool> G01_aan := false; // G01_Nat_meerkost_CO2_Kost_Reductie_Hoog = Leercurves maximaal optimistisch

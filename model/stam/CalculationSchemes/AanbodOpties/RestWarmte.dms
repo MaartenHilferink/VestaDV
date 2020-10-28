@@ -107,7 +107,7 @@ template RestWarmte
 		);
 	}
 
-	container Results := BeginStatus, IntegrityCheck = "P_Bron <= Bronnen/MWTh_Max * float64(3.00)"
+	container Results := BeginStatus //, IntegrityCheck = "P_Bron <= Bronnen/MWTh_Max * float64(3.00)"
 	{
 		container BebouwingMutatie :=
 			for_each_ne(Classifications/BebouwingsComponent/name
@@ -276,6 +276,7 @@ template RestWarmte
 				attribute<Eur> Ki_wd_Gnet  (PlanRegio) := const(0[Eur], PlanRegio);
 				attribute<Eur> Ki_id_lo    (PlanRegio) := const(0[Eur], PlanRegio);
 			}
+
 
 			container Verbruik
 			{
