@@ -19,6 +19,14 @@ container LeidraadResultaten: using = "Model;Geography"
 			parameter<string> Last_Rekenstap := 'ZichtJaar';
 			parameter<string> Last_Rekenstap_Expl := last(/rekenstap/name);
 			
+			parameter<string> regio_naam := SharedInvoer/StudieGebied == 'RESNoordHollandZuid'
+												? 'Havenstad'
+												: SharedInvoer/StudieGebied == 'RESTwente'
+													? 'Hengelo'
+													: SharedInvoer/StudieGebied == 'RESGooienVechtstreek'
+														? 'GooiEnVechtstreek'
+														: 'NL';
+			
 			unit<uint8> ReportPeriods : nrofrows = 3
 			{
 				attribute<string> name_src  : ['StartJaar', 'Ref2030', 'LastRekenstap'];
@@ -176,13 +184,7 @@ container LeidraadResultaten: using = "Model;Geography"
 				
 				container PerStudyArea
 				{
-					parameter<string> regio_naam := SharedInvoer/StudieGebied == 'RESNoordHollandZuid'
-														? 'Havenstad'
-														: SharedInvoer/StudieGebied == 'RESTwente'
-															? 'Hengelo'
-															: SharedInvoer/StudieGebied == 'RESGooienVechtstreek'
-																? 'GooiEnVechtstreek'
-																: 'NL';
+					parameter<string> regio_naam := Settings/Regio_naam;
 					
 					parameter<string> selected_list := 'selected_'+regio_naam;
 					
@@ -953,7 +955,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					parameter<string> RunName_src := Exports/Settings/RunName == 'StartJaar' 
 														? 'StartJaar'
 														: Exports/Settings/RunName;
-					parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/Warmtebronnen/'+RunName_src+'/'+SharedInvoer/StudieGebied;
+					parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/Warmtebronnen/'+RunName_src+'/'+Settings/Regio_naam;
 					unit<uint32>      list_PerRekenstap   := SubItem_PropValues(CombinedBronnen,'name');
 					container         export_PerRekenstap := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(CombinedBronnen, replace(AsList(list_PerRekenstap/name, ';'), 'Geometry;','') , OutputFolder_str+'/Warmtebronnen_PerPlanRegio_ESDL.csv');
 				}
