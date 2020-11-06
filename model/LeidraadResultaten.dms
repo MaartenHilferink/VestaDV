@@ -173,12 +173,13 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        A22_Aansl_MT_BioWKK             (PlanRegio) := ='LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Aansluitingen/Extra_aansluitingen/A22_Aansl_MT_BioWKK';
 						attribute<nrAsl>        A23_Aansl_H2                    (PlanRegio) := ='LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Aansluitingen/Extra_aansluitingen/A23_Aansl_H2';
 						
-						attribute<nrAsl>        A30_Aansl_LabelA                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/A + Schillabels/Nieuwbouw'+BebouwingsSector+'/A';
-						attribute<nrAsl>        A31_Aansl_LabelB                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/B + Schillabels/Nieuwbouw'+BebouwingsSector+'/B';
-						attribute<nrAsl>        A32_Aansl_LabelC                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/C + Schillabels/Nieuwbouw'+BebouwingsSector+'/C';
-						attribute<nrAsl>        A33_Aansl_LabelD                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/D + Schillabels/Nieuwbouw'+BebouwingsSector+'/D';
-						attribute<nrAsl>        A34_Aansl_LabelE                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/E + Schillabels/Nieuwbouw'+BebouwingsSector+'/E';
-						attribute<nrAsl>        A35_Aansl_LabelF                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/F + Schillabels/Nieuwbouw'+BebouwingsSector+'/F';
+						attribute<nrAsl>        A30_Aansl_LabelAppp             (PlanRegio) := ='Schillabels/Nieuwbouw'+BebouwingsSector+'/Appp';
+						attribute<nrAsl>        A31_Aansl_LabelA                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/A';
+						attribute<nrAsl>        A32_Aansl_LabelB                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/B + Schillabels/Nieuwbouw'+BebouwingsSector+'/B';
+						attribute<nrAsl>        A33_Aansl_LabelC                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/C + Schillabels/Nieuwbouw'+BebouwingsSector+'/C';
+						attribute<nrAsl>        A34_Aansl_LabelD                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/D + Schillabels/Nieuwbouw'+BebouwingsSector+'/D';
+						attribute<nrAsl>        A35_Aansl_LabelE                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/E + Schillabels/Nieuwbouw'+BebouwingsSector+'/E';
+						attribute<nrAsl>        A36_Aansl_LabelF                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/F + Schillabels/Nieuwbouw'+BebouwingsSector+'/F';
 					}
 				}
 				
@@ -268,12 +269,13 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_A22_Aansl_MT_BioWKK         := PerBebouwingsSector/Woning/PerPlanRegio/A22_Aansl_MT_BioWKK[nr_OrgEntity];
 						attribute<nrAsl>        Woning_A23_Aansl_H2                := PerBebouwingsSector/Woning/PerPlanRegio/A23_Aansl_H2[nr_OrgEntity];
 						
-						attribute<nrAsl>        Woning_A30_Aansl_LabelA            := PerBebouwingsSector/Woning/PerPlanRegio/A30_Aansl_LabelA[nr_OrgEntity];
-						attribute<nrAsl>        Woning_A31_Aansl_LabelB            := PerBebouwingsSector/Woning/PerPlanRegio/A31_Aansl_LabelB[nr_OrgEntity];
-						attribute<nrAsl>        Woning_A32_Aansl_LabelC            := PerBebouwingsSector/Woning/PerPlanRegio/A32_Aansl_LabelC[nr_OrgEntity];
-						attribute<nrAsl>        Woning_A33_Aansl_LabelD            := PerBebouwingsSector/Woning/PerPlanRegio/A33_Aansl_LabelD[nr_OrgEntity];
-						attribute<nrAsl>        Woning_A34_Aansl_LabelE            := PerBebouwingsSector/Woning/PerPlanRegio/A34_Aansl_LabelE[nr_OrgEntity];
-						attribute<nrAsl>        Woning_A35_Aansl_LabelF            := PerBebouwingsSector/Woning/PerPlanRegio/A35_Aansl_LabelF[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A30_Aansl_LabelAppp         := PerBebouwingsSector/Woning/PerPlanRegio/A30_Aansl_LabelAppp[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A31_Aansl_LabelA            := PerBebouwingsSector/Woning/PerPlanRegio/A31_Aansl_LabelA[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A32_Aansl_LabelB            := PerBebouwingsSector/Woning/PerPlanRegio/A32_Aansl_LabelB[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A33_Aansl_LabelC            := PerBebouwingsSector/Woning/PerPlanRegio/A33_Aansl_LabelC[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A34_Aansl_LabelD            := PerBebouwingsSector/Woning/PerPlanRegio/A34_Aansl_LabelD[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A35_Aansl_LabelE            := PerBebouwingsSector/Woning/PerPlanRegio/A35_Aansl_LabelE[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A36_Aansl_LabelF            := PerBebouwingsSector/Woning/PerPlanRegio/A36_Aansl_LabelF[nr_OrgEntity];
 						
 						attribute<GJ_yr>        Util_H01_Vraag_Totaal            := PerBebouwingsSector/Util/PerPlanRegio/H01_Vraag_Totaal[nr_OrgEntity];
 						attribute<GJ_yr>        Util_H02_Vraag_Ruimteverwarming  := PerBebouwingsSector/Util/PerPlanRegio/H02_Vraag_Ruimteverwarming[nr_OrgEntity];
@@ -315,12 +317,13 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_A22_Aansl_MT_BioWKK         := PerBebouwingsSector/Util/PerPlanRegio/A22_Aansl_MT_BioWKK[nr_OrgEntity];
 						attribute<nrAsl>        Util_A23_Aansl_H2                := PerBebouwingsSector/Util/PerPlanRegio/A23_Aansl_H2[nr_OrgEntity];
 						
-						attribute<nrAsl>        Util_A30_Aansl_LabelA            := PerBebouwingsSector/Util/PerPlanRegio/A30_Aansl_LabelA[nr_OrgEntity];
-						attribute<nrAsl>        Util_A31_Aansl_LabelB            := PerBebouwingsSector/Util/PerPlanRegio/A31_Aansl_LabelB[nr_OrgEntity];
-						attribute<nrAsl>        Util_A32_Aansl_LabelC            := PerBebouwingsSector/Util/PerPlanRegio/A32_Aansl_LabelC[nr_OrgEntity];
-						attribute<nrAsl>        Util_A33_Aansl_LabelD            := PerBebouwingsSector/Util/PerPlanRegio/A33_Aansl_LabelD[nr_OrgEntity];
-						attribute<nrAsl>        Util_A34_Aansl_LabelE            := PerBebouwingsSector/Util/PerPlanRegio/A34_Aansl_LabelE[nr_OrgEntity];
-						attribute<nrAsl>        Util_A35_Aansl_LabelF            := PerBebouwingsSector/Util/PerPlanRegio/A35_Aansl_LabelF[nr_OrgEntity];
+						attribute<nrAsl>        Util_A30_Aansl_LabelAppp         := PerBebouwingsSector/Util/PerPlanRegio/A30_Aansl_LabelAppp[nr_OrgEntity];
+						attribute<nrAsl>        Util_A31_Aansl_LabelA            := PerBebouwingsSector/Util/PerPlanRegio/A31_Aansl_LabelA[nr_OrgEntity];
+						attribute<nrAsl>        Util_A32_Aansl_LabelB            := PerBebouwingsSector/Util/PerPlanRegio/A32_Aansl_LabelB[nr_OrgEntity];
+						attribute<nrAsl>        Util_A33_Aansl_LabelC            := PerBebouwingsSector/Util/PerPlanRegio/A33_Aansl_LabelC[nr_OrgEntity];
+						attribute<nrAsl>        Util_A34_Aansl_LabelD            := PerBebouwingsSector/Util/PerPlanRegio/A34_Aansl_LabelD[nr_OrgEntity];
+						attribute<nrAsl>        Util_A35_Aansl_LabelE            := PerBebouwingsSector/Util/PerPlanRegio/A35_Aansl_LabelE[nr_OrgEntity];
+						attribute<nrAsl>        Util_A36_Aansl_LabelF            := PerBebouwingsSector/Util/PerPlanRegio/A36_Aansl_LabelF[nr_OrgEntity];
 						
 						attribute<ton_yr>       H15_CO2_uitstoot            := PerBebouwingsSector/Woning/PerPlanRegio/H15_CO2_uitstoot[nr_OrgEntity];
 						attribute<Eur_yr>       H16_Nat_meerkost            := PerBebouwingsSector/Woning/PerPlanRegio/H16_Nat_meerkost[nr_OrgEntity];
@@ -344,7 +347,10 @@ container LeidraadResultaten: using = "Model;Geography"
 							, 'sum(float64(/TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwWoning/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwWoning/BO/nrAansluitingen, /TussenResultaten/'+ReportRekenstap_expl+'/StateNaAllocatie/Bebouwing/NieuwbouwWoning/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
-						);
+						)
+					{
+						attribute<nrAsl> Appp (PlanRegio) := A;
+					}
 						
 					container BestaandeUtil := 
 						for_each_nedv(
@@ -360,7 +366,10 @@ container LeidraadResultaten: using = "Model;Geography"
 							, 'sum(float64(/TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwUtil/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwUtil/BO/nrAansluitingen, /TussenResultaten/'+ReportRekenstap_expl+'/StateNaAllocatie/Bebouwing/NieuwbouwUtil/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
-						);
+						)
+					{
+						attribute<nrAsl> Appp (PlanRegio) := A;
+					}
 						
 					container Totaal := 
 						for_each_nedv(
@@ -831,18 +840,19 @@ container LeidraadResultaten: using = "Model;Geography"
 				unit<uint32> CombinedBronnen := =Settings/CombinedBronnen_str
 				{
 					attribute<string>     bron_naam                   := =Settings/CombinedBronnen_str+'/bron_naam';
-					attribute<string>     label                       := =Settings/CombinedBronnen_str+'/label';
+					attribute<string>     bron_id                     := =Settings/CombinedBronnen_str+'/bron_id';
 					attribute<float32>    x_coord                     := =Settings/CombinedBronnen_str+'/x_coord';
 					attribute<float32>    y_coord                     := =Settings/CombinedBronnen_str+'/y_coord';
 					attribute<yr_uint16>  ingebruik                   := =Settings/CombinedBronnen_str+'/ingebruik';
 					attribute<yr_uint16>  uitgebruik                  := =Settings/CombinedBronnen_str+'/uitgebruik';
-					attribute<MW>         MWth_max                    := =Settings/CombinedBronnen_str+'/MWth_max';
-					attribute<ratio>      Bron_vol                    := =Settings/CombinedBronnen_str+'/Bron_vol';
-					attribute<ratio>      Bron_cap                    := =Settings/CombinedBronnen_str+'/Bron_cap';
+					attribute<MW>         MWth_max                    := =Settings/CombinedBronnen_str+'/MWth_max', descr = "MW thermisch wat maximaal door bron gegenereerd kan worden";
+					attribute<ratio>      Bron_vol                    := =Settings/CombinedBronnen_str+'/Bron_vol', descr = "Fractie van het energieverbruik dat door bijstook geleverd wordt";
+					attribute<ratio>      Bron_cap                    := =Settings/CombinedBronnen_str+'/Bron_cap', descr = "Fractie van de vermogenscapaciteit wat door bijstook kan worden gegenereerd (dus tijdens piekmomenten)";
 					attribute<Celsius>    T_bron                      := =Settings/CombinedBronnen_str+'/T_bron';
-					attribute<Eur_kW>     Ki_kW_min                   := =Settings/CombinedBronnen_str+'/Ki_kW_min';
-					attribute<Eur_kW>     Ki_kW_max                   := =Settings/CombinedBronnen_str+'/Ki_kW_max';
-					attribute<Eur_GJ>     K_GJ                        := =Settings/CombinedBronnen_str+'/K_GJ';
+					attribute<Eur_kW>     Ki_kW_min                   := =Settings/CombinedBronnen_str+'/Ki_kW_min', descr = "Ondergrens van de bandbreedte van de investeringskosten per kW van de beschikbaar te stellen vermogenscapaciteit";
+					attribute<Eur_kW>     Ki_kW_max                   := =Settings/CombinedBronnen_str+'/Ki_kW_max', descr = "Bovengrens van de bandbreedte van de investeringskosten per kW van de beschikbaar te stellen vermogenscapaciteit";
+					// attribute<Eur_GJ>     Ki_ow                       := =Settings/CombinedBronnen_str+'/K_GJ', descr = "Eenmalige totale investerings euros voor opwekking"; 
+					attribute<Eur_GJ>     K_GJ                        := =Settings/CombinedBronnen_str+'/K_GJ', descr = "kosten van verbruik"; 
 					attribute<Ratio>      capaciteit_benuttingsfactor := =Settings/CombinedBronnen_str+'/capaciteit_benuttingsfactor';
 					attribute<string>     SourceType                  := =Settings/CombinedBronnen_str+'/SourceType';
 				}
@@ -861,7 +871,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					unit<uint32> PerRekenstap := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen'
 					{
 						attribute<string>     bron_naam                   := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/bron_naam';
-						attribute<string>     label                       := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/label';
+						attribute<string>     bron_id                     := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/label';
 						attribute<rdc_meter>  geometry                    := ='Invoer/RuimtelijkeData/WarmteBronnen/RestWarmte/BronSelecties/'+RekenstapName+'/Bronnen/Point';
 						attribute<float32>    x_coord                     := pointcol(RD2LatLongWgs84(geometry,dpoint))[float32];
 						attribute<float32>    y_coord                     := pointrow(RD2LatLongWgs84(geometry,dpoint))[float32];
@@ -897,7 +907,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					unit<uint32> PerRekenstap := Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron
 					{
 						attribute<string>     bron_naam                   := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/bron_naam;
-						attribute<string>     label                       := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/label;
+						attribute<string>     bron_id                     := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/label;
 						attribute<rdc_meter>  geometry                    := /Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point;
 						attribute<float32>    x_coord                     := pointcol(RD2LatLongWgs84(/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point,dpoint))[float32];
 						attribute<float32>    y_coord                     := pointrow(RD2LatLongWgs84(/Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/bron/Point,dpoint))[float32];
@@ -930,7 +940,7 @@ container LeidraadResultaten: using = "Model;Geography"
 						unit<uint32> PerRekenstap : nrofrows = 0
 						{
 							attribute<string>     bron_naam                   := const('', .);
-							attribute<string>     label                       := const('', .);
+							attribute<string>     bron_id                     := const('', .);
 							attribute<float32>    x_coord                     := const((0f/0f), .);
 							attribute<float32>    y_coord                     := const((0f/0f), .);
 							attribute<yr_uint16>  ingebruik                   := const((0/0)[yr_uint16], .);
