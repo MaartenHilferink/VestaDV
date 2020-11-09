@@ -12,7 +12,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 container Referentie
-{ 
+{  
 	parameter<string> Variantcode := 'Ref2030';
 	#include <%projDir%/model/Units.dms>
 	#include <%projDir%/model/Geography.dms>
@@ -27,13 +27,14 @@ container Referentie
 		// bij label en name kun je eigen rekenstappen opgeven. Deze namen moeten overeen komen met:
 		// - namen van subitems van in Invoer/SpecifiekeInstellingen
 		attribute<string>          label := string(id(.))+'_'+string(Jaar);
-		attribute<string>          name  := id(.) == 0b ? 'StartJaar' : 'R' + label; 
-		attribute<bool>            IsWarmteBronRelevant := const(true, .);
-		
-		unit<uint8> uq_years := unique(Jaar)
-		{
-			attribute<string> last_step := last(../name, ../jaar);
-		}
+		attribute<string>          name  := id(.) == 0b 
+											? 'StartJaar' 
+											: id(.) == 1b 
+												? 'Ref2030'
+												: id(.) == #.[uint8] - 1b
+													? 'Ref2050'
+													: 'R' + label; 
+		attribute<bool>            IsWarmteBronRelevant : [FALSE, FALSE, FALSE, TRUE, FALSE];
 	}
 	
 	#include <%projDir%/runs/SharedInvoer.dms>
@@ -67,15 +68,15 @@ container Referentie
 			parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
 			
 			parameter<bool>   LeesWarmtebronnenUitESDL  := FALSE;
-			parameter<string> WarmtebronnenEsdlPath   := '%ProjDir%/ESDL/S3b_B_LT30_70_Havenstad.esdl';
+			parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
 			
 			container StartJaar := DefaultInstellingen/Basis;
 			
 			// Per rekenstap kun je hier specifieke instelling overrulen. De lijst van rekenstappen wordt gedefinieerd bij rekenstap
-			container R1_2030 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
+			container Ref2030 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
 			container R2_2030 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
 			container R3_2050 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
-			container R4_2050 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
+			container Ref2050 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
 		}
 	}
 

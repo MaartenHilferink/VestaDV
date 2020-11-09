@@ -502,7 +502,8 @@ container WarmteBronnen
 			attribute<kW>        P_ow_max      := bron_src/P_ow_max[nr_OrgEntity];
 			attribute<Eur_kW>    Ki_kW_min     := bron_src/Ki_KW_min[nr_OrgEntity];
 			attribute<Eur_kW>    Ki_kW_max     := bron_src/Ki_KW_max[nr_OrgEntity];
-			attribute<Eur_GJ>    K_GJ          := bron_src/K_GJ[nr_OrgEntity];
+			// attribute<Eur_GJ>    K_GJ          := bron_src/K_GJ[nr_OrgEntity];
+			attribute<Eur_GJ>    K_GJ          := bron_src/K_GJ[nr_OrgEntity]; //Maak actueel
 		}
 
 	}

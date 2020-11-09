@@ -16,14 +16,14 @@ set CUR_SS=%time:~6,2%
 set CUR_MS=%time:~9,2%
 set SUBFILENAME=%CUR_YYYY%%CUR_MM%%CUR_DD%-%CUR_HH%%CUR_NN%%CUR_SS%
 
-set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_Havenstad_LastPeriod
+set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_LastPeriod
 set EXPORT_PATH_STARTJAAR=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_StartJaar
 
 REM "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH_STARTJAAR%"
 REM "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH%"
 
-REM   "%exe_path%" "%prj_dir%\Runs\S1a_B_LuchtWP.dms" "%EXPORT_PATH%"
-REM   "%exe_path%" "%prj_dir%\Runs\S1b_B_BodemWP.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S1a_B_LuchtWP.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S1b_B_BodemWP.dms" "%EXPORT_PATH%"
 
 REM  "%exe_path%" "%prj_dir%\Runs\S2a_B_Restwarmte.dms" "%EXPORT_PATH%"
 REM  "%exe_path%" "%prj_dir%\Runs\S2b_B_Geo_contour.dms" "%EXPORT_PATH%"
@@ -42,12 +42,12 @@ REM "%exe_path%" "%prj_dir%\Runs\S3g_D_BuurtWKO.dms" "%EXPORT_PATH%"
 REM "%exe_path%" "%prj_dir%\Runs\S3h_D_TEO.dms" "%EXPORT_PATH%"
 
 REM  "%exe_path%" "%prj_dir%\Runs\S4a_GG_B_hWP.dms" "%EXPORT_PATH%"
-REM  "%exe_path%" "%prj_dir%\Runs\S4b_GG_B_HR.dms" "%EXPORT_PATH%"
-REM  "%exe_path%" "%prj_dir%\Runs\S4c_GG_D_hWP.dms" "%EXPORT_PATH%"
-REM  "%exe_path%" "%prj_dir%\Runs\S4d_GG_D_HR.dms" "%EXPORT_PATH%"
+  "%exe_path%" "%prj_dir%\Runs\S4b_GG_B_HR.dms" "%EXPORT_PATH%"
+  "%exe_path%" "%prj_dir%\Runs\S4c_GG_D_hWP.dms" "%EXPORT_PATH%"
+  "%exe_path%" "%prj_dir%\Runs\S4d_GG_D_HR.dms" "%EXPORT_PATH%"
 
-REM  "%exe_path%" "%prj_dir%\Runs\S5a_H2_B_hWP.dms" "%EXPORT_PATH%"
-REM  "%exe_path%" "%prj_dir%\Runs\S5b_H2_B_HR.dms" "%EXPORT_PATH%"
+  "%exe_path%" "%prj_dir%\Runs\S5a_H2_B_hWP.dms" "%EXPORT_PATH%"
+  "%exe_path%" "%prj_dir%\Runs\S5b_H2_B_HR.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S5c_H2_D_hWP.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S5d_H2_D_HR.dms" "%EXPORT_PATH%"
 
