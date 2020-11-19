@@ -13,7 +13,8 @@
 
 container SharedInvoer
 {
-	parameter<string> StudieGebied          : ['RESNoordHollandZuid']; //'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
+	parameter<string> StudieGebied_src  : ['Havenstad']; //'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
+	parameter<string> StudieGebied      := StudieGebied_src == 'Havenstad' ? 'RESNoordHollandZuid' : StudieGebied_src;
 //	parameter<string> StudieGebied          : ['NL']; //'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
 	
 	parameter<bool> G01_aan := false; // G01_Nat_meerkost_CO2_Kost_Reductie_Hoog = Leercurves maximaal optimistisch

@@ -29,8 +29,8 @@ REM  "%exe_path%" "%prj_dir%\Runs\S2a_B_Restwarmte.dms" "%EXPORT_PATH%"
 REM  "%exe_path%" "%prj_dir%\Runs\S2b_B_Geo_contour.dms" "%EXPORT_PATH%"
 REM  "%exe_path%" "%prj_dir%\Runs\S2c_B_Geo_overal.dms" "%EXPORT_PATH%"
 REM  "%exe_path%" "%prj_dir%\Runs\S2d_D_Restwarmte.dms" "%EXPORT_PATH%"
-REM  "%exe_path%" "%prj_dir%\Runs\S2e_D_Geo_contour.dms" "%EXPORT_PATH%"
-REM  "%exe_path%" "%prj_dir%\Runs\S2f_D_Geo_overal.dms" "%EXPORT_PATH%"
+REM  "%exe_path%" "%prj_dir%\Runs\S2e_D_Geo_contour.dms" "%EXPORT_PATH%" REM Gaat niet door
+REM  "%exe_path%" "%prj_dir%\Runs\S2f_D_Geo_overal.dms" "%EXPORT_PATH%" REM Gaat niet door
 
 REM "%exe_path%" "%prj_dir%\Runs\S3a_B_LT30_30.dms" "%EXPORT_PATH%"
 REM "%exe_path%" "%prj_dir%\Runs\S3b_B_LT30_70.dms" "%EXPORT_PATH%"
@@ -42,7 +42,7 @@ REM "%exe_path%" "%prj_dir%\Runs\S3g_D_BuurtWKO.dms" "%EXPORT_PATH%"
 REM "%exe_path%" "%prj_dir%\Runs\S3h_D_TEO.dms" "%EXPORT_PATH%"
 
 REM  "%exe_path%" "%prj_dir%\Runs\S4a_GG_B_hWP.dms" "%EXPORT_PATH%"
-  "%exe_path%" "%prj_dir%\Runs\S4b_GG_B_HR.dms" "%EXPORT_PATH%"
+REM  "%exe_path%" "%prj_dir%\Runs\S4b_GG_B_HR.dms" "%EXPORT_PATH%" REM Gaat niet door
   "%exe_path%" "%prj_dir%\Runs\S4c_GG_D_hWP.dms" "%EXPORT_PATH%"
   "%exe_path%" "%prj_dir%\Runs\S4d_GG_D_HR.dms" "%EXPORT_PATH%"
 
