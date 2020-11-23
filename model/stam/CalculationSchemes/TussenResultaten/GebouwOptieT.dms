@@ -18,18 +18,18 @@ template GebouwOptieT
 	parameter<string> SprongSuffix     :=  AltijdSprong ? '[0[SchilLabelDomain]]' : '';
 	unit<uint32>      SchilLabelDomain := =AltijdSprong ? 'range(uint32, 0, 1)' : 'BebouwingsObject';
 
-	attribute<Classifications/SchilLabel> Defaultlabel (SchilLabelDomain) :=  BO/Defaultlabel_new;
+	attribute<Classifications/SchilLabel> Defaultlabel (BebouwingsObject) :=  BO/Defaultlabel_new;
 	
 	attribute<Classifications/SchilLabel> SchilLabel_rel (SchilLabelDomain) := = AltijdSprong
 		? 'union_data(SchilLabelDomain, SchilLabel_rel_formeel)'
 		: SomsSprong
 			? 'BebouwingsObject/schillabel_rel == Classifications/schillabel/V/N && Defaultlabel <= SchilLabel_rel_formeel
-			? BebouwingsObject/schillabel_rel
-			: min_elem(BebouwingsObject/schillabel_rel, SchilLabel_rel_formeel)'
+				? BebouwingsObject/schillabel_rel
+				: min_elem(BebouwingsObject/schillabel_rel, SchilLabel_rel_formeel)'
 			: 'BebouwingsObject/schillabel_rel';
 
-	attribute<Classifications/Schillabel>  SchillabelOrDefault_rel (SchilLabelDomain) :=
-		Schillabel_rel == Classifications/schillabel/V/N ? Defaultlabel : Schillabel_rel;
+	attribute<Classifications/Schillabel>  SchillabelOrDefault_rel (BebouwingsObject) :=
+		= 'Schillabel_rel == Classifications/schillabel/V/N ? Defaultlabel : Schillabel_rel'+SprongSuffix;
 			
 	// InstallatiePerProduct geeft per BebouwingsObject of per SchilLabel voor ieder Product de te kiezen of al aanwezige installatie
 	
