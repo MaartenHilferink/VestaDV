@@ -62,6 +62,7 @@ container S3b_B_LT30_70
 			parameter<string> NieuwbouwInputTemplate      := 'EsdlNieuwbouw';
 			parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
 			parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
+			parameter<string> BuurtflipPath           := '%ProjDir%/ESDL/S3b_B_LT30_70_Havenstad.esdl';
 			
 			parameter<bool>   LeesWarmtebronnenUitESDL  := TRUE;
 			parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
