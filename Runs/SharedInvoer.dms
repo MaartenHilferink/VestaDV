@@ -32,7 +32,7 @@ container SharedInvoer
 	parameter<units/m3> MaxVolume_GG := 1500000000[units/m3]; //Invoer maximale beschikbaarheid GG in m3 aardgasequivalent
 	
 	// ESDL support
-	parameter<string> NieuwbouwInputTemplate      := 'EsdlNieuwbouw';
+	parameter<string> NieuwbouwInputTemplate  := 'EsdlNieuwbouw';
 	parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
 	parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
 			

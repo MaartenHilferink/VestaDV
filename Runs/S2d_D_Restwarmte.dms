@@ -65,10 +65,6 @@ container S2d_D_Restwarmte
 			attribute<bool> BS_isActive(BsBase) : [ true, true, false];
 			parameter<bool> BC_doNieuwbouw := TRUE;
 			
-			parameter<string> NieuwbouwInputTemplate  := 'EsdlNieuwbouw';
-			parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-input-VESTA.esdl';
-			parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-input-VESTA.esdl';
-			
 			parameter<bool>   LeesWarmtebronnenUitESDL  := FALSE;
 			parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
 			
@@ -78,6 +74,7 @@ container S2d_D_Restwarmte
 			container Ref2030 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
 			container R2_2030 := DefaultInstellingen/Rekenstap_GroenGasD/Stap_1;
 			container R3_2030 := DefaultInstellingen/Rekenstap_AllesD_Restwarmte/Stap_1;
+			container R4_2040 := DefaultInstellingen/Rekenstap_Doeniks/Stap_2040;
 			container Ref2050 := DefaultInstellingen/Rekenstap_Doeniks/Stap_2050;
 		}
 	}

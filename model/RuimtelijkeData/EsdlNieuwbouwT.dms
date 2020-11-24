@@ -75,7 +75,7 @@ template EsdlNieuwbouw
 		}
 	}
 	
-	parameter<string> ESDL_Nieuwbouw: StorageName = "=SpecifiekeInstellingen/NieuwbouwWoningEsdlPath", StorageType = "str";
+	parameter<string> ESDL_Nieuwbouw: StorageName = "=Invoer/NieuwbouwWoningEsdlPath", StorageType = "str";
 		
 	container Parsed_Nieuwbouw:= parse_xml(ESDL_Nieuwbouw, VestaBebouwingsComponentSchema);
 	

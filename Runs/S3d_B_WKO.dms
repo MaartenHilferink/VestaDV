@@ -20,13 +20,14 @@ container S3d_B_WKO
 
 	// Hier kun je meer of minder rekenstappen per jaar gaan definieren. Pas dan ook de onderstaande attribuutdata aan.
 	// Waarschijnlijk moet de eerste rekenstap wel verwijzen naar het eerste zichtjaar en moeten volgende rekenstappen niet naar eerdere jaren verwijzen.	
-	unit<uint8> rekenstap: nrofrows = 5
+	
+	unit<uint8> rekenstap: nrofrows = 6
 	{
-		attribute<units/yr_uint16> Jaar  : [2019, 2030, 2030, 2030, 2050];
+		attribute<units/yr_uint16> Jaar  : [2019, 2030, 2030, 2030, 2040, 2050];
 		
 		// bij label en name kun je eigen rekenstappen opgeven. Deze namen moeten overeen komen met:
 		// - namen van subitems van in Invoer/SpecifiekeInstellingen
-		attribute<string> label := string(id(.))+ '_' +string(Jaar);
+		attribute<string>          label := string(id(.))+'_'+string(Jaar);
 		attribute<string>          name  := id(.) == 0b 
 											? 'StartJaar' 
 											: id(.) == 1b 
@@ -34,7 +35,7 @@ container S3d_B_WKO
 												: id(.) == #.[uint8] - 1b
 													? 'Ref2050'
 													: 'R' + label; 
-		attribute<bool>            IsWarmteBronRelevant : [FALSE, FALSE, FALSE, TRUE, FALSE];
+		attribute<bool>            IsWarmteBronRelevant : [FALSE, FALSE, FALSE, TRUE, FALSE, FALSE];
 	}
 	
 	#include <%projDir%/runs/SharedInvoer.dms>
@@ -65,10 +66,6 @@ container S3d_B_WKO
 			attribute<bool> BS_isActive(BsBase) : [ true, true, false];
 			parameter<bool> BC_doNieuwbouw := TRUE;
 			
-			parameter<string> NieuwbouwInputTemplate  := 'EsdlNieuwbouw';
-			parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-input-VESTA.esdl';
-			parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-input-VESTA.esdl';
-			
 			parameter<bool>   LeesWarmtebronnenUitESDL  := FALSE;
 			parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
 			
@@ -78,6 +75,7 @@ container S3d_B_WKO
 			container Ref2030 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
 			container R2_2030 := DefaultInstellingen/Rekenstap_GroenGasB/Stap_1;
 			container R3_2030 := DefaultInstellingen/Rekenstap_AllesB_WKO/Stap_1;
+			container R4_2040 := DefaultInstellingen/Rekenstap_Doeniks/Stap_2040;
 			container Ref2050 := DefaultInstellingen/Rekenstap_Doeniks/Stap_2050;
 		}
 	}

@@ -65,10 +65,6 @@ container S2a_B_Restwarmte
 			attribute<bool> BS_isActive(BsBase) : [ true, true, false];
 			parameter<bool> BC_doNieuwbouw := TRUE;
 			
-			parameter<string> NieuwbouwInputTemplate  := 'EsdlNieuwbouw';
-			parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
-			parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
-			
 			parameter<bool>   LeesWarmtebronnenUitESDL  := FALSE;
 			parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
 			
