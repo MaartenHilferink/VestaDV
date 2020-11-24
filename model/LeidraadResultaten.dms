@@ -27,9 +27,9 @@ container LeidraadResultaten: using = "Model;Geography"
 														? 'GooiEnVechtstreek'
 														: 'NL';
 			
-			unit<uint8> ReportPeriods : nrofrows = 3
+			unit<uint8> ReportPeriods : nrofrows = 4
 			{
-				attribute<string> name_src  : ['StartJaar', 'Ref2030', 'LastRekenstap'];
+				attribute<string> name_src  : ['StartJaar', 'Ref2030', 'Ref2040', 'LastRekenstap'];
 				attribute<string> name      := replace(name_src, 'LastRekenstap', Last_Rekenstap);
 				attribute<string> name_expl := replace(name_src, 'LastRekenstap', Last_Rekenstap_Expl);
 			}
