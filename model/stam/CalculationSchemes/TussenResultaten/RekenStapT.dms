@@ -216,6 +216,16 @@ template RekenstapT
 	{
 		parameter<string> ResultStateName := MakeDefined(last(Voorkeuren/ActieveGebiedsOptie/name)+'/Results', 'Initieel');
 		container ResultState := =ResultStateName;
+		
+		unit<uint32> BestaandeWoningDomain := = ResultStateName+'/BebouwingMutatie/BestaandeWoning/results';
+		unit<uint32> NieuwbouwWoningDomain := = ResultStateName+'/BebouwingMutatie/NieuwbouwWoning/results';
+		unit<uint32> BestaandeUtilDomain   := = ResultStateName+'/BebouwingMutatie/BestaandeUtil/results';
+		unit<uint32> NieuwbouwUtilDomain   := = ResultStateName+'/BebouwingMutatie/NieuwbouwUtil/results';
+		
+		attribute<Classifications/WarmteOptie> Final_WarmteOptie_rel_BestaandeWoning (BestaandeWoningDomain) := BestaandeWoningDomain/WarmteOptie_rel;
+		attribute<Classifications/WarmteOptie> Final_WarmteOptie_rel_NieuwbouwWoning (NieuwbouwWoningDomain) := NieuwbouwWoningDomain/WarmteOptie_rel;
+		attribute<Classifications/WarmteOptie> Final_WarmteOptie_rel_BestaandeUtil   (BestaandeUtilDomain)   := BestaandeUtilDomain/WarmteOptie_rel;
+		attribute<Classifications/WarmteOptie> Final_WarmteOptie_rel_NieuwbouwUtil   (NieuwbouwUtilDomain)   := NieuwbouwUtilDomain/WarmteOptie_rel;
 	}
 
 	#include<StateNaAllocatie.dms>
