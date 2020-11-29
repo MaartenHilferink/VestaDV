@@ -16,7 +16,8 @@ set CUR_SS=%time:~6,2%
 set CUR_MS=%time:~9,2%
 set SUBFILENAME=%CUR_YYYY%%CUR_MM%%CUR_DD%-%CUR_HH%%CUR_NN%%CUR_SS%
 
-set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_LastPeriod
+REM set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_LastPeriod
+set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_All 
 set EXPORT_PATH_STARTJAAR=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_StartJaar
 
 REM "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH_STARTJAAR%"

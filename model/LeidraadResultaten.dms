@@ -85,9 +85,12 @@ container LeidraadResultaten: using = "Model;Geography"
 		container ESDL
 		{
 			parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result;
-			parameter<string> Generate_PerPlanRegio_LastPeriod           := ='PerRekenstap/'+Settings/Last_Rekenstap+'/PerStudyArea/export_PerPlanRegio/result + Generate_BronnenExport';
+			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/Ref2030/PerStudyArea/export_PerPlanRegio/result + Generate_BronnenExport;
+			parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R4_2040/PerStudyArea/export_PerPlanRegio/result;
+			parameter<string> Generate_PerPlanRegio_LastPeriod           := ='PerRekenstap/'+Settings/Last_Rekenstap+'/PerStudyArea/export_PerPlanRegio/result';
 			parameter<string> Generate_BronnenExport                     := ='LeidraadResultaten/Exports/ESDL/Bronnen/BronnenExportSettings/export_PerRekenstap/result';
-			
+
+			parameter<string> Generate_PerPlanRegio_All                 := Generate_PerPlanRegio_2030 + Generate_PerPlanRegio_2040 + Generate_PerPlanRegio_LastPeriod;
 			container PerRekenstap := 
 				for_each_ne(
 					  Settings/ReportPeriods/name
