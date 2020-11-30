@@ -226,9 +226,6 @@ container Bebouwing :=
 			}
 		}
 		container Nieuwbouw := =SharedInvoer/NieuwbouwInputTemplate + '()';
-		container BuurtFlip {
-			parameter<string> ESDL_BuurtMaatregelen: StorageName = "=SharedInvoer/BuurtFlipPath", StorageType = "str";
-			container Parsed_BuurtMaatregelen:= parse_xml(ESDL_BuurtMaatregelen, Nieuwbouw/VestaBebouwingsComponentSchema);
-		}
+		container BuurtFlip := EsdlNieuwBouw(SharedInvoer/BuurtFlipPath);
 	}
 }

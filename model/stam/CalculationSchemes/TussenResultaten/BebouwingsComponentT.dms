@@ -422,12 +422,28 @@ template BebouwingsComponentT
 
 	attribute<string> GebouwOptie_sel_Expr (Classifications/GebouwOptie) := 'LowerCase(LocatieSpecifiekeOpties/GebouwOpties/'+Classifications/GebouwOptie/name+') != ' + Quote('criteria/never');
 	attribute<bool>   GebouwOptie_sel      (Classifications/GebouwOptie) := ='union_data(Classifications/GebouwOptie, '+AsItemList(GebouwOptie_sel_Expr)+')';
-	
+
+	unit<uint32> EsdlBuurtMeasure := /Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/EsdlBuurt_Measure;
 	unit<uint8> BcGebouwOptie := subset(GebouwOptie_sel) 
 	{
+		attribute<classifications/WarmteOptie> WarmteOptie_rel := Classifications/GebouwOptie/WarmteOptie_rel[nr_OrgEntity];
+		
 		attribute<string> name           := Classifications/GebouwOptie/name[nr_OrgEntity];
 		attribute<string> label          := name, DialogType = "labelText";
-		attribute<string> Criterium_expr := ='replace_value(LowerCase(union_data(., '+AsItemList('LocatieSpecifiekeOpties/GebouwOpties/'+name)+')), ''criteria/always'', '''')';
+		attribute<string> Criterium_expr_1 := ='replace_value(LowerCase(union_data(., '+AsItemList('LocatieSpecifiekeOpties/GebouwOpties/'+name)+')), ''criteria/always'', '''')';
+		attribute<string> Criterium_expr_2 := (SharedInvoer/BuurtFlipPath == '')
+			?  ''
+			:  IsDefined(rlookup(WarmteOptie_rel, /Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/KiesbareMeasure/WarmteOptie_rel))
+				? 'EsdlBuurtMeasure/Toegestaan['
+					'combine_data(EsdlBuurtMeasure, '
+						'rlookup(BebouwingsObject/PlanRegio_rel, /Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/EsdlBuurt/PlanRegio_rel)'
+					',  '+string(rlookup(WarmteOptie_rel,/Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/KiesbareMeasure/WarmteOptie_rel))+'[/Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/KiesbareMeasure]'
+				  ')]'
+				: '';
+		attribute<string> Criterium_expr := Criterium_expr_1 != '' && Criterium_expr_2 != '' 
+			 ? 'and('+Criterium_expr_1+','+Criterium_expr_2+')'
+			 : Criterium_expr_1 + Criterium_expr_2
+		;
 		container V := for_each_nedv(name, 'value('+string(id(.))+', ..)', void, .);
 	}
 
