@@ -14,6 +14,8 @@
 
 template EsdlNieuwbouw
 {
+	parameter<string> EsdlPath := Invoer/NieuwbouwWoningEsdlPath;
+	
 	container VestaBebouwingsComponentSchema
 	{
 		unit<uint32> measure {
@@ -75,7 +77,7 @@ template EsdlNieuwbouw
 		}
 	}
 	
-	parameter<string> ESDL_Nieuwbouw: StorageName = "=Invoer/NieuwbouwWoningEsdlPath", StorageType = "str";
+	parameter<string> ESDL_Nieuwbouw: StorageName = "=EsdlPath", StorageType = "str";
 		
 	container Parsed_Nieuwbouw:= parse_xml(ESDL_Nieuwbouw, VestaBebouwingsComponentSchema);
 	
