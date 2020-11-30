@@ -94,6 +94,8 @@ template EsdlNieuwbouw
 			attribute<EsdlBuurt_Measure> EsdlBuurt_Measure_rel := combine_data(EsdlBuurt_Measure, Buurt_rel, KiesbareMeasure_rel);
 		}
 		attribute<bool> HasMeasure := any(const(true, Measure), Measure/Buurt_rel);
+		attribute<string> buurt_name := id;
+		attribute</Invoer/RuimtelijkeData/StudieGebied/buurt> PlanRegio_rel := rlookup(lowercase(buurt_name), lowercase(/Invoer/RuimtelijkeData/StudieGebied/buurt/name));
 	}
 	unit<uint32> EsdlBuurt_Measure := combine(EsdlBuurt, KiesbareMeasure)
 	{

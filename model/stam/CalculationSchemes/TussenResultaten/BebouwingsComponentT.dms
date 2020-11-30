@@ -434,11 +434,11 @@ template BebouwingsComponentT
 		attribute<string> Criterium_expr_2 := (SharedInvoer/BuurtFlipPath == '')
 			?  ''
 			:  IsDefined(rlookup(WarmteOptie_rel, /Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/KiesbareMeasure/WarmteOptie_rel))
-				? 'EsdlBuurtMeasure/Toegestaan('
+				? 'EsdlBuurtMeasure/Toegestaan['
 					'combine_data(EsdlBuurtMeasure, '
-						'rlookup(code, /Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/EsdlBuurt/id)'
+						'rlookup(BebouwingsObject/PlanRegio_rel, /Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/EsdlBuurt/PlanRegio_rel)'
 					',  '+string(rlookup(WarmteOptie_rel,/Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/KiesbareMeasure/WarmteOptie_rel))+'[/Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/KiesbareMeasure]'
-				  '))'
+				  ')]'
 				: '';
 		attribute<string> Criterium_expr := Criterium_expr_1 != '' && Criterium_expr_2 != '' 
 			 ? 'and('+Criterium_expr_1+','+Criterium_expr_2+')'
