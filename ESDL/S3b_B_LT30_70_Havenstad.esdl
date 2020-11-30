@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <esdl:EnergySystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:esdl="http://www.tno.nl/esdl" id="55d4ee8b-3163-4384-855b-db5bb4c6a573" name="S3b_B_LT30_70_Havenstad">
   <measures xsi:type="esdl:Measures">
-    <measure xsi:type="esdl:Measure" name="VRu" id="VRu"/>
+    <measure xsi:type="esdl:Measure" name="VRw" id="VRw"/>
     <measure xsi:type="esdl:Measure" name="HRw" id="HRw"/>
   </measures>
   <energySystemInformation xsi:type="esdl:EnergySystemInformation" id="643e9b25-671f-4a2a-ad81-6b83244b50dd">
@@ -246,7 +246,7 @@
           </buildingTypeDistribution>
         </asset>
         <measures xsi:type="esdl:Measures">
-          <measure xsi:type="esdl:MeasureReference" id="424e3a65-0521-4710-83a5-a72bdcc83c75" reference="VRu"/>
+          <measure xsi:type="esdl:MeasureReference" id="424e3a65-0521-4710-83a5-a72bdcc83c75" reference="VRw"/>
           <measure xsi:type="esdl:MeasureReference" id="7ec3b58a-c288-41af-9f96-04c34bade2e3" reference="HRw"/>
         </measures>
       </area>
