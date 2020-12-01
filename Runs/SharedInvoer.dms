@@ -12,11 +12,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 container SharedInvoer
-{
-//	parameter<string> StudieGebied_src  : ['Havenstad']; //'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
-//	parameter<string> StudieGebied      := StudieGebied_src == 'Havenstad' ? 'RESNoordHollandZuid' : StudieGebied_src;
-//	parameter<string> StudieGebied          : ['NL']; //'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
-	
+{ 
 	parameter<string> StudieGebied_config  : ['RESNoordHollandZuid']; // 'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
 	parameter<string> StudieGebied_cmd_setting := Expand(., '%env:STUDIEGEBIED%'); 
 	parameter<string> StudieGebied  := replace_value(StudieGebied_cmd_setting, 'env:STUDIEGEBIED', StudieGebied_config);
@@ -37,7 +33,10 @@ container SharedInvoer
 	parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
 			
 	parameter<bool>   LeesWarmtebronnenUitESDL  := TRUE;
-	parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
-			
-	parameter<string> BuurtflipPath           := '%ProjDir%/ESDL/S3b_B_LT30_70_Havenstad.esdl';
+	// parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
+	parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? BuurtflipPath : ''''';
+	
+	parameter<string> FullVariantName := rjoin(VariantCode, /Classifications/VestaVarianten/Variantcode, /Classifications/VestaVarianten/VariantNaam);
+
+	parameter<string> BuurtflipPath           := '%ProjDir%/ESDL/'+FullVariantName+'_Havenstad.esdl';
 }

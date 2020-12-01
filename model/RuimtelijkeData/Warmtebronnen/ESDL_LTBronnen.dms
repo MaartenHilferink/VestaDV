@@ -15,8 +15,10 @@ container ESDL_LTBronnen
 			{
 				attribute<string> xsi_type;
 				attribute<string> id;
-				attribute<string> power;
 				attribute<string> name;
+				attribute<string> commissioningDate;
+				attribute<string> decommissioningDate;
+				attribute<string> power;
 				
 				unit<uint32> geometry
 				{
@@ -29,6 +31,19 @@ container ESDL_LTBronnen
 				{
 					attribute<string> value;
 					attribute<string> name;
+				}
+			}
+			unit<uint32> potential // ResidualHeatSource
+			{
+				attribute<string> xsi_type;
+				attribute<string> id;
+				attribute<string> name;
+				
+				unit<uint32> geometry
+				{
+					attribute<string> CRS;
+					attribute<string> lat;
+					attribute<string> lon;
 				}
 			}
 		}

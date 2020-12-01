@@ -13,6 +13,23 @@
 
 container Classifications: Using = "Units", KeepData = "True", IsHidden = "True"
 {
+	unit<uint8> VestaVarianten : nrofrows = 25
+	{
+		attribute<string> VariantCode : ['s0'
+											,'s1a','s1b'
+											,'s2a','s2b','s2c','s2d','s2e','s2f'
+											,'s3a','s3b','s3c','s3d','s3e','s3f','s3g','s3h'
+											,'s4a','s4b','s4c','s4d'
+											,'s5a','s5b','s5c','s5d'
+										];
+		attribute<string> VariantNaam : ['S0_Referentie'
+											, 'S1a_B_LuchtWP', 'S1b_B_BodemWP'
+											, 'S2a_B_Restwarmte', 'S2b_B_Geo_contour', 'S2c_B_Geo_overal', 'S2d_D_Restwarmte', 'S2e_D_Geo_contour', 'S2f_D_Geo_overal'
+											, 'S3a_B_LT30_30', 'S3b_B_LT30_70', 'S3c_B_BuurtWKO', 'S3d_B_WKO', 'S3e_B_TEO', 'S3f_D_LT30_70', 'S3g_D_BuurtWKO', 'S3h_D_TEO'
+											, 'S4a_GG_B_hWP', 'S4b_GG_B_HR', 'S4c_GG_D_hWP', 'S4d_GG_D_HR'
+											, 'S5a_H2_B_hWP', 'S5b_H2_B_HR', 'S5c_H2_D_hWP', 'S5d_H2_D_HR'
+										];
+	}
 	unit<uint8> BebouwingsSectorBase: nrofrows = 3
 	{
 		attribute<string> name     : [ 'Woning', 'Util', 'GlTb'];
