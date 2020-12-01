@@ -64,7 +64,7 @@ container Referentie
 			parameter<bool> BC_doNieuwbouw := TRUE;
 			
 			parameter<bool>   LeesWarmtebronnenUitESDL  := FALSE;
-			parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
+			// parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
 			
 			container StartJaar := DefaultInstellingen/Basis;
 			

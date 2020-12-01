@@ -47,8 +47,9 @@ container PlanregioResults
 							  add('+AsItemList('R_AardG * sum(Allocatie/'+Classifications/BebouwingsComponent/name+'/metervraag/Aardgas, bebouwing/'+Classifications/BebouwingsComponent/name+'/PlanRegio_rel)')+')
 						,0[GJ_yr]
 					 )';
-			attribute<string> Uitgesloten := string(Statisch/IsUitgesloten);
-			attribute<string> IsOngeldig    := string(Checks/s3GeenLT || Checks/s2GeenMT || Statisch/IsUitgesloten);
+			// attribute<string> Uitgesloten := string(Statisch/IsUitgesloten);
+			// attribute<string> IsOngeldig    := string(Checks/s3GeenLT || Checks/s2GeenMT || Statisch/IsUitgesloten);
+			attribute<string> IsOngeldig    := const('FALSE',.);
 
 			attribute<string> MT_nr := =(Variantcode == 's2a' || Variantcode == 's2d') 
 				? 'TussenResultaten/GebiedsAllocatie/RestWarmte/results/RestWarmte/bron_naam' 
@@ -173,8 +174,9 @@ container PlanregioResults
 	{
 		unit<uint32> extensief := Invoer/DefaultInstellingen/Basis/PlanRegio
 		{
-			attribute<bool> IsOngeldig := Hulpvariabelen/Checks/s3GeenLT || Hulpvariabelen/Checks/s2GeenMT ||
-				(Hulpvariabelen/Checks/NegatiefCO2 && not(IsUitgesloten_Stap0_Referentie));
+			// attribute<bool> IsOngeldig := Hulpvariabelen/Checks/s3GeenLT || Hulpvariabelen/Checks/s2GeenMT ||
+				// (Hulpvariabelen/Checks/NegatiefCO2 && not(IsUitgesloten_Stap0_Referentie));
+			attribute<bool> IsOngeldig := const(FALSE,.);
 
 			// VRAAG
 			attribute<GJ_yr> H01_Vraag_totaal := add(H02_Vraag_RV, H03_Vraag_TW, H04_Vraag_Vent, H05_Vraag_K, H06_Vraag_App);
@@ -409,7 +411,8 @@ container PlanregioResults
 	//nationale kosten absoluut en CO2 uitstoot
 	container NationaleKosten
 	{
-		attribute<bool> IsOngeldig                     (PlanRegio) := Hulpvariabelen/Checks/s3GeenLT || Hulpvariabelen/Checks/s2GeenMT;
+		// attribute<bool> IsOngeldig                     (PlanRegio) := Hulpvariabelen/Checks/s3GeenLT || Hulpvariabelen/Checks/s2GeenMT;
+		attribute<bool> IsOngeldig                     (PlanRegio) := const(FALSE,PlanRegio);
 
 		unit<uint32> Recap := Invoer/DefaultInstellingen/Basis/PlanRegio
 		{
