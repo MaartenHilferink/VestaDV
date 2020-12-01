@@ -431,7 +431,8 @@ template BebouwingsComponentT
 		attribute<string> name           := Classifications/GebouwOptie/name[nr_OrgEntity];
 		attribute<string> label          := name, DialogType = "labelText";
 		attribute<string> Criterium_expr_1 := ='replace_value(LowerCase(union_data(., '+AsItemList('LocatieSpecifiekeOpties/GebouwOpties/'+name)+')), ''criteria/always'', '''')';
-		attribute<string> Criterium_expr_2 := (SharedInvoer/BuurtFlipPath == '')
+		// attribute<string> Criterium_expr_2 := (SharedInvoer/ESDL_Invoer_path == '')
+		attribute<string> Criterium_expr_2 := !SharedInvoer/BuurtFlippenAAN
 			?  ''
 			:  IsDefined(rlookup(WarmteOptie_rel, /Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/KiesbareMeasure/WarmteOptie_rel))
 				? 'EsdlBuurtMeasure/Toegestaan['

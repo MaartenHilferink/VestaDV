@@ -226,6 +226,6 @@ container Bebouwing :=
 			}
 		}
 		container Nieuwbouw := =SharedInvoer/NieuwbouwInputTemplate + '()';
-		container BuurtFlip := EsdlNieuwBouw(SharedInvoer/BuurtFlipPath);
+		container BuurtFlip := EsdlNieuwBouw(SharedInvoer/ESDL_Invoer_path);
 	}
 }

@@ -30,13 +30,10 @@ container SharedInvoer
 	// ESDL support
 	parameter<string> NieuwbouwInputTemplate  := 'EsdlNieuwbouw';
 	parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
-	parameter<string> NieuwbouwUtilEsdlPath   := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
-			
-	parameter<bool>   LeesWarmtebronnenUitESDL  := TRUE;
-	// parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
-	parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? BuurtflipPath : ''''';
+	parameter<string> NieuwbouwUtilEsdlPath   := NieuwbouwWoningEsdlPath;
 	
-	parameter<string> FullVariantName := rjoin(VariantCode, /Classifications/VestaVarianten/Variantcode, /Classifications/VestaVarianten/VariantNaam);
-
-	parameter<string> BuurtflipPath           := '%ProjDir%/ESDL/'+FullVariantName+'_Havenstad.esdl';
+	parameter<bool>   BuurtFlippenAAN            := TRUE;
+	parameter<string> FullVariantName            := rjoin(VariantCode, /Classifications/VestaVarianten/Variantcode, /Classifications/VestaVarianten/VariantNaam);
+	parameter<string> WarmtebronnenEsdlPath      := ='Invoer/SpecifiekeInstellingen/LeesWarmtebronnenUitESDL ? ESDL_Invoer_path : ''''';
+	parameter<string> ESDL_Invoer_path           := '%ProjDir%/ESDL/'+FullVariantName+'_Havenstad.esdl';
 }

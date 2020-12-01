@@ -221,9 +221,6 @@
             <buildingTypePercentage xsi:type="esdl:BuildingTypePercentage" percentage="100.0" buildingType="UTILITY"/>
           </buildingTypeDistribution>
         </asset>
-        <measures xsi:type="esdl:Measures">
-          <measure xsi:type="esdl:MeasureReference" id="e61f0e32-82ab-4584-b9b9-45925b6ccbc4" reference="Lt30_70"/>
-        </measures>
       </area>
       <area xsi:type="esdl:Area" scope="NEIGHBOURHOOD" id="bu03631001">
         <KPIs xsi:type="esdl:KPIs" id="b2ef94d4-b427-4d04-8d16-98b810bc6ba0">
@@ -2347,11 +2344,6 @@
             <buildingTypePercentage xsi:type="esdl:BuildingTypePercentage" percentage="100.0" buildingType="UTILITY"/>
           </buildingTypeDistribution>
         </asset>
-        <measures xsi:type="esdl:Measures">
-          <measure xsi:type="esdl:MeasureReference" id="da00c134-6aec-44f2-861a-853962288ee5" reference="VRu"/>
-          <measure xsi:type="esdl:MeasureReference" id="31caf01c-054e-43a6-9607-a50c7375b2bf" reference="HRw"/>
-          <measure xsi:type="esdl:MeasureReference" id="87c8a5e1-d254-459a-87c0-0e9fb8114e18" reference="HRu"/>
-        </measures>
       </area>
       <area xsi:type="esdl:Area" scope="NEIGHBOURHOOD" id="bu03637104">
         <KPIs xsi:type="esdl:KPIs" id="fc08fb71-2ddc-40c0-9739-e933a064cadd">
@@ -2493,11 +2485,6 @@
             <buildingTypePercentage xsi:type="esdl:BuildingTypePercentage" percentage="100.0" buildingType="UTILITY"/>
           </buildingTypeDistribution>
         </asset>
-        <measures xsi:type="esdl:Measures">
-          <measure xsi:type="esdl:MeasureReference" id="5a331181-2596-43d9-a5eb-b61f764408f9" reference="VRu"/>
-          <measure xsi:type="esdl:MeasureReference" id="f472cef3-570e-404d-bc64-71c82b26b697" reference="HRw"/>
-          <measure xsi:type="esdl:MeasureReference" id="8c601a25-d407-4510-838e-8ba483dcc19c" reference="HRu"/>
-        </measures>
       </area>
       <asset xsi:type="esdl:ResidualHeatSource" id="c1e51d7a-9c7c-4b84-8e30-150d362cb59d" name="newasco van houten b v   heemstede" power="2.0" decommissioningDate="1999-01-01T00:00:00.000000" commissioningDate="1999-01-01T00:00:00.000000">
         <KPIs xsi:type="esdl:KPIs" id="6ba37025-0bd9-4eb0-a461-6d13b719a571">
@@ -11277,10 +11264,4 @@
     </area>
     <date xsi:type="esdl:InstanceDate" date="2050-01-01T00:00:00.000000"/>
   </instance>
-  <measures xsi:type="esdl:Measures">
-    <measure xsi:type="esdl:Measure" id="Lt30_70" name="Lt30_70"/>
-    <measure xsi:type="esdl:Measure" id="VRu" name="VRu"/>
-    <measure xsi:type="esdl:Measure" id="HRw" name="HRw"/>
-    <measure xsi:type="esdl:Measure" id="HRu" name="HRu"/>
-  </measures>
 </esdl:EnergySystem>

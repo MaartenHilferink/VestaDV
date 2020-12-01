@@ -49,7 +49,7 @@ container ESDL_LTBronnen
 		}
 	}
 
-	parameter<string> ESDL_Warmtebronnen: StorageName = "=SpecifiekeInstellingen/WarmtebronnenEsdlPath", StorageType = "str";
+	parameter<string> ESDL_Warmtebronnen: StorageName = "=SharedInvoer/WarmtebronnenEsdlPath", StorageType = "str";
 		
 	container Parsed_Warmtebronnen := parse_xml(ESDL_Warmtebronnen, LT_warmtebronnen_Schema);
 	

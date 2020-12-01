@@ -13,7 +13,7 @@
 
 container Referentie
 {  
-	parameter<string> Variantcode := 'Ref2030';
+	parameter<string> Variantcode := 's0';
 	#include <%projDir%/model/Units.dms>
 	#include <%projDir%/model/Geography.dms>
 	#include <%projDir%/model/Classifications.dms>
