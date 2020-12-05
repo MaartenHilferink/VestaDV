@@ -96,7 +96,7 @@ template EsdlNieuwbouw
 		}
 		attribute<bool> HasMeasure := any(const(true, Measure), Measure/Buurt_rel);
 		attribute<string> buurt_name := id;
-		attribute</Invoer/RuimtelijkeData/StudieGebied/buurt> PlanRegio_rel := rlookup(lowercase(buurt_name), lowercase(/Invoer/RuimtelijkeData/StudieGebied/buurt/name));
+		attribute<RegioIndelingen/buurt> PlanRegio_rel := rlookup(lowercase(buurt_name), lowercase(RegioIndelingen/buurt/BU_CODE));
 		
 		attribute<bool> StrategieToegestaan := =StrategieFlip 
 			? 'HasMeasure ? any(uppercase(measure/reference)==SharedInvoer/FullVariantName, Measure/Buurt_rel) : true' 
