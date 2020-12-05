@@ -85,6 +85,7 @@ template EsdlNieuwbouw
 	{
 		attribute<Classifications/WarmteOptie> WarmteOptie_rel := rlookup(uppercase(id), uppercase(Classifications/WarmteOptie/name));
 	}
+	parameter<bool> StrategieFlip := IsDefined(rlookup(uppercase(SharedInvoer/FullVariantName), uppercase(KiesbareMeasure/id)));
 	unit<uint32> EsdlBuurt := Parsed_Nieuwbouw/area
 	{
 		unit<uint32> Measure := Parsed_Nieuwbouw/area/Measure
@@ -96,6 +97,10 @@ template EsdlNieuwbouw
 		attribute<bool> HasMeasure := any(const(true, Measure), Measure/Buurt_rel);
 		attribute<string> buurt_name := id;
 		attribute</Invoer/RuimtelijkeData/StudieGebied/buurt> PlanRegio_rel := rlookup(lowercase(buurt_name), lowercase(/Invoer/RuimtelijkeData/StudieGebied/buurt/name));
+		
+		attribute<bool> StrategieToegestaan := =StrategieFlip 
+			? 'HasMeasure ? any(uppercase(measure/reference)==SharedInvoer/FullVariantName, Measure/Buurt_rel) : true' 
+			: 'const(true, .)';
 	}
 	unit<uint32> EsdlBuurt_Measure := combine(EsdlBuurt, KiesbareMeasure)
 	{
