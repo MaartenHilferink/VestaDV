@@ -46,7 +46,8 @@ container LeidraadResultaten: using = "Model;Geography"
 			unit<uint32> selected_Havenstad := range(uint32, 0, strcount(Settings/StudieGebied_Havenstad, ',') + 1 ){attribute<string> values := ReadArray(trim(Settings/StudieGebied_Havenstad), ., String, 0);}
 			unit<uint32> selected_GooiEnVechtstreek := range(uint32, 0, strcount(Settings/StudieGebied_GooiEnVechtstreek, ',') + 1 ){attribute<string> values := ReadArray(trim(Settings/StudieGebied_GooiEnVechtstreek), ., String, 0);}
 			unit<uint32> selected_Hengelo := range(uint32, 0, strcount(Settings/StudieGebied_Hengelo, ',') + 1 ){attribute<string> values := ReadArray(trim(Settings/StudieGebied_Hengelo), ., String, 0);}
-			parameter<string> RegioSelectie_Havenstad_str           := 'subset('+AsList('PlanRegio/BU_CODE == ' +quote(selected_Havenstad/values), ' || ')+')';
+			parameter<string> RegioSelectie_HavenstadTarget_str     := 'subset('+AsList('PlanRegio/BU_CODE == ' +quote(selected_Havenstad/values), ' || ')+')';
+			parameter<string> RegioSelectie_Havenstad_str           := 'subset(PlanRegio/StudyAreaCentroidDist <= /Invoer/RuimtelijkeData/StudieGebied/impl/Havenstad_ReportArea_straal)';
 			parameter<string> RegioSelectie_GooiEnVechtstreek_str   := 'subset('+AsList('PlanRegio/GM_CODE == ' +quote(selected_GooiEnVechtstreek/values), ' || ')+')';
 			parameter<string> RegioSelectie_Hengelo_str             := 'subset('+AsList('PlanRegio/GM_CODE == ' +quote(selected_Hengelo/values), ' || ')+')';
 			
@@ -56,9 +57,17 @@ container LeidraadResultaten: using = "Model;Geography"
 																	? RegioSelectie_Hengelo_str
 																	: RegioSelectie_GooiEnVechtstreek_str;
 			
-			unit<uint32> StudyArea := =RegioSelectie_str
+			unit<uint32> TargetStudyArea := =RegioSelectie_HavenstadTarget_str
 			{
-				attribute<rdc_meter> Geometery (poly) := PlanRegio/geometry[nr_OrgEntity];
+				attribute<rdc_meter> Geometry (poly)  := PlanRegio/geometry[nr_OrgEntity];
+				attribute<string>    BU_CODE           := PlanRegio/BU_CODE[nr_OrgEntity];
+			}
+			unit<uint32> StudyArea := =RegioSelectie_str
+			, DialogType = "map", DialogData = "geometry"
+			{
+				attribute<rdc_meter> Geometry (poly)  := PlanRegio/geometry[nr_OrgEntity];
+				attribute<string>    BU_CODE           := PlanRegio/BU_CODE[nr_OrgEntity];
+				attribute<string>    IsTargetStudyArea := IsDefined(rlookup(BU_CODE, TargetStudyArea/BU_CODE)) ? 'Yes' : 'No';
 			}
 			unit<uint8> StudyAreas : nrofrows = 3
 			{
@@ -120,6 +129,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					Unit<uint32>  PerPlanRegio := PlanRegio, using = "Settings"
 					{
 						attribute<String>       BU_CODE                         (Planregio) := PlanRegio/BU_CODE;
+						attribute<string>       IsTargetStudyArea               (Planregio) := PlanRegio/IsTargetStudyArea;
 						attribute<String>       I01_buurtcode                   (Planregio) := ='LeidraadResultaten/'+ReportRekenstap+'/PlanregioResults/Statisch/table/I01_buurtcode';
 						attribute<String>       I02_buurtnaam                   (Planregio) := ='LeidraadResultaten/'+ReportRekenstap+'/PlanregioResults/Statisch/table/I02_buurtnaam';
 						attribute<String>       I03_wijkcode                    (Planregio) := ='LeidraadResultaten/'+ReportRekenstap+'/PlanregioResults/Statisch/table/I03_wijkcode';
@@ -190,12 +200,12 @@ container LeidraadResultaten: using = "Model;Geography"
 					
 					unit<uint32> selected := ='Settings/'+selected_list;
 					
-					parameter<string> RegioSelectie_Buurt_str      := 'subset('+AsList('PlanRegio/BU_CODE == ' +quote(selected/values), ' || ')+')';
-					parameter<string> RegioSelectie_Gemeente_str   := 'subset('+AsList('PlanRegio/GM_CODE == ' +quote(selected/values), ' || ')+')';
+					// parameter<string> RegioSelectie_Buurt_str      := 'subset('+AsList('PlanRegio/BU_CODE == ' +quote(selected/values), ' || ')+')';
+					// parameter<string> RegioSelectie_Gemeente_str   := 'subset('+AsList('PlanRegio/GM_CODE == ' +quote(selected/values), ' || ')+')';
 					
-					parameter<string> RegioSelectie_str            := regio_naam == 'Havenstad'
-																		? RegioSelectie_Buurt_str
-																		: RegioSelectie_Gemeente_str;
+					// parameter<string> RegioSelectie_str            := regio_naam == 'Havenstad'
+																		// ? RegioSelectie_Buurt_str
+																		// : RegioSelectie_Gemeente_str;
 					parameter<string> RunName_src := ReportRekenstap == 'StartJaar' 
 														? 'StartJaar'
 														: Settings/RunName;
@@ -209,10 +219,11 @@ container LeidraadResultaten: using = "Model;Geography"
 					unit<uint32> list_PerPlanRegio          := SubItem_PropValues(Regio_selectie,'name');
 					container export_PerPlanRegio           := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Regio_selectie, replace(AsList(list_PerPlanRegio/name, ';'), 'Geometry;','') , OutputFolder_str+'/PerPlanRegio_ESDL.csv');
 					
-					unit<uint32> Regio_selectie := =RegioSelectie_str
+					unit<uint32> Regio_selectie := =Settings/RegioSelectie_str
 					{
 						attribute<dpoint>       Geometry(poly)              := PerBebouwingsSector/Woning/PerPlanRegio/Geometry[nr_OrgEntity];
 						attribute<String>       BU_CODE                     := PerBebouwingsSector/Woning/PerPlanRegio/BU_CODE[nr_OrgEntity];
+						attribute<string>       IsTargetStudyArea           := Settings/StudyArea/IsTargetStudyArea;
 						attribute<String>       I01_buurtcode               := PerBebouwingsSector/Woning/PerPlanRegio/I01_buurtcode[nr_OrgEntity];
 						attribute<String>       I02_buurtnaam               := PerBebouwingsSector/Woning/PerPlanRegio/I02_buurtnaam[nr_OrgEntity];
 						attribute<String>       I03_wijkcode                := PerBebouwingsSector/Woning/PerPlanRegio/I03_wijkcode[nr_OrgEntity];
@@ -1003,7 +1014,9 @@ container LeidraadResultaten: using = "Model;Geography"
 					parameter<string> RunName_src := Exports/Settings/RunName == 'StartJaar' 
 														? 'StartJaar'
 														: Exports/Settings/RunName;
-					parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/Warmtebronnen/'+RunName_src+'/'+Settings/Regio_naam;
+					// parameter<string> OutputFolder_str          := '%localDataProjDir%/Results/Warmtebronnen/'+RunName_src+'/'+Settings/Regio_naam;
+					parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/'+Settings/RegioNaam_Havenstad+'/'+Settings/RunName+'/y2030';
+					
 					unit<uint32>      list_PerRekenstap   := SubItem_PropValues(CombinedBronnen,'name');
 					container         export_PerRekenstap := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(CombinedBronnen, replace(AsList(list_PerRekenstap/name, ';'), 'Geometry;','') , OutputFolder_str+'/Warmtebronnen_PerPlanRegio_ESDL.csv');
 				}

@@ -1,8 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <esdl:EnergySystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:esdl="http://www.tno.nl/esdl" id="55d4ee8b-3163-4384-855b-db5bb4c6a573" name="S3b_B_LT30_70_Havenstad">
   <measures xsi:type="esdl:Measures">
-    <measure xsi:type="esdl:Measure" name="VRw" id="VRw"/>
-    <measure xsi:type="esdl:Measure" name="HRw" id="HRw"/>	
     <measure xsi:type="esdl:Measure" name="S0_Referentie" id ="S0_Referentie"/>
     <measure xsi:type="esdl:Measure" name="S1a_B_LuchtWP" id ="S1a_B_LuchtWP"/>
     <measure xsi:type="esdl:Measure" name="S1b_B_BodemWP" id ="S1b_B_BodemWP"/>
@@ -270,10 +268,6 @@
             <buildingTypePercentage xsi:type="esdl:BuildingTypePercentage" percentage="100.0" buildingType="UTILITY"/>
           </buildingTypeDistribution>
         </asset>
-        <measures xsi:type="esdl:Measures">
-          <measure xsi:type="esdl:MeasureReference" id="424e3a65-0521-4710-83a5-a72bdcc83c75" reference="VRw"/>
-          <measure xsi:type="esdl:MeasureReference" id="7ec3b58a-c288-41af-9f96-04c34bade2e3" reference="HRw"/>
-        </measures>
       </area>
       <area xsi:type="esdl:Area" scope="NEIGHBOURHOOD" id="bu03631001">
         <KPIs xsi:type="esdl:KPIs" id="ba019e43-e8d3-4cfd-a063-375647b96a93">
