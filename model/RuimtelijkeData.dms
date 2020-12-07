@@ -52,30 +52,36 @@ container RuimtelijkeData: Using = "Units;Geography;Model", FreeData = "False"
 		}	
 		
 		attribute<bool> selected_per_gemeente (RegioIndelingen/gemeente) := 
-			invoer/studiegebied == 'NL'
-				? const(true, RegioIndelingen/gemeente)
-				: invoer/studiegebied == 'RESNoordHollandZuid'
-					? IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_NHZ/values))
-					: invoer/studiegebied == 'RESTwente'
-						? IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_TW/values))
-						: invoer/studiegebied == 'RESGooienVechtstreek'
-							? IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_GenV/values))
-							: invoer/studiegebied == 'MONDAINE'
-								? IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_MONDAINE/values))
-								: const(false, RegioIndelingen/gemeente);
+			=	invoer/studiegebied == 'NL'                  ? 'const(true, RegioIndelingen/gemeente)'
+			:	invoer/studiegebied == 'RESNoordHollandZuid' ? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_NHZ/values))'
+			:	invoer/studiegebied == 'RESTwente'           ? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_TW/values))'
+			:	invoer/studiegebied == 'RESGooienVechtstreek'? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_GenV/values))'
+			:	invoer/studiegebied == 'MONDAINE'            ? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_MONDAINE/values))'
+			:	'const(false, RegioIndelingen/gemeente)'
+			;
 		
+		attribute<bool> selected_per_buurt_studiegebied (RegioIndelingen/buurt) := 
+		=	invoer/studiegebied == 'NL'                  ? 'const(true, RegioIndelingen/buurt)'
+		:	invoer/studiegebied == 'RESNoordHollandZuid' ? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_NHZ/values))'
+		:	invoer/studiegebied == 'RESTwente'           ? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_TW/values))'
+		:	invoer/studiegebied == 'RESGooienVechtstreek'? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_GenV/values))'
+		:	invoer/studiegebied == 'MONDAINE'            ? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_MONDAINE/values))'
+		:	'const(false, RegioIndelingen/buurt)'
+		;
+
+		unit<uint32> EsdlBuurt := /Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/EsdlBuurt {
+			attribute<.> per_buurt(RegioIndelingen/buurt) := invert(PlanRegio_rel);
+		}
+		attribute<bool> StrategieToegestaan_per_buurt(RegioIndelingen/buurt) :=
+			= Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/StrategieFlip
+			? 'IsDefined(EsdlBuurt/per_buurt) ? EsdlBuurt/StrategieToegestaan[ EsdlBuurt/per_buurt ] : true'
+			: 'const(true, RegioIndelingen/buurt)';
+			
 		attribute<bool> selected_per_buurt (RegioIndelingen/buurt) := 
-			invoer/studiegebied == 'NL'
-				? const(true, RegioIndelingen/buurt)
-				: invoer/studiegebied == 'RESNoordHollandZuid'
-					? IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_NHZ/values))
-					: invoer/studiegebied == 'RESTwente'
-						? IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_TW/values))
-						: invoer/studiegebied == 'RESGooienVechtstreek'
-							? IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_GenV/values))
-							: invoer/studiegebied == 'MONDAINE'
-								? IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_MONDAINE/values))
-								: const(false, RegioIndelingen/buurt);
+			= 'selected_per_buurt_studiegebied'
+			+ (Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/StrategieFlip ? ' && StrategieToegestaan_per_buurt' : '')
+			;
+
 
 		attribute<bool> selected_per_m100 (Geography/rdc_grids/m100 ) := selected_per_gemeente[Geography/RegioIndelingen/gemeente/per_m100];
 
