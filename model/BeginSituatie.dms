@@ -39,7 +39,7 @@ container BeginSituatie : Using = "Units;Geography;Model;Invoer"
 			, /Invoer/RuimtelijkeData/Bebouwing/impl/BestaandeWoning/buurt_rel);
 
 		attribute<kW>    capaciteit_buurt             (PlanRegio)    := vermogensvraag_woningen + vermogensvraag_util + vermogensvraag_gltb;
-
+		attribute<MSR>   aant_nieuwe_MSR              (PlanRegio)    := const(0[MSR], .);
 		attribute<kW>    vermogensvraag_woningen      (PlanRegio)    := /TussenResultaten/StartJaar/StateNaAllocatie/Infra_per_buurt/vermogensvraag_woningen;
 		attribute<kW>    vermogensvraag_util          (PlanRegio)    := /TussenResultaten/StartJaar/StateNaAllocatie/Infra_per_buurt/vermogensvraag_util;
 		attribute<kW>    vermogensvraag_gltb          (PlanRegio)    := /TussenResultaten/StartJaar/StateNaAllocatie/Infra_per_buurt/vermogensvraag_gltb;
