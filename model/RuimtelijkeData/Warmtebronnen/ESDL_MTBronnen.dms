@@ -1,6 +1,6 @@
-container ESDL_LTBronnen
+container ESDL_MTBronnen
 {  
-	container LT_warmtebronnen_Schema
+	container MT_warmtebronnen_Schema
 	{
 		unit<uint32> area
 		{
@@ -51,7 +51,7 @@ container ESDL_LTBronnen
 
 	parameter<string> ESDL_Warmtebronnen: StorageName = "=SharedInvoer/WarmtebronnenEsdlPath", StorageType = "str";
 		
-	container Parsed_Warmtebronnen := parse_xml(ESDL_Warmtebronnen, LT_warmtebronnen_Schema);
+	container Parsed_Warmtebronnen := parse_xml(ESDL_Warmtebronnen, MT_warmtebronnen_Schema);
 	
 	unit<uint32> Read_Bronnen := Parsed_Warmtebronnen/area/asset
 	, FreeData = "false"
@@ -62,16 +62,16 @@ container ESDL_LTBronnen
 		attribute<string>     Bron_naam     := Parsed_Warmtebronnen/area/asset/name;
 		attribute<string>     label         := KPI/value[invert(KPI/name == 'label'         ? convert(KPI/parent_rel,.) : value(0/0, .))];
 		attribute<MW>          power         := value(Parsed_Warmtebronnen/area/asset/power, Mw);
-		attribute<yr_uint16>  ingebruik     := value(left(Parsed_Warmtebronnen/area/asset/commissioningDate, 4),yr_uint16);
-		attribute<yr_uint16>  uitgebruik    := value(left(Parsed_Warmtebronnen/area/asset/decommissioningDate, 4),yr_uint16);
+		attribute<yr_uint16>  ingebruik     := MakeDefined(value(left(Parsed_Warmtebronnen/area/asset/commissioningDate, 4),yr_uint16),1999[yr_uint16]);
+		attribute<yr_uint16>  uitgebruik    := MakeDefined(value(left(Parsed_Warmtebronnen/area/asset/decommissioningDate, 4),yr_uint16),2100[yr_uint16]);
 		attribute<Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/categorie>    Categorie_rel := value(KPI/value[invert(KPI/name == 'categorie_rel' ? convert(KPI/parent_rel,.) : value(0/0, .))],Invoer/RuimtelijkeData/WarmteBronnen/LtWarmte/categorie);
 		attribute<MW>         MWth_max      := power, Descr = "Maximale capaciteit waarvoor de bron kan worden ingezet";
-		attribute<ratio>      Bron_vol      := MakeDefined(value(KPI/value[invert(KPI/name == 'bron_vol'      ? convert(KPI/parent_rel,.) : value(0/0, .))],ratio),0.7[Ratio]), Descr = "Aandeel op secundair netvolume dat de bron voor rekening kan nemen";
+		attribute<ratio>      Bron_vol      := MakeDefined(value(KPI/value[invert(KPI/name == 'bron_vol'      ? convert(KPI/parent_rel,.) : value(0/0, .))],ratio),0.8[Ratio]), Descr = "Aandeel op secundair netvolume dat de bron voor rekening kan nemen";
 		attribute<ratio>      Bron_cap      := MakeDefined(value(KPI/value[invert(KPI/name == 'bron_cap'      ? convert(KPI/parent_rel,.) : value(0/0, .))],ratio),0.3[Ratio]), Descr = "Aandeel op secundaire netcapaciteit dat de bron voor rekening kan nemen";
-		attribute<Celsius>    T_bron        := MakeDefined(value(KPI/value[invert(KPI/name == 'T_bron'        ? convert(KPI/parent_rel,.) : value(0/0, .))],Celsius),30[Celsius]), Descr = "Temperatuur welke de bron maximaal kan leveren zonder hulpvoorziening";
+		attribute<Celsius>    T_bron        := MakeDefined(value(KPI/value[invert(KPI/name == 'T_bron'        ? convert(KPI/parent_rel,.) : value(0/0, .))],Celsius),70[Celsius]), Descr = "Temperatuur welke de bron maximaal kan leveren zonder hulpvoorziening";
 		attribute<kW>         P_ow_max      := MakeDefined(value(KPI/value[invert(KPI/name == 'P_ow_max'      ? convert(KPI/parent_rel,.) : value(0/0, .))],kW),0[kw]);
-		attribute<Eur_kW>     Ki_kW_min     := MakeDefined(value(KPI/value[invert(KPI/name == 'Ki_kW_min'     ? convert(KPI/parent_rel,.) : value(0/0, .))],Eur_kW),50[Eur_kW]);
-		attribute<Eur_kW>     Ki_kW_max     := MakeDefined(convert(KPI/value[invert(KPI/name == 'Ki_kW_max'     ? convert(KPI/parent_rel,.) : value(0/0, .))],Eur_kW),250[Eur_kW]);
+		attribute<Eur_kW>     Ki_kW_min     := MakeDefined(value(KPI/value[invert(KPI/name == 'Ki_kW_min'     ? convert(KPI/parent_rel,.) : value(0/0, .))],Eur_kW),150[Eur_kW]);
+		attribute<Eur_kW>     Ki_kW_max     := MakeDefined(convert(KPI/value[invert(KPI/name == 'Ki_kW_max'     ? convert(KPI/parent_rel,.) : value(0/0, .))],Eur_kW),1800[Eur_kW]);
 		attribute<Eur_GJ>     K_GJ          := MakeDefined(value(KPI/value[invert(KPI/name == 'K_GJ'          ? convert(KPI/parent_rel,.) : value(0/0, .))],Eur_GJ),0[Eur_GJ]);
 		attribute<bool>       IsBron        := IsDefined(point);
 		
@@ -103,6 +103,11 @@ container ESDL_LTBronnen
 		attribute<Eur_kW>     Ki_kW_min     := Read_Bronnen/Ki_kW_min[nr_OrgEntity];
 		attribute<Eur_kW>     Ki_kW_max     := Read_Bronnen/Ki_kW_max[nr_OrgEntity];
 		attribute<Eur_GJ>     K_GJ          := Read_Bronnen/K_GJ[nr_OrgEntity];
+		
+		attribute<Geography/RegioIndelingen/gemeente> gem_rel_P      := point_in_polygon(point, Geography/RegioIndelingen/gemeente/Geometry);
+		attribute<Geography/RegioIndelingen/gemeente> target_gem_rel := MakeDefined(rlookup(targetGMC,Geography/RegioIndelingen/gemeente/GM_CODE),gem_rel_P);
+
+		attribute<bool> inStudieGebied := Invoer/RuimtelijkeData/StudieGebied/selected_per_gemeente[target_gem_rel];
 	}
 
 }

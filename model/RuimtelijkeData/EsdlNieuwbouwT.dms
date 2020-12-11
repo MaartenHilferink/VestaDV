@@ -99,7 +99,7 @@ template EsdlNieuwbouw
 		attribute<RegioIndelingen/buurt> PlanRegio_rel := rlookup(lowercase(buurt_name), lowercase(RegioIndelingen/buurt/BU_CODE));
 		
 		attribute<bool> StrategieToegestaan := =StrategieFlip 
-			? 'HasMeasure ? any(uppercase(measure/reference)==SharedInvoer/FullVariantName, Measure/Buurt_rel) : true' 
+			? 'HasMeasure ? any(uppercase(measure/reference)==uppercase(SharedInvoer/FullVariantName), Measure/Buurt_rel) : true' 
 			: 'const(true, .)';
 	}
 	unit<uint32> EsdlBuurt_Measure := combine(EsdlBuurt, KiesbareMeasure)

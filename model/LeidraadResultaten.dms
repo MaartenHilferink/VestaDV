@@ -161,7 +161,7 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<ton_yr>       H15_CO2_uitstoot                (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H15_CO2_uitstoot, 0[ton_yr])';
 						attribute<Eur_yr>       H16_Nat_meerkost                (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H16_Nat_meerkost, 0[Eur_yr])';
 						attribute<Eur_ton>      H17_Nat_meerkost_CO2            (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H17_Nat_meerkost_CO2, 0[Eur_ton])';
-						attribute<Eur_yr>       H18_Nat_meerkost_WEQ            (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H18_Nat_meerkost_WEQ, 0[Eur_yr])';
+						attribute<Eur_yr_WEQ>   H18_Nat_meerkost_WEQ            (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H18_Nat_meerkost_WEQ, 0[Eur_yr_WEQ])';
 						attribute<Eur_m3>       H19_Waarde_hernieuwbaar_gas     (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H19_Waarde_hernieuwbaar_gas, 0[Eur_m3])';
 						
 						attribute<kW>           H21_CapaciteitsvraagE           (Planregio) := ='MakeDefined(LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Hoofdindicatoren/Table/H21_CapaciteitsvraagE, 0[kW])';
@@ -276,6 +276,11 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_A13_Aansl_hWP                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/hWPw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_A[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_C[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_D[nr_OrgEntity]; // s4a s4c
 						attribute<nrAsl>        Woning_A14_Aansl_h2WP                  := Woning_G13_Aansl_WaterstofWP;  //s5a s5c
 						attribute<nrAsl>        Woning_A15_Aansl_h2R                   := Woning_G12_Aansl_WaterstofHR;   //s5b s5d
+						
+						attribute<nrAsl>        Woning_A16_Aansl_naarA                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarA_w[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A17_Aansl_naarB                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarB_w[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A18_Aansl_naarC                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarC_w[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A19_Aansl_naarD                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarD_w[nr_OrgEntity];
 
 						attribute<nrAsl>        Woning_G01_Aansl_LT15_50               := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT15_50[nr_OrgEntity];
 						attribute<nrAsl>        Woning_G02_Aansl_LT15_70               := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity];
@@ -333,7 +338,11 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_A13_Aansl_hWP                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_C[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_D[nr_OrgEntity];
 						attribute<nrAsl>        Util_A14_Aansl_h2WP                  := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2WPu[nr_OrgEntity];
 						attribute<nrAsl>        Util_A15_Aansl_h2R                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2Ru[nr_OrgEntity];
-
+						
+						attribute<nrAsl>        Util_A17_Aansl_naarB                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarB_u[nr_OrgEntity];
+						attribute<nrAsl>        Util_A18_Aansl_naarC                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarC_u[nr_OrgEntity];
+						attribute<nrAsl>        Util_A19_Aansl_naarD                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarD_u[nr_OrgEntity];
+						
 						attribute<nrAsl>        Util_G01_Aansl_LT15_50               := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_50[nr_OrgEntity];
 						attribute<nrAsl>        Util_G02_Aansl_LT15_70               := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity];
 						attribute<nrAsl>        Util_G03_Aansl_LT30_30               := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT30_30[nr_OrgEntity];
@@ -359,7 +368,7 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<ton_yr>       H15_CO2_uitstoot            := PerBebouwingsSector/Woning/PerPlanRegio/H15_CO2_uitstoot[nr_OrgEntity];
 						attribute<Eur_yr>       H16_Nat_meerkost            := PerBebouwingsSector/Woning/PerPlanRegio/H16_Nat_meerkost[nr_OrgEntity];
 						attribute<Eur_ton>      H17_Nat_meerkost_CO2        := PerBebouwingsSector/Woning/PerPlanRegio/H17_Nat_meerkost_CO2[nr_OrgEntity];
-						attribute<Eur_yr>       H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Woning/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
+						attribute<Eur_yr_WEQ>   H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Woning/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
 						attribute<kW>           H23_Capaciteit_huidig       := PerBebouwingsSector/Woning/PerPlanRegio/H23_Capaciteit_huidig[nr_OrgEntity];
 					}
 					unit<uint32> Regio_selectie_RES := PlanRegio
@@ -416,6 +425,11 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_A13_Aansl_hWP                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/hWPw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_A + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_C + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_D; // s4a s4c
 						attribute<nrAsl>        Woning_A14_Aansl_h2WP                  := Woning_G13_Aansl_WaterstofWP;  //s5a s5c
 						attribute<nrAsl>        Woning_A15_Aansl_h2R                   := Woning_G12_Aansl_WaterstofHR;   //s5b s5d
+						
+						attribute<nrAsl>        Woning_A16_Aansl_naarA                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarA_w;
+						attribute<nrAsl>        Woning_A17_Aansl_naarB                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarB_w;
+						attribute<nrAsl>        Woning_A18_Aansl_naarC                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarC_w;
+						attribute<nrAsl>        Woning_A19_Aansl_naarD                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarD_w;
 
 						attribute<nrAsl>        Woning_G01_Aansl_LT15_50               := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT15_50;
 						attribute<nrAsl>        Woning_G02_Aansl_LT15_70               := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT15_70;
@@ -473,7 +487,11 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_A13_Aansl_hWP                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_C + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_D;
 						attribute<nrAsl>        Util_A14_Aansl_h2WP                  := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2WPu;
 						attribute<nrAsl>        Util_A15_Aansl_h2R                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2Ru;
-
+						
+						attribute<nrAsl>        Util_A17_Aansl_naarB                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarB_u;
+						attribute<nrAsl>        Util_A18_Aansl_naarC                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarC_u;
+						attribute<nrAsl>        Util_A19_Aansl_naarD                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarD_u;
+						
 						attribute<nrAsl>        Util_G01_Aansl_LT15_50               := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_50;
 						attribute<nrAsl>        Util_G02_Aansl_LT15_70               := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70;
 						attribute<nrAsl>        Util_G03_Aansl_LT30_30               := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT30_30;
@@ -499,7 +517,7 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<ton_yr>       H15_CO2_uitstoot            := PerBebouwingsSector/Woning/PerPlanRegio/H15_CO2_uitstoot;
 						attribute<Eur_yr>       H16_Nat_meerkost            := PerBebouwingsSector/Woning/PerPlanRegio/H16_Nat_meerkost;
 						attribute<Eur_ton>      H17_Nat_meerkost_CO2        := PerBebouwingsSector/Woning/PerPlanRegio/H17_Nat_meerkost_CO2;
-						attribute<Eur_yr>       H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Woning/PerPlanRegio/H18_Nat_meerkost_WEQ;
+						attribute<Eur_yr_WEQ>   H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Woning/PerPlanRegio/H18_Nat_meerkost_WEQ;
 						attribute<kW>           H23_Capaciteit_huidig       := PerBebouwingsSector/Woning/PerPlanRegio/H23_Capaciteit_huidig;
 					}
 				}
@@ -698,7 +716,7 @@ container LeidraadResultaten: using = "Model;Geography"
 								: (Statisch/IsUitgesloten || nrWEQ == 0[nrWoning])
 									? 0[GJ_yr]
 									: MakeDefined(
-										(sum(Allocatie/BestaandeWoning/metervraag/Warmte_LT, bebouwing/BestaandeWoning/PlanRegio_rel) + sum(Allocatie/NieuwbouwWoning/metervraag/Warmte_LT, bebouwing/NieuwbouwWoning/PlanRegio_rel) > 0[GJ_yr]
+										(sum(Allocatie/BestaandeWoning/metervraag/Warmte_MT, bebouwing/BestaandeWoning/PlanRegio_rel) + sum(Allocatie/NieuwbouwWoning/metervraag/Warmte_MT, bebouwing/NieuwbouwWoning/PlanRegio_rel) > 0[GJ_yr]
 											? 0[GJ_yr]
 											:
 											  R_AardG * StateNaAllocatie/Totaal/Verbruik/V_warmte
@@ -729,7 +747,7 @@ container LeidraadResultaten: using = "Model;Geography"
 								(Statisch/IsUitgesloten || isStap0)
 									? 0[Eur_yr]
 									: MakeDefined(
-										 NationaleKosten/TotaalUitstoot/Delta_nat_kosten //nationale meerkosten per woningequivalent
+										 NationaleKosten/TotaalUitstoot/Delta_nat_kosten 
 										,0[Eur_yr]);
 										
 							attribute<kW> H21_CapaciteitsvraagE := = '(Statisch/IsUitgesloten || isStap0)
@@ -800,15 +818,15 @@ container LeidraadResultaten: using = "Model;Geography"
 											,0[Eur_ton])
 								)[Eur_ton];
 							
-							attribute<Eur_yr> H18_Nat_meerkost_WEQ := IsOngeldig
-								? (0/0)[Eur_yr]
+							attribute<Eur_yr_WEQ> H18_Nat_meerkost_WEQ := IsOngeldig
+								? (0/0)[Eur_yr_WEQ]
 								: round(
 									IsUitgesloten_Stap0_Referentie
-										? 0[Eur_yr]
+										? 0[Eur_yr_WEQ]
 										: MakeDefined(
-											 (extensief/H16_Nat_meerkost) //nationale meerkosten per vermeden ton CO2
-											,0[Eur_yr])
-								)[Eur_yr];
+											 (extensief/H16_Nat_meerkost) / PlanregioResults/Statisch/Table/I11_woningequivalenten
+											,0[Eur_yr_WEQ])
+								)[Eur_yr_WEQ];
 
 							attribute<Eur_m3> H19_waarde_hernieuwbaar_gas          := const(0[Eur_m3] , PlanRegio);
 							// attribute<string> H20_beschikbaarheid_hernieuwbaar_gas := const('onbekend', PlanRegio);

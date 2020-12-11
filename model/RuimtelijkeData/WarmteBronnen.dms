@@ -94,7 +94,11 @@ container WarmteBronnen
 
 			attribute<bool> inStudieGebied := Invoer/RuimtelijkeData/StudieGebied/selected_per_gemeente[target_gem_rel];
 		}
-
+		
+		// #include<ESDL_MTBronnen.dms>
+		
+		// unit<uint32> data := =SpecifiekeInstellingen/LeesWarmtebronnenUitESDL ? 'ESDL_MTBronnen/Bronnen' : 'data_csv';
+		
 		template BronSelectie: IsHidden = "True"
 		{
 			// begin case parameters

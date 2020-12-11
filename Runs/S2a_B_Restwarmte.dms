@@ -65,8 +65,7 @@ container S2a_B_Restwarmte
 			attribute<bool> BS_isActive(BsBase) : [ true, true, false];
 			parameter<bool> BC_doNieuwbouw := TRUE;
 			
-			parameter<bool>   LeesWarmtebronnenUitESDL  := FALSE;
-			parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
+			parameter<bool>   LeesWarmtebronnenUitESDL  := TRUE;
 			
 			container StartJaar := DefaultInstellingen/Basis;
 			
