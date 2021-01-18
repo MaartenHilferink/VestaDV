@@ -29,7 +29,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			
 			unit<uint8> ReportPeriods : nrofrows = 4
 			{
-				attribute<string> name_src  : ['StartJaar', 'R3_2030', 'R4_2040', 'LastRekenstap'];
+				attribute<string> name_src  : ['StartJaar', 'R4_2030', 'R5_2040', 'LastRekenstap'];
 				attribute<string> name      := replace(name_src, 'LastRekenstap', Last_Rekenstap);
 				attribute<string> name_expl := replace(name_src, 'LastRekenstap', Last_Rekenstap_Expl);
 				attribute<string> year      : ['y2019', 'y2030', 'y2040', 'y2050'];
@@ -94,8 +94,8 @@ container LeidraadResultaten: using = "Model;Geography"
 		container ESDL
 		{
 			parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio_RES/result;
-			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R3_2030/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R3_2030/PerStudyArea/export_PerPlanRegio_RES/result + Generate_BronnenExport;
-			parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R4_2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R4_2040/PerStudyArea/export_PerPlanRegio_RES/result;
+			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R4_2030/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R4_2030/PerStudyArea/export_PerPlanRegio_RES/result + Generate_BronnenExport;
+			parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R5_2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R5_2040/PerStudyArea/export_PerPlanRegio_RES/result;
 			parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio_RES/result;
 			parameter<string> Generate_BronnenExport                     := ='LeidraadResultaten/Exports/ESDL/Bronnen/BronnenExportSettings/export_PerRekenstap/result';
 			
@@ -1235,7 +1235,7 @@ container LeidraadResultaten: using = "Model;Geography"
 				// + StartJaar/EnergyResults/CO2/GebiedsOpties/totaal    / 1000.0[kg_yr / ton_yr];
 		}
 	}
-	container Ref2030        := CalculationSchemes/LeidraadResultaten(Classifications/Rekenstap/name[uint8(1)])
+	container Ref2030        := CalculationSchemes/LeidraadResultaten(first(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2030w, Classifications/RekenJaar/values)])
 	{	
 		container WarmteBestaand
 		{
@@ -1290,7 +1290,7 @@ container LeidraadResultaten: using = "Model;Geography"
 		}
 	}
 	
-	container R3_2030        := CalculationSchemes/LeidraadResultaten(Classifications/Rekenstap/name[uint8(3)]), FreeData = "false"
+	container Res2030  := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2030w, Classifications/RekenJaar/values)]), FreeData = "false"
 	{	
 		container WarmteBestaand
 		{
@@ -1345,7 +1345,7 @@ container LeidraadResultaten: using = "Model;Geography"
 		}
 	}
 	
-	container R4_2040        := CalculationSchemes/LeidraadResultaten(Classifications/Rekenstap/name[uint8(4)]), FreeData = "false"
+	container Res2040        := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2040w, Classifications/RekenJaar/values)]), FreeData = "false"
 	{	
 		container WarmteBestaand
 		{

@@ -14,6 +14,7 @@
 container SharedInvoer
 { 
 	parameter<string> StudieGebied_config  : ['RESNoordHollandZuid']; // 'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
+//	parameter<string> StudieGebied_config  : ['RESGooienVechtstreek']; // 'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
 	parameter<string> StudieGebied_cmd_setting := Expand(., '%env:STUDIEGEBIED%'); 
 	parameter<string> StudieGebied  := replace_value(StudieGebied_cmd_setting, 'env:STUDIEGEBIED', StudieGebied_config);
 	
@@ -35,5 +36,6 @@ container SharedInvoer
 	parameter<bool>   BuurtFlippenAAN            := TRUE; // TRUE FALSE
 	parameter<string> FullVariantName            := rjoin(VariantCode, /Classifications/VestaVarianten/Variantcode, /Classifications/VestaVarianten/VariantNaam);
 	parameter<string> WarmtebronnenEsdlPath      := ='Invoer/SpecifiekeInstellingen/LeesWarmtebronnenUitESDL ? ESDL_Invoer_path : ''''';
-	parameter<string> ESDL_Invoer_path           := '%ProjDir%/ESDL/BuurtMaatregelen.esdl';
+//	parameter<string> ESDL_Invoer_path           := '%ProjDir%/ESDL/BuurtMaatregelen.esdl';
+	parameter<string> ESDL_Invoer_path           := '%ProjDir%/ESDL/GooiEnVechtstreek.esdl';
 }
