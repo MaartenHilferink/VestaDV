@@ -44,9 +44,9 @@ container RuimtelijkeData: Using = "Units;Geography;Model", FreeData = "False"
 			{
 				attribute<string> values := ReadArray(lowercase(trim(StudieGebied_U10_U16)), ., string, 0);
 			}
-			unit<uint32> Selected_StudieGebied_GenV := union_unit(Selected_StudieGebied_AMF,Selected_StudieGebied_U10_U16)
+			unit<uint32> Selected_StudieGebied_GenV := union_unit(Selected_StudieGebied_NHZ)
 			{
-				attribute<string> values := union_data(., Selected_StudieGebied_AMF/values, Selected_StudieGebied_U10_U16/values);
+				attribute<string> values := union_data(., Selected_StudieGebied_NHZ/values);
 			}
 			unit<uint32> Selected_MONDAINE := union_unit(Selected_StudieGebied_NHZ,Selected_StudieGebied_TW,Selected_StudieGebied_GenV) 
 			{

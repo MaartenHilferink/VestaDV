@@ -29,7 +29,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			
 			unit<uint8> ReportPeriods : nrofrows = 4
 			{
-				attribute<string> name_src  : ['StartJaar', 'R4_2030', 'R5_2040', 'LastRekenstap'];
+				attribute<string> name_src  : ['StartJaar', 'R3_2030', 'R4_2040', 'LastRekenstap'];
 				attribute<string> name      := replace(name_src, 'LastRekenstap', Last_Rekenstap);
 				attribute<string> name_expl := replace(name_src, 'LastRekenstap', Last_Rekenstap_Expl);
 				attribute<string> year      : ['y2019', 'y2030', 'y2040', 'y2050'];
@@ -93,10 +93,14 @@ container LeidraadResultaten: using = "Model;Geography"
 
 		container ESDL
 		{
-			parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio_RES/result;
-			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R4_2030/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R4_2030/PerStudyArea/export_PerPlanRegio_RES/result + Generate_BronnenExport;
-			parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R5_2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R5_2040/PerStudyArea/export_PerPlanRegio_RES/result;
-			parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio_RES/result;
+			// parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio_RES/result;
+			// parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R4_2030/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R4_2030/PerStudyArea/export_PerPlanRegio_RES/result + Generate_BronnenExport;
+			// parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R5_2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R5_2040/PerStudyArea/export_PerPlanRegio_RES/result;
+			// parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio_RES/result;
+			parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result; 
+			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R4_2030/PerStudyArea/export_PerPlanRegio/result;
+			parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R5_2040/PerStudyArea/export_PerPlanRegio/result;
+			parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio/result;
 			parameter<string> Generate_BronnenExport                     := ='LeidraadResultaten/Exports/ESDL/Bronnen/BronnenExportSettings/export_PerRekenstap/result';
 			
 			parameter<String> Generate_PerPlanRegio_All := 'Ready', ExplicitSuppliers = "Generate_PerPlanRegio_StartJaar;Generate_PerPlanRegio_2030;Generate_PerPlanRegio_2040;Generate_PerPlanRegio_2050";
@@ -215,12 +219,12 @@ container LeidraadResultaten: using = "Model;Geography"
 					parameter<string> OutputFolder_Hengelo             := '%localDataProjDir%/Results/'+Settings/RegioNaam_Hengelo+'/'+Settings/RunName+'/'+ReportRekenstap_year;
 					
 					parameter<string> OutputFolder_str    := ='OutputFolder_'+regio_naam;
-					parameter<string> OutputFolderRES_str := ='OutputFolder_'+SharedInvoer/StudieGebied;
+					// parameter<string> OutputFolderRES_str := ='OutputFolder_'+SharedInvoer/StudieGebied;
 					
 					unit<uint32> list_PerPlanRegio          := SubItem_PropValues(Regio_selectie,'name');
-					unit<uint32> list_PerPlanRegio_RES      := SubItem_PropValues(Regio_selectie_RES,'name');
+					// unit<uint32> list_PerPlanRegio_RES      := SubItem_PropValues(Regio_selectie_RES,'name');
 					container export_PerPlanRegio           := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Regio_selectie, replace(AsList(list_PerPlanRegio/name, ';'), 'Geometry;','') , OutputFolder_str+'/PerPlanRegio_ESDL.csv');
-					container export_PerPlanRegio_RES       := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Regio_selectie_RES, replace(AsList(list_PerPlanRegio_RES/name, ';'), 'Geometry;','') , OutputFolderRES_str+'/PerPlanRegio_ESDL.csv');
+					// container export_PerPlanRegio_RES       := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Regio_selectie_RES, replace(AsList(list_PerPlanRegio_RES/name, ';'), 'Geometry;','') , OutputFolderRES_str+'/PerPlanRegio_ESDL.csv');
 					
 					unit<uint32> Regio_selectie := =Settings/RegioSelectie_str
 					{
@@ -1235,7 +1239,7 @@ container LeidraadResultaten: using = "Model;Geography"
 				// + StartJaar/EnergyResults/CO2/GebiedsOpties/totaal    / 1000.0[kg_yr / ton_yr];
 		}
 	}
-	container Ref2030        := CalculationSchemes/LeidraadResultaten(first(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2030w, Classifications/RekenJaar/values)])
+	container Ref2030        := CalculationSchemes/LeidraadResultaten(Classifications/Rekenstap/name[uint8(1)])
 	{	
 		container WarmteBestaand
 		{
@@ -1290,7 +1294,7 @@ container LeidraadResultaten: using = "Model;Geography"
 		}
 	}
 	
-	container Res2030  := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2030w, Classifications/RekenJaar/values)]), FreeData = "false"
+	container R3_2030        := CalculationSchemes/LeidraadResultaten(Classifications/Rekenstap/name[uint8(3)]), FreeData = "false"
 	{	
 		container WarmteBestaand
 		{
@@ -1345,7 +1349,7 @@ container LeidraadResultaten: using = "Model;Geography"
 		}
 	}
 	
-	container Res2040        := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2040w, Classifications/RekenJaar/values)]), FreeData = "false"
+	container R4_2040        := CalculationSchemes/LeidraadResultaten(Classifications/Rekenstap/name[uint8(4)]), FreeData = "false"
 	{	
 		container WarmteBestaand
 		{

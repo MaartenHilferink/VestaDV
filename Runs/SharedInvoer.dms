@@ -13,8 +13,8 @@
 
 container SharedInvoer
 { 
-	parameter<string> StudieGebied_config  : ['RESNoordHollandZuid']; // 'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
-//	parameter<string> StudieGebied_config  : ['RESGooienVechtstreek']; // 'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
+	parameter<string> StudieGebied_config  : ['RESGooienVechtstreek']; // 'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
+
 	parameter<string> StudieGebied_cmd_setting := Expand(., '%env:STUDIEGEBIED%'); 
 	parameter<string> StudieGebied  := replace_value(StudieGebied_cmd_setting, 'env:STUDIEGEBIED', StudieGebied_config);
 	
