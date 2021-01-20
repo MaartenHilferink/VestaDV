@@ -94,12 +94,12 @@ container LeidraadResultaten: using = "Model;Geography"
 		container ESDL
 		{
 			// parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio_RES/result;
-			// parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R4_2030/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R4_2030/PerStudyArea/export_PerPlanRegio_RES/result + Generate_BronnenExport;
-			// parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R5_2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R5_2040/PerStudyArea/export_PerPlanRegio_RES/result;
+			// parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R3_2030/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R3_2030/PerStudyArea/export_PerPlanRegio_RES/result + Generate_BronnenExport;
+			// parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R4_2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R4_2040/PerStudyArea/export_PerPlanRegio_RES/result;
 			// parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio_RES/result;
 			parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result; 
-			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R4_2030/PerStudyArea/export_PerPlanRegio/result;
-			parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R5_2040/PerStudyArea/export_PerPlanRegio/result;
+			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R3_2030/PerStudyArea/export_PerPlanRegio/result;
+			parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R4_2040/PerStudyArea/export_PerPlanRegio/result;
 			parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio/result;
 			parameter<string> Generate_BronnenExport                     := ='LeidraadResultaten/Exports/ESDL/Bronnen/BronnenExportSettings/export_PerRekenstap/result';
 			

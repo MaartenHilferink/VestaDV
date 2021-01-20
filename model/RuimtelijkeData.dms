@@ -18,12 +18,12 @@ container RuimtelijkeData: Using = "Units;Geography;Model", FreeData = "False"
 		{
 			parameter<string> RES_StudieGebied_NHZ     : ['RESNoordHollandZuid'];
 			parameter<string> RES_StudieGebied_TW      : ['RESTwente']; 
-			parameter<string> RES_StudieGebied_AMF     : ['RESAmersfoort']; 
-			parameter<string> RES_StudieGebied_U10_U16 : ['RESU10_U16'];
+			// parameter<string> RES_StudieGebied_AMF     : ['RESAmersfoort']; 
+			// parameter<string> RES_StudieGebied_U10_U16 : ['RESU10_U16'];
 			parameter<string> StudieGebied_NHZ         := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_NHZ, Geography/RegioIndelingen/Energieregio/name)];
 			parameter<string> StudieGebied_TW          := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_TW, Geography/RegioIndelingen/Energieregio/name)];
-			parameter<string> StudieGebied_AMF         := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_AMF, Geography/RegioIndelingen/Energieregio/name)];
-			parameter<string> StudieGebied_U10_U16     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_U10_U16, Geography/RegioIndelingen/Energieregio/name)];
+			// parameter<string> StudieGebied_AMF         := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_AMF, Geography/RegioIndelingen/Energieregio/name)];
+			// parameter<string> StudieGebied_U10_U16     := Geography/RegioIndelingen/Energieregio/GM_code_list[rlookup(RES_StudieGebied_U10_U16, Geography/RegioIndelingen/Energieregio/name)];
 			
 			parameter<rdc_meter> Havenstad_Centroid          := point(490783.701, 119265.636, rdc_meter);
 			parameter<float64>   Havenstad_ReportArea_straal := 5000d;
@@ -36,17 +36,17 @@ container RuimtelijkeData: Using = "Units;Geography;Model", FreeData = "False"
 			{
 				attribute<string> values := ReadArray(lowercase(trim(StudieGebied_TW)), ., string, 0);
 			}
-			unit<uint32> Selected_StudieGebied_AMF := range(uint32, 0, strcount(StudieGebied_AMF, ',') + 1 ) //Amersfoort
+			// unit<uint32> Selected_StudieGebied_AMF := range(uint32, 0, strcount(StudieGebied_AMF, ',') + 1 ) //Amersfoort
+			// {
+				// attribute<string> values := ReadArray(lowercase(trim(StudieGebied_AMF)), ., string, 0);
+			// }
+			// unit<uint32> Selected_StudieGebied_U10_U16 := range(uint32, 0, strcount(StudieGebied_U10_U16, ',') + 1 ) //Utrecht
+			// {
+				// attribute<string> values := ReadArray(lowercase(trim(StudieGebied_U10_U16)), ., string, 0);
+			// }
+			unit<uint32> Selected_StudieGebied_GenV := Selected_StudieGebied_NHZ
 			{
-				attribute<string> values := ReadArray(lowercase(trim(StudieGebied_AMF)), ., string, 0);
-			}
-			unit<uint32> Selected_StudieGebied_U10_U16 := range(uint32, 0, strcount(StudieGebied_U10_U16, ',') + 1 ) //Utrecht
-			{
-				attribute<string> values := ReadArray(lowercase(trim(StudieGebied_U10_U16)), ., string, 0);
-			}
-			unit<uint32> Selected_StudieGebied_GenV := union_unit(Selected_StudieGebied_NHZ)
-			{
-				attribute<string> values := union_data(., Selected_StudieGebied_NHZ/values);
+				attribute<string> values := Selected_StudieGebied_NHZ/values;
 			}
 			unit<uint32> Selected_MONDAINE := union_unit(Selected_StudieGebied_NHZ,Selected_StudieGebied_TW,Selected_StudieGebied_GenV) 
 			{
