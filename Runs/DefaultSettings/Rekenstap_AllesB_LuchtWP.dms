@@ -33,7 +33,7 @@ container Rekenstap_AllesB_LuchtWP
 				{
 					container GebouwOpties := Basis/RuimtelijkeVraag/Lokaal/Generiek/GebouwOpties
 					{
-						parameter<string> geen:     ['Criteria/never']; // geen labelsprong - behoud huidig label en installaties
+						parameter<string> geen:     ['metervraag/Gas == 0[GJ_Yr]'];  // geen labelsprong - behoud huidig label en installaties is toegestan indien nu gebiedsoptie is toegewezen.
 						parameter<string> LeWPw:    ['Criteria/Always']; // Sprong naar label B - behoud huidig label en installaties
 					}
 				}
@@ -41,7 +41,7 @@ container Rekenstap_AllesB_LuchtWP
 				{
 					container GebouwOpties := Basis/RuimtelijkeVraag/Lokaal/Generiek/GebouwOpties
 					{
-						parameter<string> geen:     ['Criteria/never']; // geen labelsprong - behoud huidig label en installaties
+						parameter<string> geen:     ['metervraag/Gas == 0[GJ_Yr]'];  // geen labelsprong - behoud huidig label en installaties is toegestan indien nu gebiedsoptie is toegewezen.
 						parameter<string> LeWPu:    ['Criteria/Always']; // Sprong naar label B - behoud huidig label en installaties
 					}
 				}
