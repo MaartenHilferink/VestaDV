@@ -67,9 +67,6 @@ container S1a_B_LuchtWP
 			attribute<bool> BS_isActive(BsBase) : [ true, true, false];
 			parameter<bool> BC_doNieuwbouw := TRUE;
 			
-			parameter<bool>   LeesWarmtebronnenUitESDL  := FALSE; // TRUE FALSE
-			parameter<string> WarmtebronnenEsdlPath     := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
-			
 			container StartJaar := DefaultInstellingen/Basis;
 			
 			// Per rekenstap kun je hier specifieke instelling overrulen. De lijst van rekenstappen wordt gedefinieerd bij rekenstap

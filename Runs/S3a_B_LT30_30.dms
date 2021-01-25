@@ -36,7 +36,7 @@ container S3a_B_LT30_30
 												: id(.) == #.[uint8] - 1b
 													? 'Ref2050'
 													: 'R' + label; 
-		attribute<bool>            IsWarmteBronRelevant : [FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE];
+		attribute<bool>            IsWarmteBronRelevant : [FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE];
 	}
 	#include <%projDir%/runs/SharedInvoer.dms>
 	
@@ -66,8 +66,6 @@ container S3a_B_LT30_30
 			unit<uint8> BsBase := Classifications/BebouwingsSectorBase;
 			attribute<bool> BS_isActive(BsBase) : [ true, true, false];
 			parameter<bool> BC_doNieuwbouw := TRUE;
-			
-			parameter<bool>   LeesWarmtebronnenUitESDL  := (SharedInvoer/StudieGebied == 'RESNoordHollandZuid');
 			
 			container StartJaar := DefaultInstellingen/Basis;
 			
