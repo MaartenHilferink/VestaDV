@@ -67,7 +67,7 @@ container S3a_B_LT30_30
 			attribute<bool> BS_isActive(BsBase) : [ true, true, false];
 			parameter<bool> BC_doNieuwbouw := TRUE;
 			
-			parameter<bool>   LeesWarmtebronnenUitESDL  := TRUE;
+			parameter<bool>   LeesWarmtebronnenUitESDL  := (SharedInvoer/StudieGebied == 'RESNoordHollandZuid');
 			
 			container StartJaar := DefaultInstellingen/Basis;
 			
