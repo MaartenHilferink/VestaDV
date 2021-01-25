@@ -76,10 +76,12 @@ container RuimtelijkeData: Using = "Units;Geography;Model", FreeData = "False"
 			attribute<.> per_buurt(RegioIndelingen/buurt) := invert(PlanRegio_rel);
 		}
 		attribute<bool> StrategieToegestaan_per_buurt(RegioIndelingen/buurt) :=
+					Bebouwing/impl/BuurtFlip/Read_FlipCSV/StrategieToegestaan_per_buurt; // HACK voor Gooi & Vechtstreek
+/* INTEGREREN OF FlipCSV uitfaseren		
 			= Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/StrategieFlip
 			? 'IsDefined(EsdlBuurt/per_buurt) ? EsdlBuurt/StrategieToegestaan[ EsdlBuurt/per_buurt ] : true'
 			: 'const(true, RegioIndelingen/buurt)';
-			
+*/			
 		attribute<bool> selected_per_buurt (RegioIndelingen/buurt) := 
 			= 'selected_per_buurt_studiegebied'
 			+ (Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/StrategieFlip ? ' && StrategieToegestaan_per_buurt' : '')

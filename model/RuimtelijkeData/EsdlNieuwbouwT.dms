@@ -110,19 +110,15 @@ template EsdlNieuwbouw
 		attribute<bool> Toegestaan := any(const(true, EsdlBuurt/Measure), EsdlBuurt/Measure/EsdlBuurt_Measure_rel) || not(EsdlBuurt/HasMeasure[Buurt_rel]);
 	}
 	
+	parameter<string> CE_Delft_buurtoptie := rjoin(/variantcode, Classifications/VestaVarianten/variantcode, Classifications/VestaVarianten/CE_Delft_buurtoptie);
 	unit<uint32> Read_FlipCSV 
 	:  StorageName     = "%ProjDir%/ESDL/GooiEnVechtstreek_voorkeursopties.csv"
 	,  StorageType     = "gdal.vect"
 	,  StorageReadOnly = "True"
 	{
 		attribute<RegioIndelingen/buurt> PlanRegio_rel := rlookup(lowercase(bu_code), lowercase(RegioIndelingen/buurt/BU_CODE));
-		attribute<Classifications/VestaVarianten> uitkomst_sa_rel := rlookup(Uitkomst_SA, Classifications/VestaVarianten/CE_Delft_buurtoptie);
-		
-		attribute<bool> StrategieToegestaan := StrategieFlip 
-													? Classifications/VestaVarianten/variantcode[uitkomst_sa_rel] == /variantcode
-														? const(true, .) 
-														: const(false, .)  
-													: const(true, .) ;
+		attribute<bool> StrategieToegestaan :=  (Uitkomst_SA == CE_Delft_buurtoptie);
+		attribute<bool> StrategieToegestaan_per_buurt(RegioIndelingen/buurt) :=  StrategieToegestaan[invert(PlanRegio_rel)] || not(IsDefined(invert(PlanRegio_rel)));
 	}
 	
 	
