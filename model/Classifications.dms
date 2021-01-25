@@ -29,6 +29,20 @@ container Classifications: Using = "Units", KeepData = "True", IsHidden = "True"
 											, 'S4a_GG_B_hWP', 'S4b_GG_B_HR', 'S4c_GG_D_hWP', 'S4d_GG_D_HR'
 											, 'S5a_H2_B_hWP', 'S5b_H2_B_HR', 'S5c_H2_D_hWP', 'S5d_H2_D_HR'
 										];
+		attribute<string> CE_Delft_buurtoptie := switch(
+													case(VariantCode == 's1a', 'All-electric')
+													, case(VariantCode == 's1b', 'All-electric')
+													, case(VariantCode == 's2a', 'Warmtenet')
+													, case(VariantCode == 's2b', 'Warmtenet')
+													, case(VariantCode == 's3a', 'Warmtenet')
+													, case(VariantCode == 's3b', 'Warmtenet')
+													, case(VariantCode == 's3c', 'Warmtenet')
+													, case(VariantCode == 's3d', 'Warmtenet')
+													, case(VariantCode == 's3e', 'Warmtenet')
+													, case(VariantCode == 's4a', 'Groengas')
+													, case(VariantCode == 's4b', 'Groengas')
+													, ''
+												);
 	}
 	unit<uint8> BebouwingsSectorBase: nrofrows = 3
 	{

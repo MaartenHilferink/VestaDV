@@ -608,13 +608,19 @@
         </measures>
       </area>
       <area xsi:type="esdl:Area" id="bu19420585" scope="NEIGHBOURHOOD">
-        <measures xsi:type="esdl:Measures" id="ba8cc41b-37d4-49fa-b278-9618f875ebfb" name="warmtenet,,">
-          <measure xsi:type="esdl:Measure" id="8ec3e95e-6553-468d-9f20-b49230ceec20" name="warmtenet,,"/>
+        <measures xsi:type="esdl:Measures">
+          <measure xsi:type="esdl:MeasureReference" id="89ac01d3-26a0-40c1-9efb-c9508f95a1bb" reference="S1a_B_LuchtWP"/>
         </measures>
+		
       </area>
     </area>
     <date xsi:type="esdl:InstanceDate" date="2030-01-01T00:00:00.000000"/>
   </instance>
+  <measures xsi:type="esdl:Measures">
+    <measure xsi:type="esdl:Measure" id="S1a_B_LuchtWP" name="S1a_B_LuchtWP"/>
+    <measure xsi:type="esdl:Measure" id="S3a_B_LT30_30" name="S3a_B_LT30_30"/>
+    <measure xsi:type="esdl:Measure" id="S0_Referentie" name="S0_Referentie"/>
+  </measures>
   <energySystemInformation xsi:type="esdl:EnergySystemInformation" id="0356cac1-694b-4bdd-9d72-7f670940c026">
     <quantityAndUnits xsi:type="esdl:QuantityAndUnits" id="4cc269a0-5356-4c6a-8b96-c25a7c0d4bb7"/>
   </energySystemInformation>
