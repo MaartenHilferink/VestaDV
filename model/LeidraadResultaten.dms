@@ -16,8 +16,9 @@ container LeidraadResultaten: using = "Model;Geography"
 		container Settings
 		{
 			parameter<string> RunName        := Expand(., '%configName%');
-			parameter<string> Last_Rekenstap := 'ZichtJaar';
-			parameter<string> Last_Rekenstap_Expl := last(/rekenstap/name);
+			parameter<string> Last_Rekenstap       := 'ZichtJaar';
+			// parameter<string> Last_Rekenstap_Expl := last(/rekenstap/name);
+			parameter<string> Last_Rekenstap_Expl := 'Res2050';
 			
 			parameter<string> regio_naam := SharedInvoer/StudieGebied == 'RESNoordHollandZuid'
 												? 'Havenstad'
@@ -29,10 +30,13 @@ container LeidraadResultaten: using = "Model;Geography"
 			
 			unit<uint8> ReportPeriods : nrofrows = 4
 			{
-				attribute<string> name_src  : ['StartJaar', 'R3_2030', 'R4_2040', 'LastRekenstap'];
-				attribute<string> name      := replace(name_src, 'LastRekenstap', Last_Rekenstap);
-				attribute<string> name_expl := replace(name_src, 'LastRekenstap', Last_Rekenstap_Expl);
-				attribute<string> year      : ['y2019', 'y2030', 'y2040', 'y2050'];
+				attribute<string> name_src  : ['StartJaar', 'Res2030', 'Res2040', 'Res2050'];
+				attribute<string> name      := name_src;
+				attribute<string> name_expl := name_src;
+				// attribute<string> name      := replace(name_src, 'LastRekenstap', Last_Rekenstap);
+				// attribute<string> name_expl := replace(name_src, 'LastRekenstap', Last_Rekenstap_Expl);
+				attribute<string>    year          : ['y2019', 'y2030', 'y2040', 'y2050'];
+				attribute<yr_uint16> year_value : [2019, 2030, 2040, 2050];
 			}
 			
 			parameter<string> RegioNaam_GooiEnVechtstreek    := 'GooiEnVechtstreek';
@@ -94,13 +98,13 @@ container LeidraadResultaten: using = "Model;Geography"
 		container ESDL
 		{
 			// parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio_RES/result;
-			// parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R3_2030/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R3_2030/PerStudyArea/export_PerPlanRegio_RES/result + Generate_BronnenExport;
-			// parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R4_2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/R4_2040/PerStudyArea/export_PerPlanRegio_RES/result;
-			// parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio_RES/result;
+			// parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/Res2030/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2030/PerStudyArea/export_PerPlanRegio_RES/result + Generate_BronnenExport;
+			// parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/Res2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2040/PerStudyArea/export_PerPlanRegio_RES/result;
+			// parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio_RES/result;
 			parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result; 
-			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/R3_2030/PerStudyArea/export_PerPlanRegio/result;
-			parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/R4_2040/PerStudyArea/export_PerPlanRegio/result;
-			parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Zichtjaar/PerStudyArea/export_PerPlanRegio/result;
+			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/Res2030/PerStudyArea/export_PerPlanRegio/result;
+			parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/Res2040/PerStudyArea/export_PerPlanRegio/result;
+			parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio/result;
 			parameter<string> Generate_BronnenExport                     := ='LeidraadResultaten/Exports/ESDL/Bronnen/BronnenExportSettings/export_PerRekenstap/result';
 			
 			parameter<String> Generate_PerPlanRegio_All := 'Ready', ExplicitSuppliers = "Generate_PerPlanRegio_StartJaar;Generate_PerPlanRegio_2030;Generate_PerPlanRegio_2040;Generate_PerPlanRegio_2050";
@@ -108,7 +112,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			container PerRekenstap := 
 				for_each_ne(
 					  Settings/ReportPeriods/name
-					, 'PerRekenstap_T('+quote(Settings/ReportPeriods/name)+','+quote(Settings/ReportPeriods/name_expl)+','+quote(Settings/ReportPeriods/year)+')'
+					, 'PerRekenstap_T('+quote(Settings/ReportPeriods/name)+','+quote(Settings/ReportPeriods/name_expl)+','+string(Settings/ReportPeriods/year_value)+'[yr_uint16])'
 				);
 			
 			Template PerRekenstap_T
@@ -116,9 +120,9 @@ container LeidraadResultaten: using = "Model;Geography"
 				
 				parameter<string> ReportRekenstap;
 				parameter<string> ReportRekenstap_expl;
-				parameter<string> ReportRekenstap_year;
+				parameter<yr_uint16> ReportRekenstap_year;
+				parameter<string> SrcRekenstapName :=  last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(ReportRekenstap_year, Classifications/RekenJaar/values)];
 				
-			
 				container PerBebouwingsSector := 
 					for_each_ne(
 						  Classifications/BebouwingsSector/name
@@ -213,10 +217,10 @@ container LeidraadResultaten: using = "Model;Geography"
 														? 'StartJaar'
 														: Settings/RunName;
 					
-					parameter<string> OutputFolder_RESNoordHollandZuid := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+Settings/RunName+'/'+ReportRekenstap_year;
-					parameter<string> OutputFolder_Havenstad           := '%localDataProjDir%/Results/'+Settings/RegioNaam_Havenstad+'/'+Settings/RunName+'/'+ReportRekenstap_year;
-					parameter<string> OutputFolder_GooiEnVechtstreek   := '%localDataProjDir%/Results/'+Settings/RegioNaam_GooiEnVechtstreek+'/'+Settings/RunName+'/'+ReportRekenstap_year;
-					parameter<string> OutputFolder_Hengelo             := '%localDataProjDir%/Results/'+Settings/RegioNaam_Hengelo+'/'+Settings/RunName+'/'+ReportRekenstap_year;
+					parameter<string> OutputFolder_RESNoordHollandZuid := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
+					parameter<string> OutputFolder_Havenstad           := '%localDataProjDir%/Results/'+Settings/RegioNaam_Havenstad+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
+					parameter<string> OutputFolder_GooiEnVechtstreek   := '%localDataProjDir%/Results/'+Settings/RegioNaam_GooiEnVechtstreek+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
+					parameter<string> OutputFolder_Hengelo             := '%localDataProjDir%/Results/'+Settings/RegioNaam_Hengelo+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
 					
 					parameter<string> OutputFolder_str    := ='OutputFolder_'+regio_naam;
 					// parameter<string> OutputFolderRES_str := ='OutputFolder_'+SharedInvoer/StudieGebied;
@@ -528,17 +532,18 @@ container LeidraadResultaten: using = "Model;Geography"
 			
 				container Schillabels : using = "Settings"
 				{
+					
 					container BestaandeWoning := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/BestaandeWoning/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/BestaandeWoning/BO/nrAansluitingen, /TussenResultaten/'+ReportRekenstap_expl+'/StateNaAllocatie/Bebouwing/BestaandeWoning/PlanRegio_rel)'
+							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/BestaandeWoning/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						);
 					container NieuwbouwWoning := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwWoning/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwWoning/BO/nrAansluitingen, /TussenResultaten/'+ReportRekenstap_expl+'/StateNaAllocatie/Bebouwing/NieuwbouwWoning/PlanRegio_rel)'
+							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/NieuwbouwWoning/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						)
@@ -549,7 +554,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					container BestaandeUtil := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/BestaandeUtil/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/BestaandeUtil/BO/nrAansluitingen, /TussenResultaten/'+ReportRekenstap_expl+'/StateNaAllocatie/Bebouwing/BestaandeUtil/PlanRegio_rel)'
+							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/BestaandeUtil/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						);
@@ -557,7 +562,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					container NieuwbouwUtil := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwUtil/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+ReportRekenstap_expl+'/AllocatieResultaten/NieuwbouwUtil/BO/nrAansluitingen, /TussenResultaten/'+ReportRekenstap_expl+'/StateNaAllocatie/Bebouwing/NieuwbouwUtil/PlanRegio_rel)'
+							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/NieuwbouwUtil/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						)
@@ -594,8 +599,8 @@ container LeidraadResultaten: using = "Model;Geography"
 
 					parameter<bool> isStap0         := ReportRekenstap == 'StartJaar';
 
-					container TussenResultaten      := ='/TussenResultaten/' + ReportRekenstap_expl;
-					container Resultaten            := ='/Resultaten/' + ReportRekenstap_expl;
+					container TussenResultaten      := ='/TussenResultaten/' +last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(ReportRekenstap_year, Classifications/RekenJaar/values)];
+					container Resultaten            := ='/Resultaten/'  +last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(ReportRekenstap_year, Classifications/RekenJaar/values)];
 
 					container Netwerken             := Resultaten/Netwerken;
 					container EnergyResults         := Resultaten/EnergyResults;
@@ -1239,7 +1244,7 @@ container LeidraadResultaten: using = "Model;Geography"
 				// + StartJaar/EnergyResults/CO2/GebiedsOpties/totaal    / 1000.0[kg_yr / ton_yr];
 		}
 	}
-	container Ref2030        := CalculationSchemes/LeidraadResultaten(Classifications/Rekenstap/name[uint8(1)])
+	container Ref2030   := CalculationSchemes/LeidraadResultaten(first(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2030w, Classifications/RekenJaar/values)])
 	{	
 		container WarmteBestaand
 		{
@@ -1293,8 +1298,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			}
 		}
 	}
-	
-	container R3_2030        := CalculationSchemes/LeidraadResultaten(Classifications/Rekenstap/name[uint8(3)]), FreeData = "false"
+	container Res2030   := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2030w, Classifications/RekenJaar/values)]), FreeData = "false"
 	{	
 		container WarmteBestaand
 		{
@@ -1348,8 +1352,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			}
 		}
 	}
-	
-	container R4_2040        := CalculationSchemes/LeidraadResultaten(Classifications/Rekenstap/name[uint8(4)]), FreeData = "false"
+	container Res2040   := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2040w, Classifications/RekenJaar/values)]), FreeData = "false"
 	{	
 		container WarmteBestaand
 		{
@@ -1403,8 +1406,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			}
 		}
 	}
-
-	container ZichtJaar := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name)), FreeData = "false"
+	container Res2050   := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name)), FreeData = "false"
 	{
 		container OrigKosten     := Ref2030/PlanregioResults/NationaleKosten
 		{
