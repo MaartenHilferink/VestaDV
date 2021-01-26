@@ -36,7 +36,7 @@ container S3a_B_LT30_30
 												: id(.) == #.[uint8] - 1b
 													? 'Ref2050'
 													: 'R' + label; 
-		attribute<bool>            IsWarmteBronRelevant : [FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE];
+		attribute<bool>            IsWarmteBronRelevant : [FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE];
 	}
 	#include <%projDir%/runs/SharedInvoer.dms>
 	

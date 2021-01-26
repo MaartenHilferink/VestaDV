@@ -34,6 +34,8 @@ container SharedInvoer
 	parameter<string> NieuwbouwUtilEsdlPath   := NieuwbouwWoningEsdlPath;
 	
 	parameter<bool>   BuurtFlippenAAN            := TRUE; // TRUE FALSE
+	parameter<string> CE_DelftScenario           := '3_GeenGroenGas'; // '1_SA' '2_Check' '3_GeenGroenGas'
+	
 	parameter<string> FullVariantName            := rjoin(VariantCode, /Classifications/VestaVarianten/Variantcode, /Classifications/VestaVarianten/VariantNaam);
 	parameter<string> WarmtebronnenEsdlPath      := ='Invoer/SpecifiekeInstellingen/LeesWarmtebronnenUitESDL ? ESDL_Invoer_path : ''''';
 //	parameter<string> ESDL_Invoer_path           := '%ProjDir%/ESDL/BuurtMaatregelen.esdl';

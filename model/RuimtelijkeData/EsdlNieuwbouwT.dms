@@ -11,7 +11,7 @@
 //       Nieuwbouw is gedefinieerd als nieuwe bebouwing in nieuwe gebieden).            //
 //                                                                                      //
 //////////////////////////////////////////////////////////////////////////////////////////
-
+ 
 template EsdlNieuwbouw
 { 
 	parameter<string> EsdlPath := Invoer/NieuwbouwWoningEsdlPath;
@@ -116,8 +116,22 @@ template EsdlNieuwbouw
 	,  StorageType     = "gdal.vect"
 	,  StorageReadOnly = "True"
 	{
-		attribute<RegioIndelingen/buurt> PlanRegio_rel := rlookup(lowercase(bu_code), lowercase(RegioIndelingen/buurt/BU_CODE));
-		attribute<bool> StrategieToegestaan :=  (Uitkomst_SA == CE_Delft_buurtoptie);
+		attribute<RegioIndelingen/buurt> PlanRegio_rel                    := rlookup(lowercase(bu_code), lowercase(RegioIndelingen/buurt/BU_CODE));
+		attribute<string>                Uitkomst_SA;
+		attribute<string>                Uitkomst_gecheckt;
+		
+		attribute<bool>                  StrategieToegestaan_SA           :=  (Uitkomst_SA == CE_Delft_buurtoptie);
+		attribute<bool>                  StrategieToegestaan_Check        :=  (Uitkomst_gecheckt == CE_Delft_buurtoptie);
+		attribute<bool>                  StrategieToegestaan_GeenGroengas :=  (StrategieToegestaan_SA || Uitkomst_SA == 'Groengas') && !(/variantcode == 's4a' || /variantcode == 's4b'  || /variantcode == 's4c'  || /variantcode == 's4d');
+		
+		attribute<bool>                  StrategieToegestaan              :=  SharedInvoer/CE_DelftScenario == '1_SA'
+																				? StrategieToegestaan_SA
+																				: SharedInvoer/CE_DelftScenario ==  '2_Check' 
+																					? StrategieToegestaan_Check
+																					: SharedInvoer/CE_DelftScenario == '3_GeenGroenGas'
+																						? StrategieToegestaan_GeenGroengas
+																						: const(true,.);
+		
 		attribute<bool> StrategieToegestaan_per_buurt(RegioIndelingen/buurt) :=  StrategieToegestaan[invert(PlanRegio_rel)] || not(IsDefined(invert(PlanRegio_rel)));
 	}
 	

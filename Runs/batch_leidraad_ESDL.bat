@@ -20,8 +20,8 @@ REM set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_LastPe
 set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_All
 REM set EXPORT_PATH_STARTJAAR=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_StartJaar
 
-REM "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH_STARTJAAR%"
-REM "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH%"
+ "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH_STARTJAAR%"
+ "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH%"
 
  "%exe_path%" "%prj_dir%\Runs\S1a_B_LuchtWP.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S1b_B_BodemWP.dms" "%EXPORT_PATH%"
@@ -33,7 +33,7 @@ REM "%exe_path%" "%prj_dir%\Runs\S2d_D_Restwarmte.dms" "%EXPORT_PATH%"
 REM "%exe_path%" "%prj_dir%\Runs\S2e_D_Geo_contour.dms" "%EXPORT_PATH%" 
 REM "%exe_path%" "%prj_dir%\Runs\S2f_D_Geo_overal.dms" "%EXPORT_PATH%" 
 
- "%exe_path%" "%prj_dir%\Runs\S3a_B_LT30_30.dms" "%EXPORT_PATH%"
+REM  "%exe_path%" "%prj_dir%\Runs\S3a_B_LT30_30.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S3b_B_LT30_70.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S3c_B_BuurtWKO.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S3d_B_WKO.dms" "%EXPORT_PATH%"
