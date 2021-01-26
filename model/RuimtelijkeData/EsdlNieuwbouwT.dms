@@ -11,7 +11,7 @@
 //       Nieuwbouw is gedefinieerd als nieuwe bebouwing in nieuwe gebieden).            //
 //                                                                                      //
 //////////////////////////////////////////////////////////////////////////////////////////
- 
+  
 template EsdlNieuwbouw
 { 
 	parameter<string> EsdlPath := Invoer/NieuwbouwWoningEsdlPath;
@@ -85,7 +85,9 @@ template EsdlNieuwbouw
 	{
 		attribute<Classifications/WarmteOptie> WarmteOptie_rel := rlookup(uppercase(id), uppercase(Classifications/WarmteOptie/name));
 	}
-	parameter<bool> StrategieFlip := IsDefined(rlookup(uppercase(SharedInvoer/FullVariantName), uppercase(KiesbareMeasure/id)));
+	// parameter<bool> StrategieFlip := IsDefined(rlookup(uppercase(SharedInvoer/FullVariantName), uppercase(KiesbareMeasure/id)));
+	parameter<bool> StrategieFlip := TRUE; // HACK gooi en vechtstreek
+	
 	unit<uint32> EsdlBuurt := Parsed_Nieuwbouw/area
 	{
 		unit<uint32> Measure := Parsed_Nieuwbouw/area/Measure

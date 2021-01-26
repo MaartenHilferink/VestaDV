@@ -83,9 +83,7 @@ container RuimtelijkeData: Using = "Units;Geography;Model", FreeData = "False"
 			: 'const(true, RegioIndelingen/buurt)';
 */			
 		attribute<bool> selected_per_buurt (RegioIndelingen/buurt) := 
-			= 'selected_per_buurt_studiegebied'
-			+ (Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/StrategieFlip ? ' && StrategieToegestaan_per_buurt' : '')
-			;
+			= 'selected_per_buurt_studiegebied' + (Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/StrategieFlip ? ' && StrategieToegestaan_per_buurt' : '');
 
 
 		attribute<bool> selected_per_m100 (Geography/rdc_grids/m100 ) := selected_per_gemeente[Geography/RegioIndelingen/gemeente/per_m100];
