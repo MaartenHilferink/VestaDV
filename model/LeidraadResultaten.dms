@@ -102,7 +102,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			// parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/Res2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2040/PerStudyArea/export_PerPlanRegio_RES/result;
 			// parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio_RES/result;
 			parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result; 
-			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/Res2030/PerStudyArea/export_PerPlanRegio/result;
+			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/Res2030/PerStudyArea/export_PerPlanRegio/result + Generate_BronnenExport;
 			parameter<string> Generate_PerPlanRegio_2040                 := PerRekenstap/Res2040/PerStudyArea/export_PerPlanRegio/result;
 			parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio/result;
 			parameter<string> Generate_BronnenExport                     := ='LeidraadResultaten/Exports/ESDL/Bronnen/BronnenExportSettings/export_PerRekenstap/result';
