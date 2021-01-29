@@ -189,13 +189,15 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl> A02_Aansl_groengas          := = '('+ReportRekenstap+'/Allocatie/aant_g_aansl_'+BebouwingsSector+'_per_planregio - '+ReportRekenstap+'/Allocatie/aant_h2_aansl_'+BebouwingsSector+'_per_planregio) * (/LeidraadResultaten/'+ReportRekenstap+'/PlanregioResults/GroenGasFactor)';
 						attribute<nrAsl> A03_Aansl_waterstof         := = ReportRekenstap+'/Allocatie/aant_h2_aansl_'+BebouwingsSector+'_per_planregio';
 						
-						attribute<nrAsl>        L01_Aansl_LabelAppp             (PlanRegio) := ='Schillabels/Nieuwbouw'+BebouwingsSector+'/Appp';
-						attribute<nrAsl>        L02_Aansl_LabelA                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/A';
-						attribute<nrAsl>        L03_Aansl_LabelB                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/B + Schillabels/Nieuwbouw'+BebouwingsSector+'/B';
-						attribute<nrAsl>        L04_Aansl_LabelC                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/C + Schillabels/Nieuwbouw'+BebouwingsSector+'/C';
-						attribute<nrAsl>        L05_Aansl_LabelD                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/D + Schillabels/Nieuwbouw'+BebouwingsSector+'/D';
-						attribute<nrAsl>        L06_Aansl_LabelE                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/E + Schillabels/Nieuwbouw'+BebouwingsSector+'/E';
-						attribute<nrAsl>        L07_Aansl_LabelF                (PlanRegio) := ='Schillabels/Bestaande'+BebouwingsSector+'/F + Schillabels/Nieuwbouw'+BebouwingsSector+'/F';
+						attribute<nrAsl>        L01_Aansl_LabelAppp             (PlanRegio) := ='SchillabelOrDefault/Nieuwbouw'+BebouwingsSector+'/Appp';
+						attribute<nrAsl>        L02_Aansl_LabelA                (PlanRegio) := ='SchillabelOrDefault/Bestaande'+BebouwingsSector+'/A';
+						attribute<nrAsl>        L03_Aansl_LabelB                (PlanRegio) := ='SchillabelOrDefault/Bestaande'+BebouwingsSector+'/B + SchillabelOrDefault/Nieuwbouw'+BebouwingsSector+'/B';
+						attribute<nrAsl>        L04_Aansl_LabelC                (PlanRegio) := ='SchillabelOrDefault/Bestaande'+BebouwingsSector+'/C + SchillabelOrDefault/Nieuwbouw'+BebouwingsSector+'/C';
+						attribute<nrAsl>        L05_Aansl_LabelD                (PlanRegio) := ='SchillabelOrDefault/Bestaande'+BebouwingsSector+'/D + SchillabelOrDefault/Nieuwbouw'+BebouwingsSector+'/D';
+						attribute<nrAsl>        L06_Aansl_LabelE                (PlanRegio) := ='SchillabelOrDefault/Bestaande'+BebouwingsSector+'/E + SchillabelOrDefault/Nieuwbouw'+BebouwingsSector+'/E';
+						attribute<nrAsl>        L07_Aansl_LabelF                (PlanRegio) := ='SchillabelOrDefault/Bestaande'+BebouwingsSector+'/F + SchillabelOrDefault/Nieuwbouw'+BebouwingsSector+'/F';
+						attribute<nrAsl>        L08_Aansl_LabelG                (PlanRegio) := ='SchillabelOrDefault/Bestaande'+BebouwingsSector+'/G + SchillabelOrDefault/Nieuwbouw'+BebouwingsSector+'/G';
+						attribute<nrAsl>        L09_Aansl_GeenLabel             (PlanRegio) := ='SchillabelOrDefault/Bestaande'+BebouwingsSector+'/N + SchillabelOrDefault/Nieuwbouw'+BebouwingsSector+'/N';
 					}
 				}
 				
@@ -311,6 +313,19 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_L05_Aansl_LabelD            := PerBebouwingsSector/Woning/PerPlanRegio/L05_Aansl_LabelD[nr_OrgEntity];
 						attribute<nrAsl>        Woning_L06_Aansl_LabelE            := PerBebouwingsSector/Woning/PerPlanRegio/L06_Aansl_LabelE[nr_OrgEntity];
 						attribute<nrAsl>        Woning_L07_Aansl_LabelF            := PerBebouwingsSector/Woning/PerPlanRegio/L07_Aansl_LabelF[nr_OrgEntity];
+						attribute<nrAsl>        Woning_L08_Aansl_LabelG            := PerBebouwingsSector/Woning/PerPlanRegio/L08_Aansl_LabelG[nr_OrgEntity];
+						attribute<nrAsl>        Woning_L09_Aansl_GeenLabel         := PerBebouwingsSector/Woning/PerPlanRegio/L09_Aansl_GeenLabel[nr_OrgEntity];
+						
+						// attribute<Percent>      Woning_P01_Aansl_LabelAppp         := MakeDefined((Woning_L01_Aansl_LabelAppp / I09_aantal_woningen) * 100[Percent], 0[Percent]);
+						// attribute<Percent>      Woning_P02_Aansl_LabelA            := MakeDefined((Woning_L02_Aansl_LabelA / I09_aantal_woningen) * 100[Percent], 0[Percent]);
+						// attribute<Percent>      Woning_P03_Aansl_LabelB            := MakeDefined((Woning_L03_Aansl_LabelB / I09_aantal_woningen) * 100[Percent], 0[Percent]);
+						// attribute<Percent>      Woning_P04_Aansl_LabelC            := MakeDefined((Woning_L04_Aansl_LabelC / I09_aantal_woningen) * 100[Percent], 0[Percent]);
+						// attribute<Percent>      Woning_P05_Aansl_LabelD            := MakeDefined((Woning_L05_Aansl_LabelD / I09_aantal_woningen) * 100[Percent], 0[Percent]);
+						// attribute<Percent>      Woning_P06_Aansl_LabelE            := MakeDefined((Woning_L06_Aansl_LabelE / I09_aantal_woningen) * 100[Percent], 0[Percent]);
+						// attribute<Percent>      Woning_P07_Aansl_LabelF            := MakeDefined((Woning_L07_Aansl_LabelF / I09_aantal_woningen) * 100[Percent], 0[Percent]);
+						// attribute<Percent>      Woning_P08_Aansl_LabelG            := MakeDefined((Woning_L08_Aansl_LabelG / I09_aantal_woningen) * 100[Percent], 0[Percent]);
+						// attribute<Percent>      Woning_P09_Aansl_GeenLabel         := MakeDefined((Woning_L09_Aansl_GeenLabel / I09_aantal_woningen) * 100[Percent], 0[Percent]);
+						// attribute<Percent>      Woning_P10_Aansl_LabelTotaal       := Woning_P01_Aansl_LabelAppp + Woning_P02_Aansl_LabelA + Woning_P03_Aansl_LabelB + Woning_P04_Aansl_LabelC + Woning_P05_Aansl_LabelD + Woning_P06_Aansl_LabelE + Woning_P07_Aansl_LabelF + Woning_P08_Aansl_LabelG + Woning_P09_Aansl_GeenLabel;
 						
 						attribute<GJ_yr>        Util_H01_Vraag_Warmte_Totaal     := Util_H02_Vraag_Ruimteverwarming + Util_H03_Vraag_Tapwater;
 						attribute<GJ_yr>        Util_H02_Vraag_Ruimteverwarming  := PerBebouwingsSector/Util/PerPlanRegio/H02_Vraag_Ruimteverwarming[nr_OrgEntity];
@@ -372,6 +387,8 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_L05_Aansl_LabelD            := PerBebouwingsSector/Util/PerPlanRegio/L05_Aansl_LabelD[nr_OrgEntity];
 						attribute<nrAsl>        Util_L06_Aansl_LabelE            := PerBebouwingsSector/Util/PerPlanRegio/L06_Aansl_LabelE[nr_OrgEntity];
 						attribute<nrAsl>        Util_L07_Aansl_LabelF            := PerBebouwingsSector/Util/PerPlanRegio/L07_Aansl_LabelF[nr_OrgEntity];
+						attribute<nrAsl>        Util_L08_Aansl_LabelG            := PerBebouwingsSector/Util/PerPlanRegio/L08_Aansl_LabelG[nr_OrgEntity];
+						attribute<nrAsl>        Util_L09_Aansl_GeenLabel         := PerBebouwingsSector/Util/PerPlanRegio/L09_Aansl_GeenLabel[nr_OrgEntity];
 						
 						attribute<ton_yr>       H15_CO2_uitstoot            := PerBebouwingsSector/Woning/PerPlanRegio/H15_CO2_uitstoot[nr_OrgEntity];
 						attribute<Eur_yr>       H16_Nat_meerkost            := PerBebouwingsSector/Woning/PerPlanRegio/H16_Nat_meerkost[nr_OrgEntity];
@@ -460,6 +477,8 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_L05_Aansl_LabelD            := PerBebouwingsSector/Woning/PerPlanRegio/L05_Aansl_LabelD;
 						attribute<nrAsl>        Woning_L06_Aansl_LabelE            := PerBebouwingsSector/Woning/PerPlanRegio/L06_Aansl_LabelE;
 						attribute<nrAsl>        Woning_L07_Aansl_LabelF            := PerBebouwingsSector/Woning/PerPlanRegio/L07_Aansl_LabelF;
+						attribute<nrAsl>        Woning_L08_Aansl_LabelG            := PerBebouwingsSector/Woning/PerPlanRegio/L08_Aansl_LabelG;
+						attribute<nrAsl>        Woning_L09_Aansl_GeenLabel         := PerBebouwingsSector/Woning/PerPlanRegio/L09_Aansl_GeenLabel;
 						
 						attribute<GJ_yr>        Util_H01_Vraag_Warmte_Totaal     := Util_H02_Vraag_Ruimteverwarming + Util_H03_Vraag_Tapwater;
 						attribute<GJ_yr>        Util_H02_Vraag_Ruimteverwarming  := PerBebouwingsSector/Util/PerPlanRegio/H02_Vraag_Ruimteverwarming;
@@ -530,20 +549,20 @@ container LeidraadResultaten: using = "Model;Geography"
 					}
 				}
 			
-				container Schillabels : using = "Settings"
+				container SchillabelOrDefault : using = "Settings"
 				{
 					
 					container BestaandeWoning := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/BestaandeWoning/PlanRegio_rel)'
+							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/SchillabelOrDefault_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/BestaandeWoning/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						);
 					container NieuwbouwWoning := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/NieuwbouwWoning/PlanRegio_rel)'
+							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO/SchillabelOrDefault_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/NieuwbouwWoning/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						)
@@ -554,7 +573,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					container BestaandeUtil := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/BestaandeUtil/PlanRegio_rel)'
+							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/SchillabelOrDefault_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/BestaandeUtil/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						);
@@ -562,7 +581,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					container NieuwbouwUtil := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO/Schillabel_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/NieuwbouwUtil/PlanRegio_rel)'
+							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO/SchillabelOrDefault_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/NieuwbouwUtil/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						)
