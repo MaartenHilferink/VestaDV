@@ -34,7 +34,7 @@ container Rekenstap_Doeniks
 				{
 					container GebouwOpties := Basis/RuimtelijkeVraag/Lokaal/Generiek/GebouwOpties
 					{
-						parameter<string> geen: ['Criteria/never'] ; // geen labelsprong - behoud huidig label en installaties
+						parameter<string> geen: ['Criteria/Always'] ; // geen labelsprong - behoud huidig label en installaties
 						parameter<string> HRw : ['Criteria/Always']; // Sprong naar label B - behoud huidig label en installaties
 					}
 				}
@@ -42,7 +42,7 @@ container Rekenstap_Doeniks
 				{
 					container GebouwOpties := Basis/RuimtelijkeVraag/Lokaal/Generiek/GebouwOpties
 					{
-						parameter<string> geen: ['Criteria/never'] ; // geen labelsprong - behoud huidig label en installaties
+						parameter<string> geen: ['Criteria/Always'] ; // geen labelsprong - behoud huidig label en installaties
 						parameter<string> HRu : ['Criteria/Always']; // Sprong naar label B - behoud huidig label en installaties
 					}
 				}
