@@ -49,8 +49,26 @@ container Rekenstap_AllesWP_LT30_70
 					}
 				}
 				container BestaandeGlTb   := Generiek;
-				container NieuwbouwWoning := BestaandeWoning;
-				container NieuwbouwUtil   := BestaandeUtil;
+				container NieuwbouwWoning := BestaandeWoning
+				{
+					container GebouwOpties := BestaandeWoning/GebouwOpties
+					{
+						parameter<string> geen: ['Criteria/never'] ; // geen labelsprong - behoud huidig label en installaties
+						parameter<string> HRw : ['Criteria/never']; // Sprong naar label B - behoud huidig label en installaties
+						parameter<string> LeWPw : ['Criteria/Always']; // Sprong naar label B - behoud huidig label en installaties
+					}
+				}
+				container NieuwbouwUtil   := BestaandeUtil
+				{
+					container GebouwOpties := BestaandeUtil/GebouwOpties
+					{
+						parameter<string> geen: ['Criteria/never'] ; // geen labelsprong - behoud huidig label en installaties
+						parameter<string> HRu : ['Criteria/never']; // Sprong naar label B - behoud huidig label en installaties
+						parameter<string> HRw : ['Criteria/never']; // Sprong naar label B - behoud huidig label en installaties
+						parameter<string> LeWPw : ['Criteria/Always']; // Sprong naar label B - behoud huidig label en installaties 
+						parameter<string> LeWPu : ['Criteria/Always']; // Sprong naar label B - behoud huidig label en installaties
+					}
+				}
 				container NieuwbouwGlTb   := BestaandeGlTb;
 			}
 		}
