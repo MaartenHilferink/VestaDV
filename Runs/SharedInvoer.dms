@@ -33,8 +33,8 @@ container SharedInvoer
 	parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
 	parameter<string> NieuwbouwUtilEsdlPath   := NieuwbouwWoningEsdlPath;
 	
-	parameter<bool>   BuurtFlippenAAN            := false; // TRUE FALSE
-	parameter<string> CE_DelftScenario           := '1_SA'; // '1_SA' '2_Check' '3_GeenGroenGas'
+	parameter<bool>   BuurtFlippenAAN            := TRUE; // TRUE FALSE
+	parameter<string> CE_DelftScenario           := '3_GeenGroenGas'; // '1_SA' '2_Check' '3_GeenGroenGas'
 	
 	parameter<string> FullVariantName            := rjoin(VariantCode, /Classifications/VestaVarianten/Variantcode, /Classifications/VestaVarianten/VariantNaam);
 	parameter<string> WarmtebronnenEsdlPath      := ='Invoer/SpecifiekeInstellingen/LeesWarmtebronnenUitESDL ? ESDL_Invoer_path : ''''';

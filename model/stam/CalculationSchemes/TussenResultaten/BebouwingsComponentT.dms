@@ -63,7 +63,10 @@ template BebouwingsComponentT
 		attribute<Units/yr> GeenLabel_Bouwjaar (BO) := =BCname == 'BestaandeWoning' ? 
 			 'Schillabel_rel == Classifications/schillabel/V/N ? Invoer/RuimtelijkeData/BAG/vbo_woonfunctie_studiegebied/bouwjaar : (0/0)[Units/yr]'
 			:'const((0/0)[Units/yr], BO)';
-		attribute<Classifications/WarmteOptie> WarmteOptie_rel (BO) := MakeDefined(PrevObject/WarmteOptie_rel[PrevObject_rel], Classifications/WarmteOptie/V/LeWPw);
+		attribute<Classifications/WarmteOptie> WarmteOptie_rel (BO) := 
+			PrevObject/WarmteOptie_rel[PrevObject_rel]
+//			MakeDefined(PrevObject/WarmteOptie_rel[PrevObject_rel], Classifications/WarmteOptie/V/LeWPw)
+		;
 
 		
 		attribute<Classifications/Schillabel>  Startlabel_rel  (BO) := =../isNieuwbouw ? 'const(Classifications/schillabel/V/A, BO)' : 'StartJaar/BebouwingsComponenten/' + BCname + '/BO/SchilLabel_rel';
