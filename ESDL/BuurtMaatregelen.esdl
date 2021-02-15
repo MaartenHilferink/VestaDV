@@ -11590,7 +11590,7 @@
           <profile xsi:type="esdl:SingleValue" id="d46f5658-01d2-48d1-b948-6009127e23cc" value="1237931.2901277"/>
         </port>
       </asset>
-      <asset xsi:type="esdl:ResidualHeatSource" id="c1fc29ff-00da-43e5-8c2f-c54b60f7faa3" power="1000000.0" name="ResidualHeatSource_c1fc" decommissioningDate="2100-01-01T00:00:00.000000" commissioningDate="2029-01-01T00:00:00.000000">
+      <asset xsi:type="esdl:ResidualHeatSource" id="c1fc29ff-00da-43e5-8c2f-c54b60f7faa3" power="4.0" name="DataCenter" decommissioningDate="2100-01-01T00:00:00.000000" commissioningDate="2029-01-01T00:00:00.000000">
         <geometry xsi:type="esdl:Point" lon="4.86248016357422" CRS="WGS84" lat="52.40519420103159"/>
         <port xsi:type="esdl:OutPort" name="Out" id="a644b3d2-aebb-4fce-903a-457b2fb7145e"/>
       </asset>
