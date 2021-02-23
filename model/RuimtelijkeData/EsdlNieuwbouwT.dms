@@ -22,6 +22,15 @@ template EsdlNieuwbouw
 			attribute<string> id;
 			attribute<string> name;
 		}
+		unit<uint32> kpis
+		{
+			unit<uint32> kpi
+			{
+				attribute<string> id;
+				attribute<string> name;
+				attribute<string> value;
+			}
+		}
 		unit<uint32> area
 		{
 			attribute<string> id;

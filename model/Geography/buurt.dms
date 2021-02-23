@@ -82,4 +82,15 @@ unit<uint32> Buurt:
 		attribute<ratio> r_water     (..) := (1d / a_opp_ha)* a_wat_ha;
 		attribute<ratio> r_checksum  (..) := r_land + r_water;
 	}
+	
+	unit<uint32> Subset_Havenstad := ='subset('+AsList('BU_CODE == '+quote(LeidraadResultaten/Exports/Settings/selected_Havenstad/Values), ' || ')+')'
+	{
+		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity];
+		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
+	}
+	unit<uint32> Subset_RESNoordHollandZuid := subset(Energieregio_rel == Energieregio/V/RESNoordHollandZuid)
+	{
+		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity];
+		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
+	}
 }

@@ -29,6 +29,7 @@ container Classifications: Using = "Units", KeepData = "True", IsHidden = "True"
 											, 'S4a_GG_B_hWP', 'S4b_GG_B_HR', 'S4c_GG_D_hWP', 'S4d_GG_D_HR'
 											, 'S5a_H2_B_hWP', 'S5b_H2_B_HR', 'S5c_H2_D_hWP', 'S5d_H2_D_HR'
 										];
+		attribute<string> label    := VariantNaam, DialogType = "LabelText";
 		attribute<string> CE_Delft_buurtoptie : ['s0'
 											,'All-electric','All-electric'
 											,'Warmtenet','Warmtenet','s2c','Warmtenet','Warmtenet','s2f'
@@ -36,6 +37,7 @@ container Classifications: Using = "Units", KeepData = "True", IsHidden = "True"
 											,'Groengas','Groengas','Groengas','Groengas'
 											,'s5a','s5b','s5c','s5d'
 										];
+		container V := for_each_nedv(VariantNaam, string(id(.))+'[..]', void, .);
 	}
 	unit<uint8> BebouwingsSectorBase: nrofrows = 3
 	{

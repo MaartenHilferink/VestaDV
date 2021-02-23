@@ -93,8 +93,6 @@ container LeidraadResultaten: using = "Model;Geography"
 															
 		}
 		
-		
-
 		container ESDL
 		{
 			parameter<string> Generate_PerPlanRegio_StartJaar_metRES            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio_RES/result;
@@ -442,22 +440,22 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_A03_Aansl_waterstof             := PerBebouwingsSector/Woning/PerPlanRegio/A03_Aansl_waterstof;
 						attribute<nrAsl>        Woning_A04_Aansl_Gasketel              := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HRw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/VRw;       //s0 s4b s4d
 						attribute<nrAsl>        Woning_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LeWPw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LeWPw_A; // s1a s1b
-						attribute<nrAsl>        Woning_A05_Aansl_eWP_bodem             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw_A; // s1a s1b
-						attribute<nrAsl>        Woning_A06_Aansl_Rest70_collGGheater   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Restwarmte; //s2a s2d
-						attribute<nrAsl>        Woning_A07_Aansl_Geo70_collGGheater    := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Geothermie; //s2b s2c s2e s2f
-						attribute<nrAsl>        Woning_A08_Aansl_Rest30_eWPlucht       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT30_30;    //s3a
-						attribute<nrAsl>        Woning_A09_Aansl_Rest30_colleWP70      := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT30_70;    //s3b s3f
-						attribute<nrAsl>        Woning_A10_Aansl_WKO15_colleWP70       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BuurtWKO;   //s3c s3g
-						attribute<nrAsl>        Woning_A11_Aansl_WKO15_colleWP50_beWP  := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/WKO;        // s3d
-						attribute<nrAsl>        Woning_A12_Aansl_WKO15_TEO15_colleWP70 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/TEO;        // s3e s3h
-						attribute<nrAsl>        Woning_A13_Aansl_hWP                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/hWPw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_A + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_C + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_D; // s4a s4c
-						attribute<nrAsl>        Woning_A14_Aansl_h2WP                  := Woning_G13_Aansl_WaterstofWP;  //s5a s5c
-						attribute<nrAsl>        Woning_A15_Aansl_h2R                   := Woning_G12_Aansl_WaterstofHR;   //s5b s5d
+						attribute<nrAsl>        Woning_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw_A; // s1a s1b
+						attribute<nrAsl>        Woning_A07_Aansl_Rest70_collGGheater   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Restwarmte; //s2a s2d
+						attribute<nrAsl>        Woning_A08_Aansl_Geo70_collGGheater    := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Geothermie; //s2b s2c s2e s2f
+						attribute<nrAsl>        Woning_A09_Aansl_Rest30_eWPlucht       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT30_30;    //s3a
+						attribute<nrAsl>        Woning_A10_Aansl_Rest30_colleWP70      := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT30_70;    //s3b s3f
+						attribute<nrAsl>        Woning_A11_Aansl_WKO15_colleWP70       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BuurtWKO;   //s3c s3g
+						attribute<nrAsl>        Woning_A12_Aansl_WKO15_colleWP50_beWP  := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/WKO;        // s3d
+						attribute<nrAsl>        Woning_A13_Aansl_WKO15_TEO15_colleWP70 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/TEO;        // s3e s3h
+						attribute<nrAsl>        Woning_A14_Aansl_hWP                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/hWPw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_A + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_C + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_D; // s4a s4c
+						attribute<nrAsl>        Woning_A15_Aansl_h2WP                  := Woning_G13_Aansl_WaterstofWP;  //s5a s5c
+						attribute<nrAsl>        Woning_A16_Aansl_h2R                   := Woning_G12_Aansl_WaterstofHR;   //s5b s5d
 						
-						attribute<nrAsl>        Woning_A16_Aansl_naarA                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarA_w;
-						attribute<nrAsl>        Woning_A17_Aansl_naarB                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarB_w;
-						attribute<nrAsl>        Woning_A18_Aansl_naarC                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarC_w;
-						attribute<nrAsl>        Woning_A19_Aansl_naarD                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarD_w;
+						attribute<nrAsl>        Woning_A17_Aansl_naarA                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarA_w;
+						attribute<nrAsl>        Woning_A18_Aansl_naarB                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarB_w;
+						attribute<nrAsl>        Woning_A19_Aansl_naarC                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarC_w;
+						attribute<nrAsl>        Woning_A20_Aansl_naarD                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarD_w;
 
 						attribute<nrAsl>        Woning_G01_Aansl_LT15_50               := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT15_50;
 						attribute<nrAsl>        Woning_G02_Aansl_LT15_70               := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT15_70;
@@ -543,6 +541,8 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_L05_Aansl_LabelD            := PerBebouwingsSector/Util/PerPlanRegio/L05_Aansl_LabelD;
 						attribute<nrAsl>        Util_L06_Aansl_LabelE            := PerBebouwingsSector/Util/PerPlanRegio/L06_Aansl_LabelE;
 						attribute<nrAsl>        Util_L07_Aansl_LabelF            := PerBebouwingsSector/Util/PerPlanRegio/L07_Aansl_LabelF;
+						attribute<nrAsl>        Util_L08_Aansl_LabelG            := PerBebouwingsSector/Util/PerPlanRegio/L08_Aansl_LabelG;
+						attribute<nrAsl>        Util_L09_Aansl_GeenLabel         := PerBebouwingsSector/Util/PerPlanRegio/L09_Aansl_GeenLabel;
 						
 						attribute<ton_yr>       H15_CO2_uitstoot            := PerBebouwingsSector/Woning/PerPlanRegio/H15_CO2_uitstoot;
 						attribute<Eur_yr>       H16_Nat_meerkost            := PerBebouwingsSector/Woning/PerPlanRegio/H16_Nat_meerkost;
@@ -1197,6 +1197,135 @@ container LeidraadResultaten: using = "Model;Geography"
 				}
 			}
 		}
+		
+		container MultiStrategieResult : using = "Classifications"
+		{
+			// parameter<string> Scenario  := '1. Alles gas (s0)';
+			parameter<string> Scenario  := '2. Alles naturel';
+			// parameter<string> Scenario  := '3. Havenstad all-electric';
+			parameter<string> StudyArea := 'RESNoordHollandZuid';
+			// parameter<string> StudyArea := 'Havenstad';
+			unit<uint32>      Buurt     := ='Geography/RegioIndelingen/Buurt/Subset_'+StudyArea;
+			
+			container Impl
+			{
+				unit<uint8> Havenstad_Scenario_strategie := =Scenario == '1. Alles gas (s0)' ? 'Havenstad_Scenario1_strategie' : Scenario == '2. Alles naturel' ? 'Havenstad_Scenario2_strategie' : 'Havenstad_Scenario2_strategie';
+				
+				unit<uint8> NoData : nrofrows = 1
+				{
+					attribute<string> name := const('',.);
+					attribute<string> label := name, DialogType = "LabelText";
+				}
+				
+				unit<uint8> Havenstad_Scenario_strategie_NoData   := union_unit_uint8(NoData, Havenstad_Scenario_strategie)
+				{
+					attribute<string> name  := union_data(.,NoData/name, Havenstad_Scenario_strategie/name);
+					attribute<string> label := union_data(.,NoData/label, Havenstad_Scenario_strategie/label);
+					container V := for_each_nedv(name, string(id(.))+'[..]', void, .);
+				}
+				
+				unit<uint8> Havenstad_Scenario1_strategie := subset(
+					   id(VestaVarianten) == VestaVarianten/V/S0_Referentie
+				)
+				{
+					attribute<string> name := VestaVarianten/VariantNaam[nr_OrgEntity];
+				}
+				
+				unit<uint8> Havenstad_Scenario2_strategie := subset(
+					   id(VestaVarianten) == VestaVarianten/V/S1a_B_LuchtWP
+					|| id(VestaVarianten) == VestaVarianten/V/S1b_B_BodemWP 
+					|| id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
+					|| id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
+					|| id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
+				)
+				{
+					attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
+					attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
+				}
+			}
+			
+			container Read_CSVs_perVariant := 
+				for_each_ne(
+					Impl/Havenstad_Scenario_strategie/name
+					, 'Read_CSVs_T('+quote(Impl/Havenstad_Scenario_strategie/name)+')'
+				);
+			
+			Template Read_CSVs_T
+			{
+				parameter<string> VariantName;
+				
+				unit<uint32> J2019
+				: StorageName = "= 'C:/GeoDMS/ProjDir/Vesta-ESDL/data/'+StudyArea+'/'+Scenario+'/'+VariantName+'/Y2019/PerPlanRegio_ESDL.csv'"
+				, StorageType = "gdal.vect"
+				, StorageReadOnly = "true"
+				{
+					attribute<rdc_meter> geometry (poly)         := Buurt/geometry[buurt_rel];
+					attribute<Buurt>     Buurt_rel               := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<float32>   Nat_Meerkosten (Buurt)  := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
+					attribute<float32>   CO2_uitstoot (Buurt)    := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
+					attribute<float32>   Warmtevraag (Buurt)     := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+				}
+				unit<uint32> J2030
+				: StorageName = "= 'C:/GeoDMS/ProjDir/Vesta-ESDL/data/'+StudyArea+'/'+Scenario+'/'+VariantName+'/Y2030/PerPlanRegio_ESDL.csv'"
+				, StorageType = "gdal.vect"
+				, StorageReadOnly = "true"
+				{
+					attribute<rdc_meter> geometry (poly) := Buurt/geometry[buurt_rel];
+					attribute<Buurt>     Buurt_rel       := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<float32>   Nat_Meerkosten (Buurt)  := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
+					attribute<float32>   CO2_uitstoot (Buurt)    := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
+					attribute<float32>   Warmtevraag (Buurt)     := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+				}
+				unit<uint32> J2040
+				: StorageName = "= 'C:/GeoDMS/ProjDir/Vesta-ESDL/data/'+StudyArea+'/'+Scenario+'/'+VariantName+'/Y2040/PerPlanRegio_ESDL.csv'"
+				, StorageType = "gdal.vect"
+				, StorageReadOnly = "true"
+				{
+					attribute<rdc_meter> geometry (poly) := Buurt/geometry[buurt_rel];
+					attribute<Buurt>     Buurt_rel       := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<float32>   Nat_Meerkosten (Buurt)  := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
+					attribute<float32>   CO2_uitstoot (Buurt)    := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
+					attribute<float32>   Warmtevraag (Buurt)     := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+				}
+				unit<uint32> J2050
+				: StorageName = "= 'C:/GeoDMS/ProjDir/Vesta-ESDL/data/'+StudyArea+'/'+Scenario+'/'+VariantName+'/Y2050/PerPlanRegio_ESDL.csv'"
+				, StorageType = "gdal.vect"
+				, StorageReadOnly = "true"
+				{
+					attribute<rdc_meter> geometry (poly, Buurt)  := Buurt/geometry;
+					attribute<Buurt>     Buurt_rel       := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<float32>   Nat_Meerkosten (Buurt)  := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
+					attribute<float32>   CO2_uitstoot (Buurt)    := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
+					attribute<float32>   Warmtevraag (Buurt)     := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+				}
+			}
+			
+			container Strategie_obv_Laagste_Nat_Meerkosten := 
+				for_each_nedv(
+					RekenJaar/name
+					, replace('argmin(0f/0f,'+AsItemList('Read_CSVs_perVariant/'+(Impl/Havenstad_Scenario_strategie/name)+'/J@RJ@/Nat_Meerkosten')+')[Impl/Havenstad_Scenario_strategie_NoData]','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, Impl/Havenstad_Scenario_strategie_NoData
+				);
+				
+			container NationaleMeerKosten_vanBeste := 
+				for_each_nedv(
+					RekenJaar/name
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Impl/Havenstad_Scenario_strategie_NoData/v/'+Impl/Havenstad_Scenario_strategie/name+', LeidraadResultaten/Exports/MultiStrategieResult/Read_CSVs_perVariant/'+Impl/Havenstad_Scenario_strategie/name+'/J@RJ@/Nat_Meerkosten)', ',')+', 0f/0f)','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, float32
+				);
+				
+			container CO2Uitstoot_vanBeste := 
+				for_each_nedv(
+					RekenJaar/name
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Impl/Havenstad_Scenario_strategie_NoData/v/'+Impl/Havenstad_Scenario_strategie/name+', LeidraadResultaten/Exports/MultiStrategieResult/Read_CSVs_perVariant/'+Impl/Havenstad_Scenario_strategie/name+'/J@RJ@/CO2_uitstoot)', ',')+', 0f/0f)','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, float32
+				);
+			
+		}	
+
 	}
 	
 
