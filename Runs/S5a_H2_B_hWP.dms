@@ -52,7 +52,7 @@ container S5a_H2_B_hWP
 		{
 			#include <%projDir%/Runs/DefaultSettings/Basis.dms>
 			#include <%projDir%/Runs/DefaultSettings/Rekenstap.dms>
-			#include <%projDir%/Runs/DefaultSettings/Rekenstap_Doeniks.dms>
+			#include <%projDir%/Runs/DefaultSettings/Rekenstap_Gas.dms>
 			#include <%projDir%/Runs/DefaultSettings/Rekenstap_GroenGasB.dms>
 			#include <%projDir%/Runs/DefaultSettings/Rekenstap_AllesB_H2WP.dms>
 			#include <%projDir%/Runs/DefaultSettings/Leidraad.dms>
@@ -69,11 +69,11 @@ container S5a_H2_B_hWP
 			container StartJaar := DefaultInstellingen/Basis;
 			
 			// Per rekenstap kun je hier specifieke instelling overrulen. De lijst van rekenstappen wordt gedefinieerd bij rekenstap
-			container Ref2030 := DefaultInstellingen/Rekenstap_Doeniks/Stap_1;
+			container Ref2030 := DefaultInstellingen/Rekenstap_Gas/Stap_1;
 			container R2_2030 := DefaultInstellingen/Rekenstap_GroenGasB/Stap_1;
 			container R3_2030 := DefaultInstellingen/Rekenstap_AllesB_H2WP/Stap_1;
-			container R4_2040 := DefaultInstellingen/Rekenstap_Doeniks/Stap_2040;
-			container Ref2050 := DefaultInstellingen/Rekenstap_Doeniks/Stap_2050;
+			container R4_2040 := DefaultInstellingen/Rekenstap_Gas/Stap_2040;
+			container Ref2050 := DefaultInstellingen/Rekenstap_Gas/Stap_2050;
 		}
 	}
 
