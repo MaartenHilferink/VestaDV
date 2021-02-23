@@ -275,22 +275,22 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_A03_Aansl_waterstof             := PerBebouwingsSector/Woning/PerPlanRegio/A03_Aansl_waterstof[nr_OrgEntity];
 						attribute<nrAsl>        Woning_A04_Aansl_Gasketel              := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HRw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/VRw[nr_OrgEntity];       //s0 s4b s4d
 						attribute<nrAsl>        Woning_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LeWPw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LeWPw_A[nr_OrgEntity]; // s1a s1b
-						attribute<nrAsl>        Woning_A05_Aansl_eWP_bodem             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw_A[nr_OrgEntity]; // s1a s1b
-						attribute<nrAsl>        Woning_A06_Aansl_Rest70_collGGheater   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Restwarmte[nr_OrgEntity]; //s2a s2d
-						attribute<nrAsl>        Woning_A07_Aansl_Geo70_collGGheater    := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Geothermie[nr_OrgEntity]; //s2b s2c s2e s2f
-						attribute<nrAsl>        Woning_A08_Aansl_Rest30_eWPlucht       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT30_30[nr_OrgEntity];    //s3a
-						attribute<nrAsl>        Woning_A09_Aansl_Rest30_colleWP70      := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT30_70[nr_OrgEntity];    //s3b s3f
-						attribute<nrAsl>        Woning_A10_Aansl_WKO15_colleWP70       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BuurtWKO[nr_OrgEntity];   //s3c s3g
-						attribute<nrAsl>        Woning_A11_Aansl_WKO15_colleWP50_beWP  := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/WKO[nr_OrgEntity];        // s3d
-						attribute<nrAsl>        Woning_A12_Aansl_WKO15_TEO15_colleWP70 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/TEO[nr_OrgEntity];        // s3e s3h
-						attribute<nrAsl>        Woning_A13_Aansl_hWP                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/hWPw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_A[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_C[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_D[nr_OrgEntity]; // s4a s4c
-						attribute<nrAsl>        Woning_A14_Aansl_h2WP                  := Woning_G13_Aansl_WaterstofWP;  //s5a s5c
-						attribute<nrAsl>        Woning_A15_Aansl_h2R                   := Woning_G12_Aansl_WaterstofHR;   //s5b s5d
+						attribute<nrAsl>        Woning_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw_A[nr_OrgEntity]; // s1a s1b
+						attribute<nrAsl>        Woning_A07_Aansl_Rest70_collGGheater   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Restwarmte[nr_OrgEntity]; //s2a s2d
+						attribute<nrAsl>        Woning_A08_Aansl_Geo70_collGGheater    := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Geothermie[nr_OrgEntity]; //s2b s2c s2e s2f
+						attribute<nrAsl>        Woning_A09_Aansl_Rest30_eWPlucht       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT30_30[nr_OrgEntity];    //s3a
+						attribute<nrAsl>        Woning_A10_Aansl_Rest30_colleWP70      := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT30_70[nr_OrgEntity];    //s3b s3f
+						attribute<nrAsl>        Woning_A11_Aansl_WKO15_colleWP70       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BuurtWKO[nr_OrgEntity];   //s3c s3g
+						attribute<nrAsl>        Woning_A12_Aansl_WKO15_colleWP50_beWP  := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/WKO[nr_OrgEntity];        // s3d
+						attribute<nrAsl>        Woning_A13_Aansl_WKO15_TEO15_colleWP70 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/TEO[nr_OrgEntity];        // s3e s3h
+						attribute<nrAsl>        Woning_A14_Aansl_hWP                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/hWPw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_A[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_C[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_D[nr_OrgEntity]; // s4a s4c
+						attribute<nrAsl>        Woning_A15_Aansl_h2WP                  := Woning_G13_Aansl_WaterstofWP;  //s5a s5c
+						attribute<nrAsl>        Woning_A16_Aansl_h2R                   := Woning_G12_Aansl_WaterstofHR;   //s5b s5d
 						
-						attribute<nrAsl>        Woning_A16_Aansl_naarA                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarA_w[nr_OrgEntity];
-						attribute<nrAsl>        Woning_A17_Aansl_naarB                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarB_w[nr_OrgEntity];
-						attribute<nrAsl>        Woning_A18_Aansl_naarC                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarC_w[nr_OrgEntity];
-						attribute<nrAsl>        Woning_A19_Aansl_naarD                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarD_w[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A17_Aansl_naarA                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarA_w[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A18_Aansl_naarB                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarB_w[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A19_Aansl_naarC                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarC_w[nr_OrgEntity];
+						attribute<nrAsl>        Woning_A20_Aansl_naarD                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarD_w[nr_OrgEntity];
 
 						attribute<nrAsl>        Woning_G01_Aansl_LT15_50               := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT15_50[nr_OrgEntity];
 						attribute<nrAsl>        Woning_G02_Aansl_LT15_70               := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity];
@@ -350,21 +350,21 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_A03_Aansl_waterstof             := PerBebouwingsSector/Util/PerPlanRegio/A03_Aansl_waterstof[nr_OrgEntity];
 						attribute<nrAsl>        Util_A04_Aansl_gasketel              := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/HRu[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/VRu[nr_OrgEntity];
 						attribute<nrAsl>        Util_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LeWPu[nr_OrgEntity]; // s1a s1b
-						attribute<nrAsl>        Util_A05_Aansl_eWP_bodem             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuG[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuK[nr_OrgEntity]; // s1a s1b
-						attribute<nrAsl>        Util_A06_Aansl_Rest70_collGGheater   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/Restwarmte[nr_OrgEntity];
-						attribute<nrAsl>        Util_A07_Aansl_Geo70_collGGheater    := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/Geothermie[nr_OrgEntity];
-						attribute<nrAsl>        Util_A08_Aansl_Rest30_eWPlucht       := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT30_30[nr_OrgEntity] > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LeWPu[nr_OrgEntity] : 0[nrAsl];
-						attribute<nrAsl>        Util_A09_Aansl_Rest30_colleWP70      := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT30_70[nr_OrgEntity];
-						attribute<nrAsl>        Util_A10_Aansl_WKO15_colleWP70       := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity];
-						attribute<nrAsl>        Util_A11_Aansl_WKO15_colleWP50_beWP  := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_50[nr_OrgEntity] > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuG[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuK[nr_OrgEntity] : 0[nrAsl];
-						attribute<nrAsl>        Util_A12_Aansl_WKO15_TEO15_colleWP70 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity] > 0[nrAsl] && PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/TEO[nr_OrgEntity] > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity] : 0[nrAsl];
-						attribute<nrAsl>        Util_A13_Aansl_hWP                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_C[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_D[nr_OrgEntity];
-						attribute<nrAsl>        Util_A14_Aansl_h2WP                  := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2WPu[nr_OrgEntity];
-						attribute<nrAsl>        Util_A15_Aansl_h2R                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2Ru[nr_OrgEntity];
+						attribute<nrAsl>        Util_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuG[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuK[nr_OrgEntity]; // s1a s1b
+						attribute<nrAsl>        Util_A07_Aansl_Rest70_collGGheater   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/Restwarmte[nr_OrgEntity];
+						attribute<nrAsl>        Util_A08_Aansl_Geo70_collGGheater    := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/Geothermie[nr_OrgEntity];
+						attribute<nrAsl>        Util_A09_Aansl_Rest30_eWPlucht       := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT30_30[nr_OrgEntity] > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LeWPu[nr_OrgEntity] : 0[nrAsl];
+						attribute<nrAsl>        Util_A10_Aansl_Rest30_colleWP70      := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT30_70[nr_OrgEntity];
+						attribute<nrAsl>        Util_A11_Aansl_WKO15_colleWP70       := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity];
+						attribute<nrAsl>        Util_A12_Aansl_WKO15_colleWP50_beWP  := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_50[nr_OrgEntity] > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuG[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuK[nr_OrgEntity] : 0[nrAsl];
+						attribute<nrAsl>        Util_A13_Aansl_WKO15_TEO15_colleWP70 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity] > 0[nrAsl] && PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/TEO[nr_OrgEntity] > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity] : 0[nrAsl];
+						attribute<nrAsl>        Util_A14_Aansl_hWP                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_C[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_D[nr_OrgEntity];
+						attribute<nrAsl>        Util_A15_Aansl_h2WP                  := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2WPu[nr_OrgEntity];
+						attribute<nrAsl>        Util_A16_Aansl_h2R                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2Ru[nr_OrgEntity];
 						
-						attribute<nrAsl>        Util_A17_Aansl_naarB                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarB_u[nr_OrgEntity];
-						attribute<nrAsl>        Util_A18_Aansl_naarC                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarC_u[nr_OrgEntity];
-						attribute<nrAsl>        Util_A19_Aansl_naarD                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarD_u[nr_OrgEntity];
+						attribute<nrAsl>        Util_A18_Aansl_naarB                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarB_u[nr_OrgEntity];
+						attribute<nrAsl>        Util_A19_Aansl_naarC                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarC_u[nr_OrgEntity];
+						attribute<nrAsl>        Util_A20_Aansl_naarD                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarD_u[nr_OrgEntity];
 						
 						attribute<nrAsl>        Util_G01_Aansl_LT15_50               := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_50[nr_OrgEntity];
 						attribute<nrAsl>        Util_G02_Aansl_LT15_70               := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity];
@@ -1185,7 +1185,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					parameter<string> RunName_src := Exports/Settings/RunName == 'StartJaar' 
 														? 'StartJaar'
 														: Exports/Settings/RunName;
-					parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/'+Settings/RegioNaam_Havenstad+'/'+Settings/RunName+'/y2030';
+					parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/'+Settings/regio_naam+'/'+Settings/RunName+'/y2030';
 					parameter<string> OutputFolderRES_str := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+Settings/RunName+'/y2030';
 					
 					unit<uint32>      list_PerRekenstap      := SubItem_PropValues(CombinedBronnen,'name');
