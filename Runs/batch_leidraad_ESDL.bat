@@ -16,11 +16,9 @@ set CUR_SS=%time:~6,2%
 set CUR_MS=%time:~9,2%
 set SUBFILENAME=%CUR_YYYY%%CUR_MM%%CUR_DD%-%CUR_HH%%CUR_NN%%CUR_SS%
 
-set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_All_MetRes
+set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_All_metRES
 
- "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH%"
-echo "Hier stoppen voor Havenstad Scenario 0" 
-pause 
+REM "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH%"
 
  "%exe_path%" "%prj_dir%\Runs\S1a_B_LuchtWP.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S1b_B_BodemWP.dms" "%EXPORT_PATH%"
@@ -34,21 +32,17 @@ REM "%exe_path%" "%prj_dir%\Runs\S2f_D_Geo_overal.dms" "%EXPORT_PATH%"
 
  "%exe_path%" "%prj_dir%\Runs\S3a_B_LT30_30.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S3b_B_LT30_70.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S3c_B_BuurtWKO.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S3d_B_WKO.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S3e_B_TEO.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S3f_D_LT30_70.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S3g_D_BuurtWKO.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S3h_D_TEO.dms" "%EXPORT_PATH%"
 
-echo "Hier stoppen voor Havenstad Scenario 3" 
-pause 
- 
- "%exe_path%" "%prj_dir%\Runs\S3c_B_BuurtWKO.dms" "%EXPORT_PATH%"
- "%exe_path%" "%prj_dir%\Runs\S3d_B_WKO.dms" "%EXPORT_PATH%"
- "%exe_path%" "%prj_dir%\Runs\S3e_B_TEO.dms" "%EXPORT_PATH%"
- "%exe_path%" "%prj_dir%\Runs\S3f_D_LT30_70.dms" "%EXPORT_PATH%"
- "%exe_path%" "%prj_dir%\Runs\S3g_D_BuurtWKO.dms" "%EXPORT_PATH%"
- "%exe_path%" "%prj_dir%\Runs\S3h_D_TEO.dms" "%EXPORT_PATH%"
-
- "%exe_path%" "%prj_dir%\Runs\S4a_GG_B_hWP.dms" "%EXPORT_PATH%"
- "%exe_path%" "%prj_dir%\Runs\S4b_GG_B_HR.dms" "%EXPORT_PATH%" 
- "%exe_path%" "%prj_dir%\Runs\S4c_GG_D_hWP.dms" "%EXPORT_PATH%"
- "%exe_path%" "%prj_dir%\Runs\S4d_GG_D_HR.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S4a_GG_B_hWP.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S4b_GG_B_HR.dms" "%EXPORT_PATH%" 
+REM "%exe_path%" "%prj_dir%\Runs\S4c_GG_D_hWP.dms" "%EXPORT_PATH%"
+REM "%exe_path%" "%prj_dir%\Runs\S4d_GG_D_HR.dms" "%EXPORT_PATH%"
 
 REM "%exe_path%" "%prj_dir%\Runs\S5a_H2_B_hWP.dms" "%EXPORT_PATH%"
 REM "%exe_path%" "%prj_dir%\Runs\S5b_H2_B_HR.dms" "%EXPORT_PATH%"
