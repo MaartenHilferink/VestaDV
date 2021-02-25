@@ -184,6 +184,13 @@ container LeidraadResultaten: using = "Model;Geography"
 								, Planregio
 								, nrAsl
 							);
+						container nrAansluitinging_Gebouw :=  
+							for_each_nedv(
+								Classifications/Installatie/name
+								, 'LeidraadResultaten/Exports/ESDL/PerRekenstap/'+ReportRekenstap+'/PerComponent/'+BebouwingsSector+'/Aansluitingen/nrAansluitinging_GebouwInstallaties_rvb/'+Classifications/Installatie/name
+								, Planregio
+								, nrAsl
+							);
 							
 						attribute<nrAsl> A01_Aansl_aardgas           := = '('+ReportRekenstap+'/Allocatie/aant_g_aansl_'+BebouwingsSector+'_per_planregio - '+ReportRekenstap+'/Allocatie/aant_h2_aansl_'+BebouwingsSector+'_per_planregio) * (1.0 - /LeidraadResultaten/'+ReportRekenstap+'/PlanregioResults/GroenGasFactor)';
 						attribute<nrAsl> A02_Aansl_groengas          := = '('+ReportRekenstap+'/Allocatie/aant_g_aansl_'+BebouwingsSector+'_per_planregio - '+ReportRekenstap+'/Allocatie/aant_h2_aansl_'+BebouwingsSector+'_per_planregio) * (/LeidraadResultaten/'+ReportRekenstap+'/PlanregioResults/GroenGasFactor)';
@@ -233,7 +240,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					container export_PerPlanRegio           := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Regio_selectie, replace(AsList(list_PerPlanRegio/name, ';'), 'Geometry;','') , OutputFolder_str+'/PerPlanRegio_ESDL.csv');
 					container export_PerPlanRegio_RES       := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Regio_selectie_RES, replace(AsList(list_PerPlanRegio_RES/name, ';'), 'Geometry;','') , OutputFolderRES_str+'/PerPlanRegio_ESDL.csv');
 					
-					unit<uint32> Regio_selectie := =Settings/RegioSelectie_str
+					unit<uint32> Regio_selectie := =Settings/RegioSelectie_str, FreeData = "false"
 					{
 						attribute<dpoint>       Geometry(poly)              := PerBebouwingsSector/Woning/PerPlanRegio/Geometry[nr_OrgEntity];
 						attribute<String>       BU_CODE                     := PerBebouwingsSector/Woning/PerPlanRegio/BU_CODE[nr_OrgEntity];
@@ -274,9 +281,9 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_A01_Aansl_aardgas               := PerBebouwingsSector/Woning/PerPlanRegio/A01_Aansl_aardgas[nr_OrgEntity];
 						attribute<nrAsl>        Woning_A02_Aansl_groengas              := PerBebouwingsSector/Woning/PerPlanRegio/A02_Aansl_groengas[nr_OrgEntity];
 						attribute<nrAsl>        Woning_A03_Aansl_waterstof             := PerBebouwingsSector/Woning/PerPlanRegio/A03_Aansl_waterstof[nr_OrgEntity];
-						attribute<nrAsl>        Woning_A04_Aansl_Gasketel              := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HRw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/VRw[nr_OrgEntity];       //s0 s4b s4d
-						attribute<nrAsl>        Woning_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LeWPw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LeWPw_A[nr_OrgEntity]; // s1a s1b
-						attribute<nrAsl>        Woning_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw_A[nr_OrgEntity]; // s1a s1b
+						attribute<nrAsl>        Woning_A04_Aansl_Gasketel              := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/HR[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/VR[nr_OrgEntity];       //s0 s4b s4d
+						attribute<nrAsl>        Woning_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/eWP_lw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/eWP_ll[nr_OrgEntity]; // s1a s1b
+						attribute<nrAsl>        Woning_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/eWP_bw[nr_OrgEntity]; // s1a s1b
 						attribute<nrAsl>        Woning_A07_Aansl_Rest70_collGGheater   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Restwarmte[nr_OrgEntity]; //s2a s2d
 						attribute<nrAsl>        Woning_A08_Aansl_Geo70_collGGheater    := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Geothermie[nr_OrgEntity]; //s2b s2c s2e s2f
 						attribute<nrAsl>        Woning_A09_Aansl_Rest30_eWPlucht       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT30_30[nr_OrgEntity];    //s3a
@@ -284,9 +291,9 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_A11_Aansl_WKO15_colleWP70       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BuurtWKO[nr_OrgEntity];   //s3c s3g
 						attribute<nrAsl>        Woning_A12_Aansl_WKO15_colleWP50_beWP  := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/WKO[nr_OrgEntity];        // s3d
 						attribute<nrAsl>        Woning_A13_Aansl_WKO15_TEO15_colleWP70 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/TEO[nr_OrgEntity];        // s3e s3h
-						attribute<nrAsl>        Woning_A14_Aansl_hWP                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/hWPw[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_A[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_C[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_D[nr_OrgEntity]; // s4a s4c
+						attribute<nrAsl>        Woning_A14_Aansl_hWP                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/BasisHWP_w[nr_OrgEntity] + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/hHR[nr_OrgEntity]; // s4a s4c
 						attribute<nrAsl>        Woning_A15_Aansl_h2WP                  := Woning_G13_Aansl_WaterstofWP;  //s5a s5c
-						attribute<nrAsl>        Woning_A16_Aansl_h2R                   := Woning_G12_Aansl_WaterstofHR;   //s5b s5d
+						attribute<nrAsl>        Woning_A16_Aansl_h2R                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/H2R[nr_OrgEntity];   //s5b s5d
 						
 						attribute<nrAsl>        Woning_A17_Aansl_naarA                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarA_w[nr_OrgEntity];
 						attribute<nrAsl>        Woning_A18_Aansl_naarB                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarB_w[nr_OrgEntity];
@@ -349,9 +356,9 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_A01_Aansl_aardgas               := PerBebouwingsSector/Util/PerPlanRegio/A01_Aansl_aardgas[nr_OrgEntity];
 						attribute<nrAsl>        Util_A02_Aansl_groengas              := PerBebouwingsSector/Util/PerPlanRegio/A02_Aansl_groengas[nr_OrgEntity];
 						attribute<nrAsl>        Util_A03_Aansl_waterstof             := PerBebouwingsSector/Util/PerPlanRegio/A03_Aansl_waterstof[nr_OrgEntity];
-						attribute<nrAsl>        Util_A04_Aansl_gasketel              := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/HRu[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/VRu[nr_OrgEntity];
-						attribute<nrAsl>        Util_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LeWPu[nr_OrgEntity]; // s1a s1b
-						attribute<nrAsl>        Util_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuG[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuK[nr_OrgEntity]; // s1a s1b
+						attribute<nrAsl>        Util_A04_Aansl_gasketel              := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/HR[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/VR[nr_OrgEntity];
+						attribute<nrAsl>        Util_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/eWP_lw_u[nr_OrgEntity]; // s1a s1b
+						attribute<nrAsl>        Util_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/eWP_bw_uG[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/eWP_bw_uK[nr_OrgEntity]; // s1a s1b
 						attribute<nrAsl>        Util_A07_Aansl_Rest70_collGGheater   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/Restwarmte[nr_OrgEntity];
 						attribute<nrAsl>        Util_A08_Aansl_Geo70_collGGheater    := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/Geothermie[nr_OrgEntity];
 						attribute<nrAsl>        Util_A09_Aansl_Rest30_eWPlucht       := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT30_30[nr_OrgEntity] > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LeWPu[nr_OrgEntity] : 0[nrAsl];
@@ -359,9 +366,9 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_A11_Aansl_WKO15_colleWP70       := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity];
 						attribute<nrAsl>        Util_A12_Aansl_WKO15_colleWP50_beWP  := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_50[nr_OrgEntity] > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuG[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuK[nr_OrgEntity] : 0[nrAsl];
 						attribute<nrAsl>        Util_A13_Aansl_WKO15_TEO15_colleWP70 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity] > 0[nrAsl] && PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/TEO[nr_OrgEntity] > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70[nr_OrgEntity] : 0[nrAsl];
-						attribute<nrAsl>        Util_A14_Aansl_hWP                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_C[nr_OrgEntity] + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_D[nr_OrgEntity];
-						attribute<nrAsl>        Util_A15_Aansl_h2WP                  := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2WPu[nr_OrgEntity];
-						attribute<nrAsl>        Util_A16_Aansl_h2R                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2Ru[nr_OrgEntity];
+						attribute<nrAsl>        Util_A14_Aansl_hWP                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/hWP_lw_u[nr_OrgEntity];
+						attribute<nrAsl>        Util_A15_Aansl_h2WP                  := Util_G13_Aansl_WaterstofWP;
+						attribute<nrAsl>        Util_A16_Aansl_h2R                   := Util_G12_Aansl_WaterstofHR;
 						
 						attribute<nrAsl>        Util_A18_Aansl_naarB                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarB_u[nr_OrgEntity];
 						attribute<nrAsl>        Util_A19_Aansl_naarC                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarC_u[nr_OrgEntity];
@@ -397,7 +404,7 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<Eur_yr_WEQ>   H18_Nat_meerkost_WEQ        := PerBebouwingsSector/Woning/PerPlanRegio/H18_Nat_meerkost_WEQ[nr_OrgEntity];
 						attribute<kW>           H23_Capaciteit_huidig       := PerBebouwingsSector/Woning/PerPlanRegio/H23_Capaciteit_huidig[nr_OrgEntity];
 					}
-					unit<uint32> Regio_selectie_RES := PlanRegio
+					unit<uint32> Regio_selectie_RES := PlanRegio, FreeData = "false"
 					{
 						attribute<dpoint>       Geometry(poly)              := PerBebouwingsSector/Woning/PerPlanRegio/Geometry;
 						attribute<String>       BU_CODE                     := PerBebouwingsSector/Woning/PerPlanRegio/BU_CODE;
@@ -438,9 +445,9 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_A01_Aansl_aardgas               := PerBebouwingsSector/Woning/PerPlanRegio/A01_Aansl_aardgas;
 						attribute<nrAsl>        Woning_A02_Aansl_groengas              := PerBebouwingsSector/Woning/PerPlanRegio/A02_Aansl_groengas;
 						attribute<nrAsl>        Woning_A03_Aansl_waterstof             := PerBebouwingsSector/Woning/PerPlanRegio/A03_Aansl_waterstof;
-						attribute<nrAsl>        Woning_A04_Aansl_Gasketel              := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HRw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/VRw;       //s0 s4b s4d
-						attribute<nrAsl>        Woning_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LeWPw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LeWPw_A; // s1a s1b
-						attribute<nrAsl>        Woning_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BeWPw_A; // s1a s1b
+						attribute<nrAsl>        Woning_A04_Aansl_Gasketel              := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/HR + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/VR;       //s0 s4b s4d
+						attribute<nrAsl>        Woning_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/eWP_lw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/eWP_ll; // s1a s1b
+						attribute<nrAsl>        Woning_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/eWP_bw; // s1a s1b
 						attribute<nrAsl>        Woning_A07_Aansl_Rest70_collGGheater   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Restwarmte; //s2a s2d
 						attribute<nrAsl>        Woning_A08_Aansl_Geo70_collGGheater    := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/Geothermie; //s2b s2c s2e s2f
 						attribute<nrAsl>        Woning_A09_Aansl_Rest30_eWPlucht       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/LT30_30;    //s3a
@@ -448,9 +455,9 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Woning_A11_Aansl_WKO15_colleWP70       := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/BuurtWKO;   //s3c s3g
 						attribute<nrAsl>        Woning_A12_Aansl_WKO15_colleWP50_beWP  := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/WKO;        // s3d
 						attribute<nrAsl>        Woning_A13_Aansl_WKO15_TEO15_colleWP70 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/TEO;        // s3e s3h
-						attribute<nrAsl>        Woning_A14_Aansl_hWP                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/hWPw + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_A + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_C + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/HWP_D; // s4a s4c
+						attribute<nrAsl>        Woning_A14_Aansl_hWP                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/BasisHWP_w + PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/hHR; // s4a s4c
 						attribute<nrAsl>        Woning_A15_Aansl_h2WP                  := Woning_G13_Aansl_WaterstofWP;  //s5a s5c
-						attribute<nrAsl>        Woning_A16_Aansl_h2R                   := Woning_G12_Aansl_WaterstofHR;   //s5b s5d
+						attribute<nrAsl>        Woning_A16_Aansl_h2R                   := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging_Gebouw/H2R;   //s5b s5d
 						
 						attribute<nrAsl>        Woning_A17_Aansl_naarA                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarA_w;
 						attribute<nrAsl>        Woning_A18_Aansl_naarB                 := PerBebouwingsSector/Woning/PerPlanRegio/nrAansluitinging/NaarB_w;
@@ -502,9 +509,9 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_A01_Aansl_aardgas               := PerBebouwingsSector/Util/PerPlanRegio/A01_Aansl_aardgas;
 						attribute<nrAsl>        Util_A02_Aansl_groengas              := PerBebouwingsSector/Util/PerPlanRegio/A02_Aansl_groengas;
 						attribute<nrAsl>        Util_A03_Aansl_waterstof             := PerBebouwingsSector/Util/PerPlanRegio/A03_Aansl_waterstof;
-						attribute<nrAsl>        Util_A04_Aansl_gasketel              := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/HRu + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/VRu;
-						attribute<nrAsl>        Util_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LeWPu; // s1a s1b
-						attribute<nrAsl>        Util_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuG + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuK; // s1a s1b
+						attribute<nrAsl>        Util_A04_Aansl_gasketel              := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/HR + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/VR;
+						attribute<nrAsl>        Util_A05_Aansl_eWP_lucht             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/eWP_lw_u; // s1a s1b
+						attribute<nrAsl>        Util_A06_Aansl_eWP_bodem             := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/eWP_bw_uG + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/eWP_bw_uK; // s1a s1b
 						attribute<nrAsl>        Util_A07_Aansl_Rest70_collGGheater   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/Restwarmte;
 						attribute<nrAsl>        Util_A08_Aansl_Geo70_collGGheater    := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/Geothermie;
 						attribute<nrAsl>        Util_A09_Aansl_Rest30_eWPlucht       := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT30_30 > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LeWPu : 0[nrAsl];
@@ -512,9 +519,9 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<nrAsl>        Util_A11_Aansl_WKO15_colleWP70       := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70;
 						attribute<nrAsl>        Util_A12_Aansl_WKO15_colleWP50_beWP  := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_50 > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuG + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/BeWPuK : 0[nrAsl];
 						attribute<nrAsl>        Util_A13_Aansl_WKO15_TEO15_colleWP70 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70 > 0[nrAsl] && PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/TEO > 0[nrAsl] ? PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/LT15_70 : 0[nrAsl];
-						attribute<nrAsl>        Util_A14_Aansl_hWP                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_C + PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/hWPu_D;
-						attribute<nrAsl>        Util_A15_Aansl_h2WP                  := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2WPu;
-						attribute<nrAsl>        Util_A16_Aansl_h2R                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/H2Ru;
+						attribute<nrAsl>        Util_A14_Aansl_hWP                   := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging_Gebouw/hWP_lw_u;
+						attribute<nrAsl>        Util_A15_Aansl_h2WP                  := Util_G13_Aansl_WaterstofWP;
+						attribute<nrAsl>        Util_A16_Aansl_h2R                   := Util_G12_Aansl_WaterstofHR;
 						
 						attribute<nrAsl>        Util_A18_Aansl_naarB                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarB_u;
 						attribute<nrAsl>        Util_A19_Aansl_naarC                 := PerBebouwingsSector/Util/PerPlanRegio/nrAansluitinging/NaarC_u;
@@ -551,21 +558,36 @@ container LeidraadResultaten: using = "Model;Geography"
 						attribute<kW>           H23_Capaciteit_huidig       := PerBebouwingsSector/Woning/PerPlanRegio/H23_Capaciteit_huidig;
 					}
 				}
-			
-				container SchillabelOrDefault : using = "Settings"
+				
+				unit<uint32> BO_BestaandeWoning := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO';
+				unit<uint32> BO_BestaandeUtil   := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO';
+				unit<uint32> BO_NieuwbouwWoning := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO';
+				unit<uint32> BO_NieuwbouwUtil   := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO';
+				
+				container Schillabel : FreeData = "false"
 				{
-					
-					container BestaandeWoning := 
+					attribute<Classifications/schillabel> BestaandeWoning (BO_BestaandeWoning) := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/Schillabel_rel';
+					attribute<Classifications/schillabel> BestaandeUtil   (BO_BestaandeUtil)   := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/Schillabel_rel';
+					attribute<Classifications/schillabel> NieuwbouwWoning (BO_NieuwbouwWoning) := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO/Schillabel_rel';
+					attribute<Classifications/schillabel> NieuwbouwUtil   (BO_NieuwbouwUtil)   := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO/Schillabel_rel';
+				}
+
+						// /TussenResultaten/R3_2030/BebouwingsComponenten/BestaandeWoning/BO/Defaultlabel_new
+						
+				container SchillabelOrDefault : using = "Settings", FreeData = "false"
+				{
+					container BestaandeWoning :=  
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/SchillabelOrDefault_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/BestaandeWoning/PlanRegio_rel)'
+							, 'sum(float64((Schillabel/BestaandeWoning == Classifications/schillabel/V/N ? BO_BestaandeWoning/Defaultlabel_new	: Schillabel/BestaandeWoning) == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/BestaandeWoning/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						);
+						
 					container NieuwbouwWoning := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO/SchillabelOrDefault_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/NieuwbouwWoning/PlanRegio_rel)'
+							, 'sum(float64((Schillabel/NieuwbouwWoning == Classifications/schillabel/V/N ? BO_NieuwbouwWoning/Defaultlabel_new	: Schillabel/NieuwbouwWoning) == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/NieuwbouwWoning/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						)
@@ -576,7 +598,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					container BestaandeUtil := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/SchillabelOrDefault_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/BestaandeUtil/PlanRegio_rel)'
+							, 'sum(float64((Schillabel/BestaandeUtil == Classifications/schillabel/V/N ? BO_BestaandeUtil/Defaultlabel_new	: Schillabel/BestaandeUtil) == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/BestaandeUtil/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						);
@@ -584,7 +606,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					container NieuwbouwUtil := 
 						for_each_nedv(
 							  Classifications/schillabel/name
-							, 'sum(float64(/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO/SchillabelOrDefault_rel == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/NieuwbouwUtil/PlanRegio_rel)'
+							, 'sum(float64((Schillabel/NieuwbouwUtil == Classifications/schillabel/V/N ? BO_NieuwbouwUtil/Defaultlabel_new	: Schillabel/NieuwbouwUtil) == /Classifications/Schillabel/V/'+Classifications/schillabel/name+') * /TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO/nrAansluitingen, /TussenResultaten/'+SrcRekenstapName+'/StateNaAllocatie/Bebouwing/NieuwbouwUtil/PlanRegio_rel)'
 							, Invoer/DefaultInstellingen/Basis/PlanRegio
 							, nrAsl
 						)
@@ -644,7 +666,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					container PlanregioResults      := ='LeidraadResultaten/'+ReportRekenstap+'/PlanregioResults';
 					// container ZichtJaar             := LeidraadResultaten/ZichtJaar;
 
-					container Hoofdindicatoren : using = "PlanregioResults;StateNaAllocatie"
+					container Hoofdindicatoren : using = "PlanregioResults;StateNaAllocatie", FreeData = "false"
 					{
 						unit<uint32> extensief := Invoer/DefaultInstellingen/Basis/PlanRegio
 						{
@@ -895,7 +917,45 @@ container LeidraadResultaten: using = "Model;Geography"
 								, Planregio
 								, nrAsl
 						);
-				
+						container nrAansluitinging_GebouwInstallaties_rvb := 
+							for_each_nedv(
+								Classifications/Installatie/name
+								, replace(
+									'add('+
+										AsItemList(
+											replace('sum(BebouwingsComponenten/@BC@/BO/nrAansluitingen * float64(BebouwingsComponenten/@BC@/BO/InstallatiePerProduct/RVb == Classifications/Installatie/V/@WO@), BebouwingsComponenten/@BC@/BO/PlanRegio_rel)'
+											, '@BC@', BebouwingsDomein/name)
+										)
+									+')'
+									,	'@WO@', Classifications/Installatie/name
+								  )
+								, Planregio
+								, nrAsl
+						);
+						
+						
+						container GebouwInstallaties_perBO
+						{
+							unit<uint32> Bestaand  := ='/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/Bestaande'+BebouwingsSector+'/BO'
+							{
+								attribute</Classifications/Installatie> RVb     := ='BebouwingsComponenten/Bestaande'+BebouwingsSector+'/BO/InstallatiePerProduct/RVb';
+								attribute</Classifications/Installatie> RVp     := ='BebouwingsComponenten/Bestaande'+BebouwingsSector+'/BO/InstallatiePerProduct/RVp';
+								attribute</Classifications/Installatie> TWb     := ='BebouwingsComponenten/Bestaande'+BebouwingsSector+'/BO/InstallatiePerProduct/TWb';
+								attribute</Classifications/Installatie> TWp     := ='BebouwingsComponenten/Bestaande'+BebouwingsSector+'/BO/InstallatiePerProduct/TWp';
+								attribute</Classifications/Installatie> Kb      := ='BebouwingsComponenten/Bestaande'+BebouwingsSector+'/BO/InstallatiePerProduct/Kb';
+								attribute</Classifications/Installatie> Kp      := ='BebouwingsComponenten/Bestaande'+BebouwingsSector+'/BO/InstallatiePerProduct/Kp';
+								
+							}
+							unit<uint32> Nieuwbouw := ='/TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/Nieuwbouw'+BebouwingsSector+'/BO'
+							{
+								attribute</Classifications/Installatie> RVb     := ='BebouwingsComponenten/Nieuwbouw'+BebouwingsSector+'/BO/InstallatiePerProduct/RVb';
+								attribute</Classifications/Installatie> RVp     := ='BebouwingsComponenten/Nieuwbouw'+BebouwingsSector+'/BO/InstallatiePerProduct/RVp';
+								attribute</Classifications/Installatie> TWb     := ='BebouwingsComponenten/Nieuwbouw'+BebouwingsSector+'/BO/InstallatiePerProduct/TWb';
+								attribute</Classifications/Installatie> TWp     := ='BebouwingsComponenten/Nieuwbouw'+BebouwingsSector+'/BO/InstallatiePerProduct/TWp';
+								attribute</Classifications/Installatie> Kb      := ='BebouwingsComponenten/Nieuwbouw'+BebouwingsSector+'/BO/InstallatiePerProduct/Kb';
+								attribute</Classifications/Installatie> Kp      := ='BebouwingsComponenten/Nieuwbouw'+BebouwingsSector+'/BO/InstallatiePerProduct/Kp';
+							}
+						}
 				
 						unit<uint32> table := Invoer/DefaultInstellingen/Basis/PlanRegio
 						{
@@ -1060,7 +1120,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			
 			container Bronnen 
 			{
-				unit<uint32> CombinedBronnen := =Settings/CombinedBronnen_str
+				unit<uint32> CombinedBronnen := =Settings/CombinedBronnen_str, FreeData = "false"
 				{
 					attribute<string>     bron_naam                   := =Settings/CombinedBronnen_str+'/bron_naam';
 					attribute<string>     bron_id                     := =Settings/CombinedBronnen_str+'/bron_id';
@@ -1085,7 +1145,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					for_each_ne(
 						Settings/WarmteBronRelevanteRekenstappen/name
 						, 'HTwarmteBronnenT('+Quote(Settings/WarmteBronRelevanteRekenstappen/name)+')'
-					);
+					), FreeData = "false";
 				
 				template HTwarmteBronnenT
 				{
@@ -1117,7 +1177,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					for_each_ne(
 						Settings/WarmteBronRelevanteRekenstappen/name
 						, 'LTwarmteBronnenT('+Quote(Settings/WarmteBronRelevanteRekenstappen/name)+')'
-					);
+					), FreeData = "false";
 				
 				template LTwarmteBronnenT
 				{
@@ -1232,15 +1292,33 @@ container LeidraadResultaten: using = "Model;Geography"
 				}
 				
 				unit<uint8> Havenstad_Scenario2_strategie := subset(
-					   id(VestaVarianten) == VestaVarianten/V/S1a_B_LuchtWP
-					|| id(VestaVarianten) == VestaVarianten/V/S1b_B_BodemWP 
-					|| id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
-					|| id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
-					|| id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
-				)
+																   id(VestaVarianten) == VestaVarianten/V/S1a_B_LuchtWP
+																|| id(VestaVarianten) == VestaVarianten/V/S1b_B_BodemWP 
+																|| id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
+																|| id(VestaVarianten) == VestaVarianten/V/S2d_D_Restwarmte 
+																|| id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
+																|| id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
+															)
 				{
 					attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
 					attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
+				}
+				unit<uint8> Havenstad_Scenario2_strategie_restwarmte := subset(
+																			   id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
+																			|| id(VestaVarianten) == VestaVarianten/V/S2d_D_Restwarmte 
+																			|| id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
+																			|| id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
+																		)
+				{
+					attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
+					attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
+				}
+				
+				unit<uint8> Havenstad_Scenario2_strategie_restwarmte_NoData   := union_unit_uint8(NoData, Havenstad_Scenario2_strategie_restwarmte)
+				{
+					attribute<string> name  := union_data(.,NoData/name, Havenstad_Scenario2_strategie_restwarmte/name);
+					attribute<string> label := union_data(.,NoData/label, Havenstad_Scenario2_strategie_restwarmte/label);
+					container V := for_each_nedv(name, string(id(.))+'[..]', void, .);
 				}
 			}
 			
@@ -1259,48 +1337,128 @@ container LeidraadResultaten: using = "Model;Geography"
 				, StorageType = "gdal.vect"
 				, StorageReadOnly = "true"
 				{
-					attribute<rdc_meter> geometry (poly)         := Buurt/geometry[buurt_rel];
-					attribute<Buurt>     Buurt_rel               := rlookup(BU_CODE, Buurt/BU_CODE);
-					attribute<float32>   Nat_Meerkosten (Buurt)  := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
-					attribute<float32>   CO2_uitstoot (Buurt)    := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
-					attribute<float32>   Warmtevraag (Buurt)     := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+					attribute<rdc_meter> geometry (poly, Buurt)      := Buurt/geometry;
+					attribute<Buurt>     Buurt_rel                   := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<float32>   Nat_Meerkosten (Buurt)      := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
+					attribute<float32>   CO2_uitstoot (Buurt)        := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
+					attribute<float32>   Warmtevraag (Buurt)         := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+					attribute<float32>   Elektriciteitsvraag (Buurt) := rjoin(id(buurt), buurt_rel, Woning_H11_Input_Elektriciteit [float32]) + rjoin(id(buurt), buurt_rel, Util_H11_Input_Elektriciteit [float32]);
+					
+					attribute<bool>      IsRelevant       (Buurt) := switch(
+																		  case(VariantName == 'S1a_B_LuchtWP', aansl_ewp_lucht > 0f)
+																		, case(VariantName == 'S1b_B_BodemWP', aansl_ewp_bodem > 0f)
+																		, case(VariantName == 'S2a_B_Restwarmte', aansl_restwarmte > 0f)
+																		, case(VariantName == 'S2d_D_Restwarmte', aansl_restwarmte > 0f)
+																		, case(VariantName == 'S3a_B_LT30_30', aansl_lt_30_30 > 0f)
+																		, case(VariantName == 'S3b_B_LT30_70', aansl_lt_30_70 > 0f)
+																		, FALSE);
+					
+					attribute<float32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[float32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[float32]);
+					attribute<float32>   aansl_ewp_lucht  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A05_Aansl_eWP_lucht[float32]) + rjoin(id(buurt), buurt_rel, util_A05_Aansl_eWP_lucht[float32]);
+					attribute<float32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[float32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[float32]);
+					attribute<float32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [float32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [float32]);
+					attribute<float32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [float32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [float32]);
 				}
 				unit<uint32> J2030
 				: StorageName = "= 'C:/GeoDMS/ProjDir/Vesta-ESDL/data/'+StudyArea+'/'+Scenario+'/'+VariantName+'/Y2030/PerPlanRegio_ESDL.csv'"
 				, StorageType = "gdal.vect"
 				, StorageReadOnly = "true"
 				{
-					attribute<rdc_meter> geometry (poly) := Buurt/geometry[buurt_rel];
-					attribute<Buurt>     Buurt_rel       := rlookup(BU_CODE, Buurt/BU_CODE);
-					attribute<float32>   Nat_Meerkosten (Buurt)  := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
-					attribute<float32>   CO2_uitstoot (Buurt)    := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
-					attribute<float32>   Warmtevraag (Buurt)     := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+					attribute<rdc_meter> geometry (poly, Buurt)      := Buurt/geometry;
+					attribute<Buurt>     Buurt_rel                   := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<float32>   Nat_Meerkosten (Buurt)      := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
+					attribute<float32>   CO2_uitstoot (Buurt)        := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
+					attribute<float32>   Warmtevraag (Buurt)         := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+					attribute<float32>   Elektriciteitsvraag (Buurt) := rjoin(id(buurt), buurt_rel, Woning_H11_Input_Elektriciteit [float32]) + rjoin(id(buurt), buurt_rel, Util_H11_Input_Elektriciteit [float32]);
+					
+					attribute<bool>      IsRelevant       (Buurt) := switch(
+																		  case(VariantName == 'S1a_B_LuchtWP', aansl_ewp_lucht > 0f)
+																		, case(VariantName == 'S1b_B_BodemWP', aansl_ewp_bodem > 0f)
+																		, case(VariantName == 'S2a_B_Restwarmte', aansl_restwarmte > 0f)
+																		, case(VariantName == 'S2d_D_Restwarmte', aansl_restwarmte > 0f)
+																		, case(VariantName == 'S3a_B_LT30_30', aansl_lt_30_30 > 0f)
+																		, case(VariantName == 'S3b_B_LT30_70', aansl_lt_30_70 > 0f)
+																		, FALSE);
+					
+					attribute<float32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[float32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[float32]);
+					attribute<float32>   aansl_ewp_lucht  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A05_Aansl_eWP_lucht[float32]) + rjoin(id(buurt), buurt_rel, util_A05_Aansl_eWP_lucht[float32]);
+					attribute<float32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[float32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[float32]);
+					attribute<float32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [float32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [float32]);
+					attribute<float32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [float32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [float32]);
 				}
 				unit<uint32> J2040
 				: StorageName = "= 'C:/GeoDMS/ProjDir/Vesta-ESDL/data/'+StudyArea+'/'+Scenario+'/'+VariantName+'/Y2040/PerPlanRegio_ESDL.csv'"
 				, StorageType = "gdal.vect"
 				, StorageReadOnly = "true"
 				{
-					attribute<rdc_meter> geometry (poly) := Buurt/geometry[buurt_rel];
-					attribute<Buurt>     Buurt_rel       := rlookup(BU_CODE, Buurt/BU_CODE);
-					attribute<float32>   Nat_Meerkosten (Buurt)  := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
-					attribute<float32>   CO2_uitstoot (Buurt)    := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
-					attribute<float32>   Warmtevraag (Buurt)     := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+					attribute<rdc_meter> geometry (poly, Buurt)      := Buurt/geometry;
+					attribute<Buurt>     Buurt_rel                   := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<float32>   Nat_Meerkosten (Buurt)      := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
+					attribute<float32>   CO2_uitstoot (Buurt)        := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
+					attribute<float32>   Warmtevraag (Buurt)         := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+					attribute<float32>   Elektriciteitsvraag (Buurt) := rjoin(id(buurt), buurt_rel, Woning_H11_Input_Elektriciteit [float32]) + rjoin(id(buurt), buurt_rel, Util_H11_Input_Elektriciteit [float32]);
+					
+					attribute<bool>      IsRelevant       (Buurt) := switch(
+																		  case(VariantName == 'S1a_B_LuchtWP', aansl_ewp_lucht > 0f)
+																		, case(VariantName == 'S1b_B_BodemWP', aansl_ewp_bodem > 0f)
+																		, case(VariantName == 'S2a_B_Restwarmte', aansl_restwarmte > 0f)
+																		, case(VariantName == 'S2d_D_Restwarmte', aansl_restwarmte > 0f)
+																		, case(VariantName == 'S3a_B_LT30_30', aansl_lt_30_30 > 0f)
+																		, case(VariantName == 'S3b_B_LT30_70', aansl_lt_30_70 > 0f)
+																		, FALSE);
+					
+					attribute<float32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[float32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[float32]);
+					attribute<float32>   aansl_ewp_lucht  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A05_Aansl_eWP_lucht[float32]) + rjoin(id(buurt), buurt_rel, util_A05_Aansl_eWP_lucht[float32]);
+					attribute<float32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[float32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[float32]);
+					attribute<float32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [float32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [float32]);
+					attribute<float32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [float32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [float32]);
 				}
 				unit<uint32> J2050
 				: StorageName = "= 'C:/GeoDMS/ProjDir/Vesta-ESDL/data/'+StudyArea+'/'+Scenario+'/'+VariantName+'/Y2050/PerPlanRegio_ESDL.csv'"
 				, StorageType = "gdal.vect"
 				, StorageReadOnly = "true"
 				{
-					attribute<rdc_meter> geometry (poly, Buurt)  := Buurt/geometry;
-					attribute<Buurt>     Buurt_rel       := rlookup(BU_CODE, Buurt/BU_CODE);
-					attribute<float32>   Nat_Meerkosten (Buurt)  := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
-					attribute<float32>   CO2_uitstoot (Buurt)    := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
-					attribute<float32>   Warmtevraag (Buurt)     := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+					attribute<rdc_meter> geometry (poly, Buurt)      := Buurt/geometry;
+					attribute<Buurt>     Buurt_rel                   := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<float32>   Nat_Meerkosten (Buurt)      := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[float32]);
+					attribute<float32>   CO2_uitstoot (Buurt)        := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[float32]);
+					attribute<float32>   Warmtevraag (Buurt)         := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[float32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[float32]);
+					attribute<float32>   Elektriciteitsvraag (Buurt) := rjoin(id(buurt), buurt_rel, Woning_H11_Input_Elektriciteit [float32]) + rjoin(id(buurt), buurt_rel, Util_H11_Input_Elektriciteit [float32]);
+					
+					attribute<bool>      IsRelevant       (Buurt) := switch(
+																		  case(VariantName == 'S1a_B_LuchtWP', aansl_ewp_lucht > 0f)
+																		, case(VariantName == 'S1b_B_BodemWP', aansl_ewp_bodem > 0f)
+																		, case(VariantName == 'S2a_B_Restwarmte', aansl_restwarmte > 0f)
+																		, case(VariantName == 'S2d_D_Restwarmte', aansl_restwarmte > 0f)
+																		, case(VariantName == 'S3a_B_LT30_30', aansl_lt_30_30 > 0f)
+																		, case(VariantName == 'S3b_B_LT30_70', aansl_lt_30_70 > 0f)
+																		, FALSE);
+					
+					attribute<float32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[float32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[float32]);
+					attribute<float32>   aansl_ewp_lucht  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A05_Aansl_eWP_lucht[float32]) + rjoin(id(buurt), buurt_rel, util_A05_Aansl_eWP_lucht[float32]);
+					attribute<float32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[float32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[float32]);
+					attribute<float32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [float32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [float32]);
+					attribute<float32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [float32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [float32]);
 				}
 			}
 			
 			container Strategie_obv_Laagste_Nat_Meerkosten := 
+				for_each_nedv(
+					RekenJaar/name
+					, replace('argmin(0f/0f,'+AsItemList('Read_CSVs_perVariant/'+(Impl/Havenstad_Scenario_strategie/name)+'/J@RJ@/IsRelevant ? Read_CSVs_perVariant/'+(Impl/Havenstad_Scenario_strategie/name)+'/J@RJ@/Nat_Meerkosten : 0f/0f')+')[Impl/Havenstad_Scenario_strategie_NoData]','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, Impl/Havenstad_Scenario_strategie_NoData
+				);
+				
+			container Strategie_obv_RestwarmteWaarMogelijk := //eerst s2 en s3 afwegen, daarna pas s1
+				for_each_nedv(
+					RekenJaar/name
+					, replace('argmin(0f/0f,'+AsItemList('Read_CSVs_perVariant/'+(Impl/Havenstad_Scenario2_strategie_restwarmte/name)+'/J@RJ@/Nat_Meerkosten')+')[Impl/Havenstad_Scenario2_strategie_restwarmte_NoData]','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, Impl/Havenstad_Scenario2_strategie_restwarmte_NoData
+				);
+				
+			container Strategie_obv_RestwarmteWaarMogelijk_daarnaNatMeerkosten := //eerst s2 en s3 afwegen, daarna pas s1
 				for_each_nedv(
 					RekenJaar/name
 					, replace('argmin(0f/0f,'+AsItemList('Read_CSVs_perVariant/'+(Impl/Havenstad_Scenario_strategie/name)+'/J@RJ@/Nat_Meerkosten')+')[Impl/Havenstad_Scenario_strategie_NoData]','@RJ@', string(RekenJaar/values))
@@ -1320,6 +1478,14 @@ container LeidraadResultaten: using = "Model;Geography"
 				for_each_nedv(
 					RekenJaar/name
 					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Impl/Havenstad_Scenario_strategie_NoData/v/'+Impl/Havenstad_Scenario_strategie/name+', LeidraadResultaten/Exports/MultiStrategieResult/Read_CSVs_perVariant/'+Impl/Havenstad_Scenario_strategie/name+'/J@RJ@/CO2_uitstoot)', ',')+', 0f/0f)','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, float32
+				);
+				
+			container Elekvraag_vanBeste := 
+				for_each_nedv(
+					RekenJaar/name
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Impl/Havenstad_Scenario_strategie_NoData/v/'+Impl/Havenstad_Scenario_strategie/name+', LeidraadResultaten/Exports/MultiStrategieResult/Read_CSVs_perVariant/'+Impl/Havenstad_Scenario_strategie/name+'/J@RJ@/Elektriciteitsvraag)', ',')+', 0f/0f)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, float32
 				);

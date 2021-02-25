@@ -93,4 +93,10 @@ unit<uint32> Buurt:
 		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity];
 		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
 	}
+	unit<uint32> Subset_Hengelo := ='subset('+AsList('GM_CODE == '+quote(LeidraadResultaten/Exports/Settings/selected_Hengelo/Values), ' || ')+')'
+	{
+		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity];
+		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
+		attribute<string>    BU_NAAM         := ../BU_NAAM[nr_OrgEntity];
+	}
 }
