@@ -228,6 +228,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					
 					parameter<string> OutputFolder_RESGooiEnVechtstreek := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
 					parameter<string> OutputFolder_RESNoordHollandZuid  := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
+					parameter<string> OutputFolder_RESTwente            := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
 					parameter<string> OutputFolder_Havenstad            := '%localDataProjDir%/Results/'+Settings/RegioNaam_Havenstad+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
 					parameter<string> OutputFolder_GooiEnVechtstreek    := '%localDataProjDir%/Results/'+Settings/RegioNaam_GooiEnVechtstreek+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
 					parameter<string> OutputFolder_Hengelo              := '%localDataProjDir%/Results/'+Settings/RegioNaam_Hengelo+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
