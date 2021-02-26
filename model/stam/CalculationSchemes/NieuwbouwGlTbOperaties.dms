@@ -50,7 +50,7 @@ container NieuwbouwGlTbOperaties
 			attribute<ratio>                              Verdeling          := RuimtelijkeData/GlasTuinBouw/Verdeling/nl/GLTB[GLTB_code];
 
 			container Criteria;
-			container Gebied: FreeData = "True" // noodzakelijk voor Bebouwingscomponent interfact, hoewel gtb niet gebruikt wordt voor WKO.
+			container Gebied // noodzakelijk voor Bebouwingscomponent interfact, hoewel gtb niet gebruikt wordt voor WKO.
 			{
 				attribute<float64> n      (..) := const(0.0, ..);
 				attribute<float64> MEAN_x (..) := const(0.0, ..);

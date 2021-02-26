@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
   
 template EsdlNieuwbouw
-{ 
+{  
 	parameter<string> EsdlPath := Invoer/NieuwbouwWoningEsdlPath;
 	
 	container VestaBebouwingsComponentSchema
@@ -22,15 +22,15 @@ template EsdlNieuwbouw
 			attribute<string> id;
 			attribute<string> name;
 		}
-		unit<uint32> kpis
-		{
-			unit<uint32> kpi
-			{
-				attribute<string> id;
-				attribute<string> name;
-				attribute<string> value;
-			}
-		}
+		// unit<uint32> kpis
+		// {
+			// unit<uint32> kpi
+			// {
+				// attribute<string> id;
+				// attribute<string> name;
+				// attribute<string> value;
+			// }
+		// }
 		unit<uint32> area
 		{
 			attribute<string> id;
@@ -80,9 +80,9 @@ template EsdlNieuwbouw
 					
 				}
 			}
-			unit<uint32> measure {
-				attribute<string> reference;
-			}
+			// unit<uint32> measure {
+				// attribute<string> reference;
+			// }
 		}
 	}
 	
@@ -95,7 +95,7 @@ template EsdlNieuwbouw
 		attribute<Classifications/WarmteOptie> WarmteOptie_rel := rlookup(uppercase(id), uppercase(Classifications/WarmteOptie/name));
 	}
 	// parameter<bool> StrategieFlip := IsDefined(rlookup(uppercase(SharedInvoer/FullVariantName), uppercase(KiesbareMeasure/id)));
-	parameter<bool> StrategieFlip := TRUE; // HACK gooi en vechtstreek
+	// parameter<bool> StrategieFlip := TRUE; // HACK gooi en vechtstreek
 	
 	unit<uint32> EsdlBuurt := Parsed_Nieuwbouw/area
 	{
@@ -109,7 +109,7 @@ template EsdlNieuwbouw
 		attribute<string> buurt_name := id;
 		attribute<RegioIndelingen/buurt> PlanRegio_rel := rlookup(lowercase(buurt_name), lowercase(RegioIndelingen/buurt/BU_CODE));
 		
-		attribute<bool> StrategieToegestaan := =StrategieFlip 
+		attribute<bool> StrategieToegestaan := =ShareInvoer/FlipStatus 
 			? 'HasMeasure ? any(uppercase(measure/reference)==uppercase(SharedInvoer/FullVariantName), Measure/Buurt_rel) : true' 
 			: 'const(true, .)';
 	}
@@ -122,9 +122,9 @@ template EsdlNieuwbouw
 	}
 	
 	parameter<string> CE_Delft_buurtoptie := rjoin(/variantcode, Classifications/VestaVarianten/variantcode, Classifications/VestaVarianten/CE_Delft_buurtoptie);
+	
 	unit<uint32> Read_FlipCSV 
-//	:  StorageName     = "%ProjDir%/ESDL/GooiEnVechtstreek_voorkeursopties.csv"
-	:  StorageName     = "%ProjDir%/ESDL/Havenstad_voorkeursopties.csv"
+	:  StorageName     = "='%ProjDir%/ESDL/'+SharedInvoer/StudieGebied+'_voorkeursopties.csv'"
 	,  StorageType     = "gdal.vect"
 	,  StorageReadOnly = "True"
 	{
@@ -136,11 +136,11 @@ template EsdlNieuwbouw
 		attribute<bool>                  StrategieToegestaan_Check        :=  (Uitkomst_gecheckt == CE_Delft_buurtoptie);
 		attribute<bool>                  StrategieToegestaan_GeenGroengas :=  (StrategieToegestaan_SA || Uitkomst_SA == 'Groengas') && !(/variantcode == 's4a' || /variantcode == 's4b'  || /variantcode == 's4c'  || /variantcode == 's4d');
 		
-		attribute<bool>                  StrategieToegestaan              :=  SharedInvoer/CE_DelftScenario == '1_SA'
+		attribute<bool>                  StrategieToegestaan              :=  SharedInvoer/Scenario == '1_SA'
 																				? StrategieToegestaan_SA
-																				: SharedInvoer/CE_DelftScenario ==  '2_Check' 
+																				: SharedInvoer/Scenario ==  '2_Check' 
 																					? StrategieToegestaan_Check
-																					: SharedInvoer/CE_DelftScenario == '3_GeenGroenGas'
+																					: SharedInvoer/Scenario == '3_GeenGroenGas'
 																						? StrategieToegestaan_GeenGroengas
 																						: const(true,.);
 		
@@ -231,14 +231,14 @@ template EsdlNieuwbouw
 		attribute<pand_asl>   pand_aandeel := value(1.0, nrPand) / value(Gebouw/Bouwlagen[gebouw_rel], nrAsl);
 		// Gebouwoptie danwel pakket Installaties voor RuimteVerwarming( basis, piek), Koude(basis, piek), Tapwater(basis, piek)		
 		
-		unit<uint32> BouwObject_Measure := combine(BouwObject, KiesbareMeasure)
-		{
-			attribute<BouwObject> BouwObject_rel := nr_1;
-			attribute<EsdlBuurt> EsdlBuurt_rel := BouwObject/EsdlBuurt_rel[nr_1];
-			attribute<KiesbareMeasure> Measure_rel := nr_2;
+		// unit<uint32> BouwObject_Measure := combine(BouwObject, KiesbareMeasure)
+		// {
+			// attribute<BouwObject> BouwObject_rel := nr_1;
+			// attribute<EsdlBuurt> EsdlBuurt_rel := BouwObject/EsdlBuurt_rel[nr_1];
+			// attribute<KiesbareMeasure> Measure_rel := nr_2;
 			
-			attribute<bool> Toegestaan := EsdlBuurt_Measure/Toegestaan[combine_data(EsdlBuurt_Measure, EsdlBuurt_rel, Measure_rel)];
-		}
+			// attribute<bool> Toegestaan := EsdlBuurt_Measure/Toegestaan[combine_data(EsdlBuurt_Measure, EsdlBuurt_rel, Measure_rel)];
+		// }
 	}
 	template SelectT
 	{

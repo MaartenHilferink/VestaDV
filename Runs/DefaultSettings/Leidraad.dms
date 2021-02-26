@@ -18,6 +18,6 @@ container Leidraad := Basis
 	attribute<bool> BS_isActive (BsBase) := not(BsBase/IsGlastuinbouw);
 	parameter<bool> BC_doNieuwbouw       := false;
 	
-	parameter<bool> LeesWarmtebronnenUitESDL  := false; // (SharedInvoer/StudieGebied == 'RESNoordHollandZuid');
+	parameter<bool>   LeesWarmtebronnenUitESDL  := false; // (SharedInvoer/StudieGebied == 'RESNoordHollandZuid');
 	parameter<string> WarmtebronnenEsdlPath   := ='LeesWarmtebronnenUitESDL ? ''%ProjDir%/ESDL/Warmtebronnen/'+Variantcode+'.esdl'' : ''''';
 }

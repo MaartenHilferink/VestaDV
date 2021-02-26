@@ -126,7 +126,7 @@ template RestWarmte
 			parameter<float64> Elektriciteit := 0.0;
 		}
 
-		container RestWarmte: FreeData = "False"
+		container RestWarmte
 		{
 			container VorigePeriode := BeginStatus/RestWarmte;
 

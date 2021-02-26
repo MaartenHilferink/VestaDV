@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 //                                                                                                           //
 //                         (C) VESTA 2020 - Planbureau voor de Leefomgeving                                  //
 //                                                                                                           //
@@ -12,11 +12,26 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 container SharedInvoer
-{ 
-	parameter<string> StudieGebied_config  : ['RESNoordHollandZuid']; // 'NL' 'RESNoordHollandZuid' 'RESTwente' 'RESGooienVechtstreek' 'MONDAINE'
+{   
+	parameter<string> StudieGebied_config  : ['Havenstad']; // 'NL' 'Havenstad' 'Hengelo' 'GooienVechtstreek' 
+	parameter<string> FlipStatus_config    : ['FALSE']; // FALSE TRUE
+	
+	//SCENARIO SETTINGS:
+		// Geen scenarios                'LosseStrategieen' 
+		// Gooi en Vechtstreek scenarios '1_SA' '2_Check' '3_GeenGroenGas' 'LosseStrategieen' 
+		// Havenstad scenarios           '1_AllesGas' '2_AllesNaturel' '3_HavenstadAllElectric'
+		// Hengelo scenarios             'Combinatie_s1abs2ad'
+	parameter<string> Scenario_config : ['2_AllesNaturel']; 
+
 
 	parameter<string> StudieGebied_cmd_setting := Expand(., '%env:STUDIEGEBIED%'); 
-	parameter<string> StudieGebied  := replace_value(StudieGebied_cmd_setting, 'env:STUDIEGEBIED', StudieGebied_config);
+	parameter<string> StudieGebied             := replace_value(StudieGebied_cmd_setting, 'env:STUDIEGEBIED', StudieGebied_config);
+	
+	parameter<string> FlipStatus_cmd_setting := Expand(., '%env:FLIPSTATUS%'); 
+	parameter<bool>   FlipStatus             := replace_value(FlipStatus_cmd_setting, 'env:FLIPSTATUS', FlipStatus_config)[bool];
+	
+	parameter<string> Scenario_cmd_setting := Expand(., '%env:SCENARIO%'); 
+	parameter<string> Scenario             := replace_value(Scenario_cmd_setting, 'env:SCENARIO', Scenario_config);
 	
 	parameter<bool> G01_aan := false; // G01_Nat_meerkost_CO2_Kost_Reductie_Hoog = Leercurves maximaal optimistisch
 	parameter<bool> G02_aan := false; // G02_Nat_meerkost_CO2_Kost_Reductie_Laag = Leercurves maximaal pessimistisch
@@ -33,11 +48,11 @@ container SharedInvoer
 	parameter<string> NieuwbouwWoningEsdlPath := '%ProjDir%/ESDL/Havenstad-input-VESTA-incl-utiliteit-en-restricties.esdl';
 	parameter<string> NieuwbouwUtilEsdlPath   := NieuwbouwWoningEsdlPath;
 	
-	parameter<bool>   BuurtFlippenAAN            := FALSE; // TRUE FALSE
-	parameter<string> CE_DelftScenario           := ''; // '1_SA' '2_Check' '3_GeenGroenGas'
+	// parameter<bool>   BuurtFlippenAAN            := FALSE; // TRUE FALSE
+	// parameter<string> CE_DelftScenario           := ''; // '1_SA' '2_Check' '3_GeenGroenGas'
 	
 	parameter<string> FullVariantName            := rjoin(VariantCode, /Classifications/VestaVarianten/Variantcode, /Classifications/VestaVarianten/VariantNaam);
 	parameter<string> WarmtebronnenEsdlPath      := ='Invoer/SpecifiekeInstellingen/LeesWarmtebronnenUitESDL ? ESDL_Invoer_path : ''''';
-	parameter<string> ESDL_Invoer_path           := '%ProjDir%/ESDL/BuurtMaatregelen.esdl';
+	parameter<string> ESDL_Invoer_path           := '%ProjDir%/ESDL/BuurtMaatregelen_clean.esdl';
 //	parameter<string> ESDL_Invoer_path           := '%ProjDir%/ESDL/GooiEnVechtstreek.esdl';
 }

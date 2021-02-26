@@ -36,14 +36,6 @@ container RuimtelijkeData: Using = "Units;Geography;Model", FreeData = "False"
 			{
 				attribute<string> values := ReadArray(lowercase(trim(StudieGebied_TW)), ., string, 0);
 			}
-			// unit<uint32> Selected_StudieGebied_AMF := range(uint32, 0, strcount(StudieGebied_AMF, ',') + 1 ) //Amersfoort
-			// {
-				// attribute<string> values := ReadArray(lowercase(trim(StudieGebied_AMF)), ., string, 0);
-			// }
-			// unit<uint32> Selected_StudieGebied_U10_U16 := range(uint32, 0, strcount(StudieGebied_U10_U16, ',') + 1 ) //Utrecht
-			// {
-				// attribute<string> values := ReadArray(lowercase(trim(StudieGebied_U10_U16)), ., string, 0);
-			// }
 			unit<uint32> Selected_StudieGebied_GenV := Selected_StudieGebied_NHZ
 			{
 				attribute<string> values := Selected_StudieGebied_NHZ/values;
@@ -56,34 +48,37 @@ container RuimtelijkeData: Using = "Units;Geography;Model", FreeData = "False"
 		
 		attribute<bool> selected_per_gemeente (RegioIndelingen/gemeente) := 
 			=	invoer/studiegebied == 'NL'                  ? 'const(true, RegioIndelingen/gemeente)'
-			:	invoer/studiegebied == 'RESNoordHollandZuid' ? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_NHZ/values))'
-			:	invoer/studiegebied == 'RESTwente'           ? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_TW/values))'
-			:	invoer/studiegebied == 'RESGooienVechtstreek'? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_GenV/values))'
+			:	invoer/studiegebied == 'Havenstad'           ? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_NHZ/values))'
+			:	invoer/studiegebied == 'Hengelo'             ? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_TW/values))'
+			:	invoer/studiegebied == 'GooienVechtstreek'? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_StudieGebied_GenV/values))'
 			:	invoer/studiegebied == 'MONDAINE'            ? 'IsDefined(rlookup(lowercase(RegioIndelingen/gemeente/GM_code), impl/Selected_MONDAINE/values))'
 			:	'const(false, RegioIndelingen/gemeente)'
 			;
 		
 		attribute<bool> selected_per_buurt_studiegebied (RegioIndelingen/buurt) := 
 		=	invoer/studiegebied == 'NL'                  ? 'const(true, RegioIndelingen/buurt)'
-		:	invoer/studiegebied == 'RESNoordHollandZuid' ? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_NHZ/values))'
-		:	invoer/studiegebied == 'RESTwente'           ? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_TW/values))'
-		:	invoer/studiegebied == 'RESGooienVechtstreek'? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_GenV/values))'
+		:	invoer/studiegebied == 'Havenstad'           ? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_NHZ/values))'
+		:	invoer/studiegebied == 'Hengelo'             ? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_TW/values))'
+		:	invoer/studiegebied == 'GooienVechtstreek'   ? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_StudieGebied_GenV/values))'
 		:	invoer/studiegebied == 'MONDAINE'            ? 'IsDefined(rlookup(lowercase(RegioIndelingen/buurt/GM_code), impl/Selected_MONDAINE/values))'
 		:	'const(false, RegioIndelingen/buurt)'
 		;
 
-		unit<uint32> EsdlBuurt := /Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/EsdlBuurt {
+		unit<uint32> EsdlBuurt := /Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/EsdlBuurt 
+		{
 			attribute<.> per_buurt(RegioIndelingen/buurt) := invert(PlanRegio_rel);
 		}
-		attribute<bool> StrategieToegestaan_per_buurt(RegioIndelingen/buurt) :=
-					Bebouwing/impl/BuurtFlip/Read_FlipCSV/StrategieToegestaan_per_buurt; // HACK voor Gooi & Vechtstreek
+		attribute<bool> StrategieToegestaan_per_buurt (RegioIndelingen/buurt) := Bebouwing/impl/BuurtFlip/Read_FlipCSV/StrategieToegestaan_per_buurt; // HACK voor Gooi & Vechtstreek
+
 /* INTEGREREN OF FlipCSV uitfaseren		
 			= Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/StrategieFlip
 			? 'IsDefined(EsdlBuurt/per_buurt) ? EsdlBuurt/StrategieToegestaan[ EsdlBuurt/per_buurt ] : true'
 			: 'const(true, RegioIndelingen/buurt)';
-*/			
+*/		
+	
 		attribute<bool> selected_per_buurt (RegioIndelingen/buurt) := 
-			= 'selected_per_buurt_studiegebied' + (Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/StrategieFlip ? ' && StrategieToegestaan_per_buurt' : '');
+			// = 'selected_per_buurt_studiegebied' + (Invoer/RuimtelijkeData/Bebouwing/impl/BuurtFlip/StrategieFlip ? ' && StrategieToegestaan_per_buurt' : '');
+			= 'selected_per_buurt_studiegebied' + (SharedInvoer/FlipStatus ? ' && StrategieToegestaan_per_buurt' : '');
 
 
 		attribute<bool> selected_per_m100 (Geography/rdc_grids/m100 ) := selected_per_gemeente[Geography/RegioIndelingen/gemeente/per_m100];
