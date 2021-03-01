@@ -265,6 +265,11 @@ container AanbodOpties
 			attribute<BcGebouwOptie> GebouwOptie_rel := Toewijzing
 				? Gebieds_BcGebouwOptie_rel
 				: BebouwingsObject/GebouwOptie_rel;
+				
+			container InstallatiePerProduct := for_each_nedv(Classifications/Product/name
+			, 'Toewijzing ? Classifications/Installatie/V/geen : BebouwingsObject/InstallatiePerProduct/'+Classifications/Product/name
+			,	., Classifications/Installatie
+			);
 
 			attribute<Classifications/WarmteOptie> WarmteOptie_rel := Toewijzing
 				? Classifications/GebiedsOptie/WarmteOptie_rel[../Optie]
