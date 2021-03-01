@@ -251,6 +251,11 @@ template LtResults
 		attribute<Classifications/WarmteOptie> WarmteOptie_rel := StartThis ? ../WarmteOptie_rel  : BebouwingsObject/WarmteOptie_rel;
 		
 		attribute<BcGebouwOptie> GebouwOptie_rel := StartThis ? Gebieds_BcGebouwOptie_rel : LTvsEWP ? BcGebouwOptie_Alternatief : BebouwingsObject/GebouwOptie_rel;
+		
+		container InstallatiePerProduct := for_each_nedv(Classifications/Product/name
+		, 'StartThis ? Classifications/Installatie/V/geen : BebouwingsObject/InstallatiePerProduct/'+Classifications/Product/name
+		,	., Classifications/Installatie
+		);
 
 //REMOVE		attribute<Eur_yr>                      KoudeAllocatie  := StartThis ? DataComponent/Opbrengsten/Oj_Koude   : BebouwingsObject/KoudeAllocatie;
 //REMOVE		attribute<Eur_yr>                      Om_comfort      := StartThis ? DataComponent/Opbrengsten/Om_comfort : BebouwingsObject/Om_comfort;
