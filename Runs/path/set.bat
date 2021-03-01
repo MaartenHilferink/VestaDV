@@ -1,8 +1,8 @@
 REM aanpassingen voor machine specifieke paden
 
 REM Computer Maarten
-set prj_dir=C:\prj\pbl\VestaHavenstad
-set log_dir=C:\prj\pbl\VestaHavenstad\log_vesta
+REM set prj_dir=C:\prj\pbl\VestaHavenstad
+REM set log_dir=C:\prj\pbl\VestaHavenstad\log_vesta
 
 REM Computer Jip
 set prj_dir=C:\GeoDMS\ProjDir\VestaDV

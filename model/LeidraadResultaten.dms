@@ -15,26 +15,25 @@ container LeidraadResultaten: using = "Model;Geography"
 		
 		container Settings
 		{
-			parameter<string> RunName        := Expand(., '%configName%');
+			parameter<string> RunName              := Expand(., '%configName%');
 			parameter<string> Last_Rekenstap       := 'ZichtJaar';
-			// parameter<string> Last_Rekenstap_Expl := last(/rekenstap/name);
-			parameter<string> Last_Rekenstap_Expl := 'Res2050';
+			parameter<string> Last_Rekenstap_Expl  := 'Res2050';
 			
-			parameter<string> regio_naam := SharedInvoer/StudieGebied == 'RESNoordHollandZuid'
-												? 'Havenstad'
-												: SharedInvoer/StudieGebied == 'RESTwente'
-													? 'Hengelo'
-													: SharedInvoer/StudieGebied == 'RESGooienVechtstreek'
-														? 'GooiEnVechtstreek'
-														: 'NL';
+			parameter<string> regio_naam := SharedInvoer/StudieGebied == 'Havenstad'
+												? 'RESNoordHollandZuid'
+												: SharedInvoer/StudieGebied == 'Hengelo'
+													? 'RESTwente'
+													: SharedInvoer/StudieGebied == 'GooienVechtstreek'
+														? 'RESGooienVechtstreek'
+														: SharedInvoer/StudieGebied == 'NL'
+															? 'NL'
+															: '';
 			
 			unit<uint8> ReportPeriods : nrofrows = 4
 			{
-				attribute<string> name_src  : ['StartJaar', 'Res2030', 'Res2040', 'Res2050'];
-				attribute<string> name      := name_src;
-				attribute<string> name_expl := name_src;
-				// attribute<string> name      := replace(name_src, 'LastRekenstap', Last_Rekenstap);
-				// attribute<string> name_expl := replace(name_src, 'LastRekenstap', Last_Rekenstap_Expl);
+				attribute<string>    name_src  : ['StartJaar', 'Res2030', 'Res2040', 'Res2050'];
+				attribute<string>    name      := name_src;
+				attribute<string>    name_expl := name_src;
 				attribute<string>    year          : ['y2019', 'y2030', 'y2040', 'y2050'];
 				attribute<yr_uint16> year_value : [2019, 2030, 2040, 2050];
 			}
@@ -42,6 +41,9 @@ container LeidraadResultaten: using = "Model;Geography"
 			parameter<string> RegioNaam_GooiEnVechtstreek    := 'GooiEnVechtstreek';
 			parameter<string> RegioNaam_Hengelo              := 'Hengelo';
 			parameter<string> RegioNaam_Havenstad            := 'Havenstad';
+			parameter<string> RegioNaam_RESNoordHollandZuid  := 'RESNoordHollandZuid';
+			parameter<string> RegioNaam_RESGooienVechtstreek := 'RESGooienVechtstreek';
+			parameter<string> RegioNaam_RESTwente            := 'RESTwente';
 			
 			parameter<string> StudieGebied_GooiEnVechtstreek := 'GM0402,GM1942,GM0376,GM0417,GM0406,GM0457,GM1696'; //Hsum, Gooise Meren,Blaricum,Laren,Weesp,Wijdemeren
 			parameter<string> StudieGebied_Hengelo           := 'GM0164'; //Hengelo
@@ -51,15 +53,10 @@ container LeidraadResultaten: using = "Model;Geography"
 			unit<uint32> selected_GooiEnVechtstreek := range(uint32, 0, strcount(Settings/StudieGebied_GooiEnVechtstreek, ',') + 1 ){attribute<string> values := ReadArray(trim(Settings/StudieGebied_GooiEnVechtstreek), ., String, 0);}
 			unit<uint32> selected_Hengelo := range(uint32, 0, strcount(Settings/StudieGebied_Hengelo, ',') + 1 ){attribute<string> values := ReadArray(trim(Settings/StudieGebied_Hengelo), ., String, 0);}
 			parameter<string> RegioSelectie_Havenstad_str     := 'subset('+AsList('PlanRegio/BU_CODE == ' +quote(selected_Havenstad/values), ' || ')+')';
-			// parameter<string> RegioSelectie_Havenstad_str           := 'subset(PlanRegio/StudyAreaCentroidDist <= /Invoer/RuimtelijkeData/StudieGebied/impl/Havenstad_ReportArea_straal)';
 			parameter<string> RegioSelectie_GooiEnVechtstreek_str   := 'subset('+AsList('PlanRegio/GM_CODE == ' +quote(selected_GooiEnVechtstreek/values), ' || ')+')';
 			parameter<string> RegioSelectie_Hengelo_str             := 'subset('+AsList('PlanRegio/GM_CODE == ' +quote(selected_Hengelo/values), ' || ')+')';
 			
-			parameter<string> RegioSelectie_str            := SharedInvoer/StudieGebied == 'RESNoordHollandZuid'
-																? RegioSelectie_Havenstad_str
-																: SharedInvoer/StudieGebied == 'RESTwente'
-																	? RegioSelectie_Hengelo_str
-																	: RegioSelectie_GooiEnVechtstreek_str;
+			parameter<string> RegioSelectie_str            := ='RegioSelectie_'+SharedInvoer/StudieGebied+'_str';
 			
 			// unit<uint32> TargetStudyArea := =RegioSelectie_HavenstadTarget_str
 			// {
@@ -212,9 +209,9 @@ container LeidraadResultaten: using = "Model;Geography"
 				{
 					parameter<string> regio_naam := Settings/Regio_naam;
 					
-					parameter<string> selected_list := 'selected_'+regio_naam;
+					// parameter<string> selected_list := 'selected_'+regio_naam;
 					
-					unit<uint32> selected := ='Settings/'+selected_list;
+					// unit<uint32> selected := ='Settings/'+selected_list;
 					
 					// parameter<string> RegioSelectie_Buurt_str      := 'subset('+AsList('PlanRegio/BU_CODE == ' +quote(selected/values), ' || ')+')';
 					// parameter<string> RegioSelectie_Gemeente_str   := 'subset('+AsList('PlanRegio/GM_CODE == ' +quote(selected/values), ' || ')+')';
@@ -226,15 +223,15 @@ container LeidraadResultaten: using = "Model;Geography"
 														? 'StartJaar'
 														: Settings/RunName;
 					
-					parameter<string> OutputFolder_RESGooiEnVechtstreek := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
-					parameter<string> OutputFolder_RESNoordHollandZuid  := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
-					parameter<string> OutputFolder_RESTwente            := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
-					parameter<string> OutputFolder_Havenstad            := '%localDataProjDir%/Results/'+Settings/RegioNaam_Havenstad+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
-					parameter<string> OutputFolder_GooiEnVechtstreek    := '%localDataProjDir%/Results/'+Settings/RegioNaam_GooiEnVechtstreek+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
-					parameter<string> OutputFolder_Hengelo              := '%localDataProjDir%/Results/'+Settings/RegioNaam_Hengelo+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
+					parameter<string> OutputFolder_RESTwente            := '%localDataProjDir%/Results/'+Settings/RegioNaam_RESTwente+'/'+SharedInvoer/Scenario+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
+					parameter<string> OutputFolder_RESGooiEnVechtstreek := '%localDataProjDir%/Results/'+Settings/RegioNaam_RESGooienVechtstreek+'/'+SharedInvoer/Scenario+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
+					parameter<string> OutputFolder_RESNoordHollandZuid  := '%localDataProjDir%/Results/'+Settings/RegioNaam_RESNoordHollandZuid+'/'+SharedInvoer/Scenario+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
+					parameter<string> OutputFolder_Havenstad            := '%localDataProjDir%/Results/'+Settings/RegioNaam_Havenstad+'/'+SharedInvoer/Scenario+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
+					parameter<string> OutputFolder_GooiEnVechtstreek    := '%localDataProjDir%/Results/'+Settings/RegioNaam_GooiEnVechtstreek+'/'+SharedInvoer/Scenario+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
+					parameter<string> OutputFolder_Hengelo              := '%localDataProjDir%/Results/'+Settings/RegioNaam_Hengelo+'/'+SharedInvoer/Scenario+'/'+Settings/RunName+'/Y'+string(ReportRekenstap_year);
 					
-					parameter<string> OutputFolder_str    := ='OutputFolder_'+regio_naam;
-					parameter<string> OutputFolderRES_str := ='OutputFolder_'+SharedInvoer/StudieGebied;
+					parameter<string> OutputFolder_str    := ='OutputFolder_'+SharedInvoer/StudieGebied;
+					parameter<string> OutputFolderRES_str := ='OutputFolder_'+regio_naam;
 					
 					unit<uint32> list_PerPlanRegio          := SubItem_PropValues(Regio_selectie,'name');
 					unit<uint32> list_PerPlanRegio_RES      := SubItem_PropValues(Regio_selectie_RES,'name');
