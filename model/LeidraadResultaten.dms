@@ -92,10 +92,11 @@ container LeidraadResultaten: using = "Model;Geography"
 		
 		container ESDL
 		{
-			parameter<string> Generate_PerPlanRegio_StartJaar_metRES            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio_RES/result;
-			parameter<string> Generate_PerPlanRegio_2030_metRES                 := PerRekenstap/Res2030/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2030/PerStudyArea/export_PerPlanRegio_RES/result + Generate_BronnenExport;
-			parameter<string> Generate_PerPlanRegio_2040_metRES                 := PerRekenstap/Res2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2040/PerStudyArea/export_PerPlanRegio_RES/result;
-			parameter<string> Generate_PerPlanRegio_2050_metRES                 := PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio_RES/result;
+			parameter<string> Generate_PerPlanRegio_StartJaar_metRES     := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio_RES/result;
+			parameter<string> Generate_PerPlanRegio_2030_metRES          := PerRekenstap/Res2030/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2030/PerStudyArea/export_PerPlanRegio_RES/result + Generate_BronnenExport + Generate_BronnenExport_RES;
+			parameter<string> Generate_PerPlanRegio_2040_metRES          := PerRekenstap/Res2040/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2040/PerStudyArea/export_PerPlanRegio_RES/result;
+			parameter<string> Generate_PerPlanRegio_2050_metRES          := PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio/result + PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio_RES/result;
+			parameter<string> Generate_BronnenExport_RES                 := ='LeidraadResultaten/Exports/ESDL/Bronnen/BronnenExportSettings/export_PerRekenstapRES/result';
 			
 			parameter<string> Generate_PerPlanRegio_StartJaar            := PerRekenstap/StartJaar/PerStudyArea/export_PerPlanRegio/result; 
 			parameter<string> Generate_PerPlanRegio_2030                 := PerRekenstap/Res2030/PerStudyArea/export_PerPlanRegio/result + Generate_BronnenExport;
@@ -103,8 +104,8 @@ container LeidraadResultaten: using = "Model;Geography"
 			parameter<string> Generate_PerPlanRegio_2050                 := PerRekenstap/Res2050/PerStudyArea/export_PerPlanRegio/result;
 			parameter<string> Generate_BronnenExport                     := ='LeidraadResultaten/Exports/ESDL/Bronnen/BronnenExportSettings/export_PerRekenstap/result';
 			
-			parameter<String> Generate_PerPlanRegio_All_metRES := 'Ready', ExplicitSuppliers = "Generate_PerPlanRegio_StartJaar_metRES;Generate_PerPlanRegio_2030_metRES;Generate_PerPlanRegio_2040_metRES;Generate_PerPlanRegio_2050_metRES";
-			parameter<String> Generate_PerPlanRegio_All        := 'Ready', ExplicitSuppliers = "Generate_PerPlanRegio_StartJaar;Generate_PerPlanRegio_2030;Generate_PerPlanRegio_2040;Generate_PerPlanRegio_2050";
+			parameter<String> Generate_PerPlanRegio_All_metRES           := 'Ready', ExplicitSuppliers = "Generate_PerPlanRegio_StartJaar_metRES;Generate_PerPlanRegio_2030_metRES;Generate_PerPlanRegio_2040_metRES;Generate_PerPlanRegio_2050_metRES";
+			parameter<String> Generate_PerPlanRegio_All                  := 'Ready', ExplicitSuppliers = "Generate_PerPlanRegio_StartJaar;Generate_PerPlanRegio_2030;Generate_PerPlanRegio_2040;Generate_PerPlanRegio_2050";
 
 			container PerRekenstap := 
 				for_each_ne(
@@ -1246,8 +1247,9 @@ container LeidraadResultaten: using = "Model;Geography"
 					parameter<string> RunName_src := Exports/Settings/RunName == 'StartJaar' 
 														? 'StartJaar'
 														: Exports/Settings/RunName;
-					parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/'+Settings/regio_naam+'/'+Settings/RunName+'/y2030';
-					parameter<string> OutputFolderRES_str := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+Settings/RunName+'/y2030';
+														
+					parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/'+SharedInvoer/StudieGebied+'/'+SharedInvoer/Scenario+'/'+Settings/RunName+'/y2030';
+					parameter<string> OutputFolderRES_str := '%localDataProjDir%/Results/'+Settings/regio_naam+'/'+SharedInvoer/Scenario+'/'+Settings/RunName+'/y2030';
 					
 					unit<uint32>      list_PerRekenstap      := SubItem_PropValues(CombinedBronnen,'name');
 					container         export_PerRekenstap    := model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(CombinedBronnen, replace(AsList(list_PerRekenstap/name, ';'), 'Geometry;','') , OutputFolder_str+'/Warmtebronnen_PerPlanRegio_ESDL.csv');

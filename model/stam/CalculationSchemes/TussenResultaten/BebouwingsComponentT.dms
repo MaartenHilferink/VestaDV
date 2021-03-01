@@ -43,7 +43,7 @@ template BebouwingsComponentT
 
 	container union := =IsNieuwbouw ? 'CalculationSchemes/BebouwingsOperaties/union(PrevObject, BebouwingsObjectZonderNieuwbouw)' : '..';
 
-	unit<uint32> BO := = IsNieuwbouw ? 'union/result' : 'BebouwingsObjectZonderNieuwbouw'
+	unit<uint32> BO := = IsNieuwbouw ? 'union/result' : 'BebouwingsObjectZonderNieuwbouw', FreeData = "false"
 	{
 		container BebouwingsComponent_UpRef := ..; // TODO_OV: used sporadically, try to avoid this CHECK
 		container NcwRefs                   := BebouwingsComponent_UpRef/NcwRefs;
@@ -453,7 +453,7 @@ template BebouwingsComponentT
 
 	container GebouwOpties := for_each_ne(BcGebouwOptie/name, 'GebouwOptieT(BO, Classifications/GebouwOptie/V/'+BcGebouwOptie/name+', '+Quote(BcGebouwOptie/Criterium_expr)+')');
 	
-	unit<uint32> BebouwingsObjectMetGebouwOptie := BO
+	unit<uint32> BebouwingsObjectMetGebouwOptie := BO, FreeData = "false"
 	{
 		unit<uint8>              BcGebouwOptie   := BebouwingsComponent_UpRef/BcGebouwOptie;
 		attribute<BcGebouwOptie> GebouwOptie_rel := =(#BcGebouwOptie == 1)? 'const(0[BcGebouwOptie],BO)' : 'argmin('+AsItemList('GebouwOpties/'+BcGebouwOptie/name+'/kosten_or_undefined')+')[BcGebouwOptie]';

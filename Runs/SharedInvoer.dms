@@ -18,7 +18,7 @@ container SharedInvoer
 	
 	//SCENARIO SETTINGS:
 		// Geen scenarios                'LosseStrategieen' 
-		// Gooi en Vechtstreek scenarios '1_SA' '2_Check' '3_GeenGroenGas' 'LosseStrategieen' 
+		// Gooi en Vechtstreek scenarios '1_SA' '2_Check' '3_GeenGroenGas' '4_LabelB' 
 		// Havenstad scenarios           '1_AllesGas' '2_AllesNaturel' '3_HavenstadAllElectric'
 		// Hengelo scenarios             'Combinatie_s1abs2ad'
 	parameter<string> Scenario_config : ['2_AllesNaturel']; 
