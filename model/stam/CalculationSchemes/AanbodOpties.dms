@@ -258,7 +258,7 @@ container AanbodOpties
 		
 		parameter<BcGebouwOptie> Gebieds_BcGebouwOptie_rel := MakeDefined(Gebieds_BcGebouwOptie_rel_w, Gebieds_BcGebouwOptie_rel_u), IntegrityCheck = "IsDefined(this)";
 		
-		unit<uint32> results := BebouwingsObject, FreeData = "false"
+		unit<uint32> results := BebouwingsObject
 		{
 			attribute<bool> Toewijzing := Classifications/WarmteOptie/kanGebiedsOptie[BebouwingsObject/WarmteOptie_rel] && GebruikOptie[PlanRegio_rel];
 			

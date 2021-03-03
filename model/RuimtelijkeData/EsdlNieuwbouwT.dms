@@ -136,13 +136,13 @@ template EsdlNieuwbouw
 		attribute<bool>                  StrategieToegestaan_Check        :=  (Uitkomst_gecheckt == CE_Delft_buurtoptie);
 		attribute<bool>                  StrategieToegestaan_GeenGroengas :=  (StrategieToegestaan_SA || Uitkomst_SA == 'Groengas') && !(/variantcode == 's4a' || /variantcode == 's4b'  || /variantcode == 's4c'  || /variantcode == 's4d');
 		
-		attribute<bool>                  StrategieToegestaan              :=  SharedInvoer/Scenario == '1_SA'
+		attribute<bool>                  StrategieToegestaan              :=  SharedInvoer/Scenario == 'GV_1_SA'
 																				? StrategieToegestaan_SA
-																				: SharedInvoer/Scenario ==  '2_Check' 
+																				: SharedInvoer/Scenario ==  'GV_2_Check' 
 																					? StrategieToegestaan_Check
-																					: SharedInvoer/Scenario == '3_GeenGroenGas'
+																					: SharedInvoer/Scenario == 'GV_3_GeenGroenGas'
 																						? StrategieToegestaan_GeenGroengas
-																						: SharedInvoer/Scenario == '3_HavenstadAllElectric'
+																						: SharedInvoer/Scenario == 'AMS_3_HavenstadAllElectric'
 																							? StrategieToegestaan_Check
 																							: const(true,.);
 		

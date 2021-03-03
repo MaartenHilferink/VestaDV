@@ -1,0 +1,534 @@
+container MultiStrategieResult
+{
+	container Impl : using = "Classifications"
+	{
+		unit<uint32> StudyAreas : nrofrows = 2
+		{
+			attribute<string> name : ['Havenstad', 'RESNoordHollandZuid'];
+			attribute<string> label := name, DialogType = "LabelText";
+		}
+		unit<uint32> Scenarios : nrofrows = 3
+		{
+			attribute<string> name : ['AMS_1_AllesGas', 'AMS_2_AllesNaturel', 'AMS_3_HavenstadAllElectric'];
+			attribute<string> label := name, DialogType = "LabelText";
+		}
+		
+		unit<uint8> NoData : nrofrows = 1
+		{
+			attribute<string> name := const('',.);
+			attribute<string> label := name, DialogType = "LabelText";
+		}
+		
+		unit<uint8> Havenstad_Scenario1_strategie := subset(id(VestaVarianten) == VestaVarianten/V/S0_Referentie)
+		{
+			attribute<string> name := VestaVarianten/VariantNaam[nr_OrgEntity];
+			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
+		}
+		
+		unit<uint8> Havenstad_Scenario2_strategie := subset(
+														   id(VestaVarianten) == VestaVarianten/V/S1a_B_LuchtWP
+														|| id(VestaVarianten) == VestaVarianten/V/S1b_B_BodemWP 
+														|| id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
+														|| id(VestaVarianten) == VestaVarianten/V/S2d_D_Restwarmte 
+														|| id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
+														|| id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
+														|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
+													)
+		{ 
+			attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
+			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
+		}
+		
+		unit<uint8> Havenstad_Scenario2_strategie_restwarmte := subset(
+																	   id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
+																	|| id(VestaVarianten) == VestaVarianten/V/S2d_D_Restwarmte 
+																	|| id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
+																	|| id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
+																	|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
+																)
+		{
+			attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
+			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
+		}
+		
+		unit<uint8> Havenstad_Scenario2_strategie_restwarmte_NoData   := union_unit_uint8(NoData, Havenstad_Scenario2_strategie_restwarmte)
+		{
+			attribute<string> name  := union_data(.,NoData/name, Havenstad_Scenario2_strategie_restwarmte/name);
+			attribute<string> label := union_data(.,NoData/label, Havenstad_Scenario2_strategie_restwarmte/label);
+			container V := for_each_nedv(name, string(id(.))+'[..]', void, .);
+		}
+
+		
+		container Generates
+		{
+			parameter<string> Havenstad_all           := =AsList('MultiStrategieResult_PerStudyArea/Havenstad/PerSccenario/'+Scenarios/name+'/Generate_Output/generate_all', ' + ');
+			parameter<string> RESNoordHollandZuid_all := =AsList('MultiStrategieResult_PerStudyArea/RESNoordHollandZuid/PerSccenario/'+Scenarios/name+'/Generate_Output/generate_all', ' + ');
+		}
+		
+	}
+	
+	container MultiStrategieResult_PerStudyArea := 
+	for_each_ne(
+		Impl/StudyAreas/name
+		, 'MultiStrategieResult_perStudyAreaT('+quote(Impl/StudyAreas/name)+')'
+	);
+
+	Template MultiStrategieResult_perStudyAreaT
+	{
+		parameter<string> StudyArea;
+		////
+		container PerSccenario := 
+			for_each_ne(
+				Impl/Scenarios/name
+				, 'MultiStrategieResult_perScenarioT('+quote(Impl/Scenarios/name)+')'
+			);
+	}
+	
+	Template MultiStrategieResult_perScenarioT : using = "Classifications"
+	{
+		////
+		parameter<string> Scenario;
+		////
+		
+		unit<uint32>      Buurt     := ='Geography/RegioIndelingen/Buurt/Subset_'+StudyArea;
+		attribute<rdc_meter> Havenstad_omlijning (poly, /Geography/RegioIndelingen/Buurt/Subset_Havenstad/single2multi_1) := /Geography/RegioIndelingen/Buurt/Subset_Havenstad/single2multi_1/geometry_rd;
+		
+		container Generate_Output :=
+			for_each_nedv(
+				RekenJaar_tot2040/name
+				, 'Settings/export_output/'+RekenJaar_tot2040/name+'/result'
+				, void
+				, string
+			)
+		{
+			parameter<String> Generate_All := 'Ready', ExplicitSuppliers = "=AsList(RekenJaar_tot2040/name, ';')";
+		}
+		
+
+		container Settings
+		{
+			parameter<string> OutputFolder_str    := '%localDataProjDir%/Results/OutputVoorESDL/'+StudyArea+'/'+Scenario;
+			unit<uint32> list_output_attributes   := SubItem_PropValues(Output/PerJaar/J2019/Attributen,'name');
+			parameter<string> list_output_attributes_str := replace(AsList(list_output_attributes/name, ';'), 'Geometry;','');
+			
+			unit<uint8> Havenstad_Scenario_strategie := =Scenario == 'AMS_1_AllesGas' ? 'Impl/Havenstad_Scenario1_strategie' : Scenario == 'AMS_2_AllesNaturel' ? 'Impl/Havenstad_Scenario2_strategie' : 'Impl/Havenstad_Scenario2_strategie';
+			
+			unit<uint8> Havenstad_Scenario_strategie_NoData   := union_unit_uint8(Impl/NoData, Havenstad_Scenario_strategie)
+			{
+				attribute<string> name  := union_data(., Impl/NoData/name, Havenstad_Scenario_strategie/name);
+				attribute<string> label := union_data(., Impl/NoData/label, Havenstad_Scenario_strategie/label);
+				container V := for_each_nedv(name, string(id(.))+'[..]', void, .);
+			}
+			container export_output := 
+				for_each_ne(
+					RekenJaar_tot2040/name
+					, 'model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Output/PerJaar/'+RekenJaar_tot2040/name+'/Attributen, '+quote(list_output_attributes_str)+' , '+quote(OutputFolder_str+'/'+RekenJaar_tot2040/name+'/PerPlanRegio_ESDL.csv')+')'
+				);
+		}
+		
+		container ReadData 
+		{
+			container Read_CSVs_perVariant := 
+				for_each_ne(
+					Settings/Havenstad_Scenario_strategie/name
+					, 'Read_CSVs_T('+quote(Settings/Havenstad_Scenario_strategie/name)+')'
+				);
+			
+			Template Read_CSVs_T
+			{
+				parameter<string> VariantName;
+				parameter<string> DataPath     := '%localDataProjDir%/Results/'+StudyArea+'/'+Scenario+'/'+VariantName;
+				
+				
+				unit<uint32> J2019
+				: StorageName = "= DataPath+'/Y2019/PerPlanRegio_ESDL.csv'"
+				, StorageType = "gdal.vect"
+				, StorageReadOnly = "true"
+				, KeepData = "true"
+				{
+					attribute<rdc_meter> geometry (poly, Buurt)      := Buurt/geometry;
+					attribute<Buurt>     Buurt_rel                   := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<int32>   Nat_Meerkosten (Buurt)      := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[int32]);
+					attribute<int32>   CO2_uitstoot (Buurt)        := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[int32]);
+					attribute<int32>   Warmtevraag (Buurt)         := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[int32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[int32]);
+					attribute<int32>   Elektriciteitsvraag (Buurt) := rjoin(id(buurt), buurt_rel, Woning_H11_Input_Elektriciteit [int32]) + rjoin(id(buurt), buurt_rel, Util_H11_Input_Elektriciteit [int32]);
+					attribute<int32>   Gasvraag (Buurt)            := rjoin(id(buurt), buurt_rel, Woning_H09_Input_Aardgas[int32]) + rjoin(id(buurt), buurt_rel, util_H09_Input_Aardgas  [int32]);
+					
+					attribute<bool>    IsRelevant       (Buurt) := aansl_aardgas > 0i;
+					
+					attribute<int32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[int32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[int32]);
+					attribute<int32>   aansl_ewp_lucht  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A05_Aansl_eWP_lucht[int32]) + rjoin(id(buurt), buurt_rel, util_A05_Aansl_eWP_lucht[int32]);
+					attribute<int32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[int32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[int32]);
+					attribute<int32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [int32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [int32]);
+					attribute<int32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [int32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [int32]);
+					attribute<int32>   aansl_aardgas    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas  [int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas  [int32]);
+				}
+				unit<uint32> J2030
+				: StorageName = "= DataPath+'/Y2030/PerPlanRegio_ESDL.csv'"
+				, StorageType = "gdal.vect"
+				, StorageReadOnly = "true"
+				, KeepData = "true"
+				{
+					attribute<rdc_meter> geometry (poly, Buurt)      := Buurt/geometry;
+					attribute<Buurt>     Buurt_rel                   := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<int32>   Nat_Meerkosten (Buurt)      := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[int32]);
+					attribute<int32>   CO2_uitstoot (Buurt)        := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[int32]);
+					attribute<int32>   Warmtevraag (Buurt)         := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[int32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[int32]);
+					attribute<int32>   Elektriciteitsvraag (Buurt) := rjoin(id(buurt), buurt_rel, Woning_H11_Input_Elektriciteit [int32]) + rjoin(id(buurt), buurt_rel, Util_H11_Input_Elektriciteit [int32]);
+					attribute<int32>   Gasvraag (Buurt)            := rjoin(id(buurt), buurt_rel, Woning_H09_Input_Aardgas[int32]) + rjoin(id(buurt), buurt_rel, util_H09_Input_Aardgas  [int32]);
+					
+					attribute<bool>      IsRelevant       (Buurt) := switch(
+																		  case(VariantName == 'S0_Referentie', aansl_aardgas > 0i || aansl_groengas > 0i)
+																		, case(VariantName == 'S1a_B_LuchtWP', aansl_ewp_lucht > 0i)
+																		, case(VariantName == 'S1b_B_BodemWP', aansl_ewp_bodem > 0i)
+																		, case(VariantName == 'S2a_B_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S2d_D_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S3a_B_LT30_30', aansl_lt_30_30 > 0i)
+																		, case(VariantName == 'S3b_B_LT30_70', aansl_lt_30_70 > 0i)
+																		, FALSE);
+					
+					attribute<int32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[int32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[int32]);
+					attribute<int32>   aansl_ewp_lucht  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A05_Aansl_eWP_lucht[int32]) + rjoin(id(buurt), buurt_rel, util_A05_Aansl_eWP_lucht[int32]);
+					attribute<int32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[int32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[int32]);
+					attribute<int32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [int32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [int32]);
+					attribute<int32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [int32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [int32]);
+					attribute<int32>   aansl_aardgas    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas  [int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas  [int32]);
+					attribute<int32>   aansl_groengas   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A02_Aansl_groengas   [int32]) + rjoin(id(buurt), buurt_rel, util_A02_Aansl_groengas   [int32]);
+				}
+				unit<uint32> J2040
+				: StorageName = "= DataPath+'/Y2040/PerPlanRegio_ESDL.csv'"
+				, StorageType = "gdal.vect"
+				, StorageReadOnly = "true"
+				, KeepData = "true"
+				{
+					attribute<rdc_meter> geometry (poly, Buurt)      := Buurt/geometry;
+					attribute<Buurt>     Buurt_rel                   := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<int32>   Nat_Meerkosten (Buurt)      := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[int32]);
+					attribute<int32>   CO2_uitstoot (Buurt)        := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[int32]);
+					attribute<int32>   Warmtevraag (Buurt)         := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[int32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[int32]);
+					attribute<int32>   Elektriciteitsvraag (Buurt) := rjoin(id(buurt), buurt_rel, Woning_H11_Input_Elektriciteit [int32]) + rjoin(id(buurt), buurt_rel, Util_H11_Input_Elektriciteit [int32]);
+					attribute<int32>   Gasvraag (Buurt)            := rjoin(id(buurt), buurt_rel, Woning_H09_Input_Aardgas[int32]) + rjoin(id(buurt), buurt_rel, util_H09_Input_Aardgas  [int32]);
+					
+					attribute<bool>      IsRelevant       (Buurt) := switch(
+																		  case(VariantName == 'S0_Referentie', aansl_aardgas > 0i || aansl_groengas > 0i)
+																		, case(VariantName == 'S1a_B_LuchtWP', aansl_ewp_lucht > 0i)
+																		, case(VariantName == 'S1b_B_BodemWP', aansl_ewp_bodem > 0i)
+																		, case(VariantName == 'S2a_B_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S2d_D_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S3a_B_LT30_30', aansl_lt_30_30 > 0i)
+																		, case(VariantName == 'S3b_B_LT30_70', aansl_lt_30_70 > 0i)
+																		, FALSE);
+					
+					attribute<int32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[int32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[int32]);
+					attribute<int32>   aansl_ewp_lucht  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A05_Aansl_eWP_lucht[int32]) + rjoin(id(buurt), buurt_rel, util_A05_Aansl_eWP_lucht[int32]);
+					attribute<int32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[int32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[int32]);
+					attribute<int32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [int32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [int32]);
+					attribute<int32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [int32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [int32]);
+					attribute<int32>   aansl_aardgas    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas  [int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas  [int32]);
+					attribute<int32>   aansl_groengas   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A02_Aansl_groengas   [int32]) + rjoin(id(buurt), buurt_rel, util_A02_Aansl_groengas   [int32]);
+				}
+				unit<uint32> J2050
+				: StorageName = "= DataPath+'/Y2050/PerPlanRegio_ESDL.csv'"
+				, StorageType = "gdal.vect"
+				, StorageReadOnly = "true"
+				, KeepData = "true"
+				{
+					attribute<rdc_meter> geometry (poly, Buurt)      := Buurt/geometry;
+					attribute<Buurt>     Buurt_rel                   := rlookup(BU_CODE, Buurt/BU_CODE);
+					attribute<int32>   Nat_Meerkosten (Buurt)      := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[int32]);
+					attribute<int32>   CO2_uitstoot (Buurt)        := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[int32]);
+					attribute<int32>   Warmtevraag (Buurt)         := rjoin(id(buurt), buurt_rel, Woning_H01_Vraag_Warmte_Totaal[int32]) + rjoin(id(buurt), buurt_rel, Util_H01_Vraag_Warmte_Totaal[int32]);
+					attribute<int32>   Elektriciteitsvraag (Buurt) := rjoin(id(buurt), buurt_rel, Woning_H11_Input_Elektriciteit [int32]) + rjoin(id(buurt), buurt_rel, Util_H11_Input_Elektriciteit [int32]);
+					attribute<int32>   Gasvraag (Buurt)            := rjoin(id(buurt), buurt_rel, Woning_H09_Input_Aardgas[int32]) + rjoin(id(buurt), buurt_rel, util_H09_Input_Aardgas  [int32]);
+					
+					attribute<bool>      IsRelevant       (Buurt) := switch(
+																		  case(VariantName == 'S0_Referentie', aansl_aardgas > 0i || aansl_groengas > 0i)
+																		, case(VariantName == 'S1a_B_LuchtWP', aansl_ewp_lucht > 0i)
+																		, case(VariantName == 'S1b_B_BodemWP', aansl_ewp_bodem > 0i)
+																		, case(VariantName == 'S2a_B_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S2d_D_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S3a_B_LT30_30', aansl_lt_30_30 > 0i)
+																		, case(VariantName == 'S3b_B_LT30_70', aansl_lt_30_70 > 0i)
+																		, FALSE);
+					
+					attribute<int32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[int32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[int32]);
+					attribute<int32>   aansl_ewp_lucht  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A05_Aansl_eWP_lucht[int32]) + rjoin(id(buurt), buurt_rel, util_A05_Aansl_eWP_lucht[int32]);
+					attribute<int32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[int32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[int32]);
+					attribute<int32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [int32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [int32]);
+					attribute<int32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [int32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [int32]);
+					attribute<int32>   aansl_aardgas    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas  [int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas  [int32]);
+					attribute<int32>   aansl_groengas   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A02_Aansl_groengas   [int32]) + rjoin(id(buurt), buurt_rel, util_A02_Aansl_groengas   [int32]);
+				}
+			}
+		}
+		
+		container Calculations
+		{
+			container Strategie_obv_Laagste_Nat_Meerkosten := 
+				for_each_nedv(
+					RekenJaar/name
+					, replace('argmin(0i/0i,'+AsItemList('ReadData/Read_CSVs_perVariant/'+(Settings/Havenstad_Scenario_strategie/name)+'/J@RJ@/IsRelevant ? ReadData/Read_CSVs_perVariant/'+(Settings/Havenstad_Scenario_strategie/name)+'/J@RJ@/Nat_Meerkosten : 0i/0i')+')[Settings/Havenstad_Scenario_strategie_NoData]','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, Settings/Havenstad_Scenario_strategie_NoData
+				);
+				
+			container NationaleMeerKosten_vanBeste := 
+				for_each_nedv(
+					RekenJaar/name
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Havenstad_Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Nat_Meerkosten)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, int32
+				);
+				
+			container CO2Uitstoot_vanBeste := 
+				for_each_nedv(
+					RekenJaar/name
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Havenstad_Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/CO2_uitstoot)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, int32
+				);
+				
+			container Elekvraag_vanBeste := 
+				for_each_nedv(
+					RekenJaar/name
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Havenstad_Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Elektriciteitsvraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, int32
+				);
+			container Warmtevraag_vanBeste := 
+				for_each_nedv(
+					RekenJaar/name
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Havenstad_Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Warmtevraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, Buurt
+					, int32
+				);
+		}
+		
+		container Output
+		{
+			container VestaOutput_impl
+			{
+				Container I09_aantal_woningen                    := KiesVariabeleVanStrategie('I09_aantal_woningen', nrAsl);
+				Container I10_aantal_utiliteit                   := KiesVariabeleVanStrategie('I10_aantal_utiliteit', nrAsl);
+				Container I11_woningequivalenten                 := KiesVariabeleVanStrategie('I11_woningequivalenten', nrWoning);
+				Container I13_opp_utiliteit                      := KiesVariabeleVanStrategie('I13_opp_utiliteit', m2);
+
+				Container Woning_H01_Vraag_Warmte_Totaal         := KiesVariabeleVanStrategie('Woning_H01_Vraag_Warmte_Totaal', GJ_yr);
+				Container Woning_H02_Vraag_Ruimteverwarming      := KiesVariabeleVanStrategie('Woning_H02_Vraag_Ruimteverwarming', GJ_yr);
+				Container Woning_H03_Vraag_Tapwater              := KiesVariabeleVanStrategie('Woning_H03_Vraag_Tapwater', GJ_yr);
+				Container Woning_H04_Vraag_Ventilatie            := KiesVariabeleVanStrategie('Woning_H04_Vraag_Ventilatie', GJ_yr);
+				Container Woning_H05_Vraag_Koude                 := KiesVariabeleVanStrategie('Woning_H05_Vraag_Koude', GJ_yr);
+				Container Woning_H06_Vraag_Apparaten             := KiesVariabeleVanStrategie('Woning_H06_Vraag_Apparaten', GJ_yr);
+				Container Woning_H09_Input_Aardgas               := KiesVariabeleVanStrategie('Woning_H09_Input_Aardgas', GJ_yr);
+				Container Woning_H10_Input_Duurzaamgas           := KiesVariabeleVanStrategie('Woning_H10_Input_Duurzaamgas', GJ_yr);
+				Container Woning_H11_Input_Elektriciteit         := KiesVariabeleVanStrategie('Woning_H11_Input_Elektriciteit', GJ_yr);
+				Container Woning_H12_Input_MTwarmte              := KiesVariabeleVanStrategie('Woning_H12_Input_MTwarmte', GJ_yr);
+				Container Woning_H13_Input_LTwarmte              := KiesVariabeleVanStrategie('Woning_H13_Input_LTwarmte', GJ_yr);
+				Container Woning_H21_CapaciteitsvraagE           := KiesVariabeleVanStrategie('Woning_H21_CapaciteitsvraagE', kW);
+				Container Woning_H22_AantalNieuweMSR             := KiesVariabeleVanStrategie('Woning_H22_AantalNieuweMSR', MSR);
+				
+				Container Woning_A01_Aansl_aardgas               := KiesVariabeleVanStrategie('Woning_A01_Aansl_aardgas', nrAsl);
+				Container Woning_A02_Aansl_groengas              := KiesVariabeleVanStrategie('Woning_A02_Aansl_groengas', nrAsl);
+				Container Woning_A03_Aansl_waterstof             := KiesVariabeleVanStrategie('Woning_A03_Aansl_waterstof', nrAsl);
+				Container Woning_A04_Aansl_Gasketel              := KiesVariabeleVanStrategie('Woning_A04_Aansl_Gasketel', nrAsl);
+				Container Woning_A05_Aansl_eWP_lucht             := KiesVariabeleVanStrategie('Woning_A05_Aansl_eWP_lucht', nrAsl);
+				Container Woning_A06_Aansl_eWP_bodem             := KiesVariabeleVanStrategie('Woning_A06_Aansl_eWP_bodem', nrAsl);
+				Container Woning_A07_Aansl_Rest70_collGGheater   := KiesVariabeleVanStrategie('Woning_A07_Aansl_Rest70_collGGheater', nrAsl);
+				Container Woning_A08_Aansl_Geo70_collGGheater    := KiesVariabeleVanStrategie('Woning_A08_Aansl_Geo70_collGGheater', nrAsl);
+				Container Woning_A09_Aansl_Rest30_eWPlucht       := KiesVariabeleVanStrategie('Woning_A09_Aansl_Rest30_eWPlucht', nrAsl);
+				Container Woning_A10_Aansl_Rest30_colleWP70      := KiesVariabeleVanStrategie('Woning_A10_Aansl_Rest30_colleWP70', nrAsl);
+				Container Woning_A11_Aansl_WKO15_colleWP70       := KiesVariabeleVanStrategie('Woning_A11_Aansl_WKO15_colleWP70', nrAsl);
+				Container Woning_A12_Aansl_WKO15_colleWP50_beWP  := KiesVariabeleVanStrategie('Woning_A12_Aansl_WKO15_colleWP50_beWP', nrAsl);
+				Container Woning_A13_Aansl_WKO15_TEO15_colleWP70 := KiesVariabeleVanStrategie('Woning_A13_Aansl_WKO15_TEO15_colleWP70', nrAsl);
+				Container Woning_A14_Aansl_hWP                   := KiesVariabeleVanStrategie('Woning_A14_Aansl_hWP', nrAsl);
+				Container Woning_A15_Aansl_h2WP                  := KiesVariabeleVanStrategie('Woning_A15_Aansl_h2WP', nrAsl);
+				Container Woning_A16_Aansl_h2R                   := KiesVariabeleVanStrategie('Woning_A16_Aansl_h2R', nrAsl);
+				
+				Container Woning_L01_Aansl_LabelAppp             := KiesVariabeleVanStrategie('Woning_L01_Aansl_LabelAppp', nrAsl);
+				Container Woning_L02_Aansl_LabelA                := KiesVariabeleVanStrategie('Woning_L02_Aansl_LabelA', nrAsl);
+				Container Woning_L03_Aansl_LabelB                := KiesVariabeleVanStrategie('Woning_L03_Aansl_LabelB', nrAsl);
+				Container Woning_L04_Aansl_LabelC                := KiesVariabeleVanStrategie('Woning_L04_Aansl_LabelC', nrAsl);
+				Container Woning_L05_Aansl_LabelD                := KiesVariabeleVanStrategie('Woning_L05_Aansl_LabelD', nrAsl);
+				Container Woning_L06_Aansl_LabelE                := KiesVariabeleVanStrategie('Woning_L06_Aansl_LabelE', nrAsl);
+				Container Woning_L07_Aansl_LabelF                := KiesVariabeleVanStrategie('Woning_L07_Aansl_LabelF', nrAsl);
+				Container Woning_L08_Aansl_LabelG                := KiesVariabeleVanStrategie('Woning_L08_Aansl_LabelG', nrAsl);
+				Container Woning_L09_Aansl_GeenLabel             := KiesVariabeleVanStrategie('Woning_L09_Aansl_GeenLabel', nrAsl);
+
+				Container Util_H01_Vraag_Warmte_Totaal           := KiesVariabeleVanStrategie('Util_H01_Vraag_Warmte_Totaal', GJ_yr);
+				Container Util_H02_Vraag_Ruimteverwarming        := KiesVariabeleVanStrategie('Util_H02_Vraag_Ruimteverwarming', GJ_yr);
+				Container Util_H03_Vraag_Tapwater                := KiesVariabeleVanStrategie('Util_H03_Vraag_Tapwater', GJ_yr);
+				Container Util_H04_Vraag_Ventilatie              := KiesVariabeleVanStrategie('Util_H04_Vraag_Ventilatie', GJ_yr);
+				Container Util_H05_Vraag_Koude                   := KiesVariabeleVanStrategie('Util_H05_Vraag_Koude', GJ_yr);
+				Container Util_H06_Vraag_Apparaten               := KiesVariabeleVanStrategie('Util_H06_Vraag_Apparaten', GJ_yr);
+				Container Util_H09_Input_Aardgas                 := KiesVariabeleVanStrategie('Util_H09_Input_Aardgas', GJ_yr);
+				Container Util_H10_Input_Duurzaamgas             := KiesVariabeleVanStrategie('Util_H10_Input_Duurzaamgas', GJ_yr);
+				Container Util_H11_Input_Elektriciteit           := KiesVariabeleVanStrategie('Util_H11_Input_Elektriciteit', GJ_yr);
+				Container Util_H12_Input_MTwarmte                := KiesVariabeleVanStrategie('Util_H12_Input_MTwarmte', GJ_yr);
+				Container Util_H13_Input_LTwarmte                := KiesVariabeleVanStrategie('Util_H13_Input_LTwarmte', GJ_yr);
+				Container Util_H21_CapaciteitsvraagE             := KiesVariabeleVanStrategie('Util_H21_CapaciteitsvraagE', kW);
+				Container Util_H22_AantalNieuweMSR               := KiesVariabeleVanStrategie('Util_H22_AantalNieuweMSR', MSR);
+				
+				Container Util_A01_Aansl_aardgas                 := KiesVariabeleVanStrategie('Util_A01_Aansl_aardgas', nrAsl);
+				Container Util_A02_Aansl_groengas                := KiesVariabeleVanStrategie('Util_A02_Aansl_groengas', nrAsl);
+				Container Util_A03_Aansl_waterstof               := KiesVariabeleVanStrategie('Util_A03_Aansl_waterstof', nrAsl);
+				Container Util_A04_Aansl_Gasketel                := KiesVariabeleVanStrategie('Util_A04_Aansl_Gasketel', nrAsl);
+				Container Util_A05_Aansl_eWP_lucht               := KiesVariabeleVanStrategie('Util_A05_Aansl_eWP_lucht', nrAsl);
+				Container Util_A06_Aansl_eWP_bodem               := KiesVariabeleVanStrategie('Util_A06_Aansl_eWP_bodem', nrAsl);
+				Container Util_A07_Aansl_Rest70_collGGheater     := KiesVariabeleVanStrategie('Util_A07_Aansl_Rest70_collGGheater', nrAsl);
+				Container Util_A08_Aansl_Geo70_collGGheater      := KiesVariabeleVanStrategie('Util_A08_Aansl_Geo70_collGGheater', nrAsl);
+				Container Util_A09_Aansl_Rest30_eWPlucht         := KiesVariabeleVanStrategie('Util_A09_Aansl_Rest30_eWPlucht', nrAsl);
+				Container Util_A10_Aansl_Rest30_colleWP70        := KiesVariabeleVanStrategie('Util_A10_Aansl_Rest30_colleWP70', nrAsl);
+				Container Util_A11_Aansl_WKO15_colleWP70         := KiesVariabeleVanStrategie('Util_A11_Aansl_WKO15_colleWP70', nrAsl);
+				Container Util_A12_Aansl_WKO15_colleWP50_beWP    := KiesVariabeleVanStrategie('Util_A12_Aansl_WKO15_colleWP50_beWP', nrAsl);
+				Container Util_A13_Aansl_WKO15_TEO15_colleWP70   := KiesVariabeleVanStrategie('Util_A13_Aansl_WKO15_TEO15_colleWP70', nrAsl);
+				Container Util_A14_Aansl_hWP                     := KiesVariabeleVanStrategie('Util_A14_Aansl_hWP', nrAsl);
+				Container Util_A15_Aansl_h2WP                    := KiesVariabeleVanStrategie('Util_A15_Aansl_h2WP', nrAsl);
+				Container Util_A16_Aansl_h2R                     := KiesVariabeleVanStrategie('Util_A16_Aansl_h2R', nrAsl);
+				
+				Container Util_L01_Aansl_LabelAppp               := KiesVariabeleVanStrategie('Util_L01_Aansl_LabelAppp', nrAsl);
+				Container Util_L02_Aansl_LabelA                  := KiesVariabeleVanStrategie('Util_L02_Aansl_LabelA', nrAsl);
+				Container Util_L03_Aansl_LabelB                  := KiesVariabeleVanStrategie('Util_L03_Aansl_LabelB', nrAsl);
+				Container Util_L04_Aansl_LabelC                  := KiesVariabeleVanStrategie('Util_L04_Aansl_LabelC', nrAsl);
+				Container Util_L05_Aansl_LabelD                  := KiesVariabeleVanStrategie('Util_L05_Aansl_LabelD', nrAsl);
+				Container Util_L06_Aansl_LabelE                  := KiesVariabeleVanStrategie('Util_L06_Aansl_LabelE', nrAsl);
+				Container Util_L07_Aansl_LabelF                  := KiesVariabeleVanStrategie('Util_L07_Aansl_LabelF', nrAsl);
+				Container Util_L08_Aansl_LabelG                  := KiesVariabeleVanStrategie('Util_L08_Aansl_LabelG', nrAsl);
+				Container Util_L09_Aansl_GeenLabel               := KiesVariabeleVanStrategie('Util_L09_Aansl_GeenLabel', nrAsl);
+				
+				Container H15_CO2_uitstoot                       := KiesVariabeleVanStrategie('H15_CO2_uitstoot', ton_yr);
+				Container H16_Nat_meerkost                       := KiesVariabeleVanStrategie('H16_Nat_meerkost', Eur_yr);
+				Container H17_Nat_meerkost_CO2                   := KiesVariabeleVanStrategie('H17_Nat_meerkost_CO2', Eur_ton);
+				Container H18_Nat_meerkost_WEQ                   := KiesVariabeleVanStrategie('H18_Nat_meerkost_WEQ', Eur_yr_WEQ);
+				Container H23_Capaciteit_huidig                  := KiesVariabeleVanStrategie('H23_Capaciteit_huidig', kW);
+			}
+
+			container PerJaar := 
+				for_each_ne(
+					RekenJaar_tot2040/name
+					, 'PerJaarT('+quote(RekenJaar_tot2040/name)+')'
+				);
+			
+			Template PerJaarT
+			{
+				parameter<string> Jaar;
+				
+				unit<uint32> Attributen := Buurt
+				{
+					attribute<dpoint>       Geometry (poly)                        := Buurt/Geometry;
+					attribute<String>       BU_CODE                                := Buurt/BU_CODE;
+					attribute<string>       Strategie                              := ='Jaar == ''J2019'' ? ''StartJaar'' : Settings/Havenstad_Scenario_strategie_NoData/name[Calculations/Strategie_obv_Laagste_Nat_Meerkosten/'+Jaar+']';
+					attribute<nrAsl>        I09_aantal_woningen	                   := ='VestaOutput_impl/I09_aantal_woningen/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        I10_aantal_utiliteit                   := ='VestaOutput_impl/I10_aantal_utiliteit/Attribute_PerJaar/'+Jaar;
+					attribute<nrWoning>     I11_woningequivalenten                 := ='VestaOutput_impl/I11_woningequivalenten/Attribute_PerJaar/'+Jaar;
+					attribute<m2>           I13_opp_utiliteit                      := ='VestaOutput_impl/I13_opp_utiliteit/Attribute_PerJaar/'+Jaar;
+
+					attribute<GJ_yr>        Woning_H01_Vraag_Warmte_Totaal         := ='VestaOutput_impl/Woning_H01_Vraag_Warmte_Totaal/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Woning_H02_Vraag_Ruimteverwarming      := ='VestaOutput_impl/Woning_H02_Vraag_Ruimteverwarming/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Woning_H03_Vraag_Tapwater              := ='VestaOutput_impl/Woning_H03_Vraag_Tapwater/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Woning_H04_Vraag_Ventilatie            := ='VestaOutput_impl/Woning_H04_Vraag_Ventilatie/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Woning_H05_Vraag_Koude                 := ='VestaOutput_impl/Woning_H05_Vraag_Koude/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Woning_H06_Vraag_Apparaten             := ='VestaOutput_impl/Woning_H06_Vraag_Apparaten/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Woning_H09_Input_Aardgas               := ='VestaOutput_impl/Woning_H09_Input_Aardgas/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Woning_H10_Input_Duurzaamgas           := ='VestaOutput_impl/Woning_H10_Input_Duurzaamgas/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Woning_H11_Input_Elektriciteit         := ='VestaOutput_impl/Woning_H11_Input_Elektriciteit/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Woning_H12_Input_MTwarmte              := ='VestaOutput_impl/Woning_H12_Input_MTwarmte/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Woning_H13_Input_LTwarmte              := ='VestaOutput_impl/Woning_H13_Input_LTwarmte/Attribute_PerJaar/'+Jaar;
+					attribute<kW>           Woning_H21_CapaciteitsvraagE           := ='VestaOutput_impl/Woning_H21_CapaciteitsvraagE/Attribute_PerJaar/'+Jaar;
+					attribute<MSR>          Woning_H22_AantalNieuweMSR             := ='VestaOutput_impl/Woning_H22_AantalNieuweMSR/Attribute_PerJaar/'+Jaar;
+					
+					attribute<nrAsl>        Woning_A01_Aansl_aardgas               := ='VestaOutput_impl/Woning_A01_Aansl_aardgas/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A02_Aansl_groengas              := ='VestaOutput_impl/Woning_A02_Aansl_groengas/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A03_Aansl_waterstof             := ='VestaOutput_impl/Woning_A03_Aansl_waterstof/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A04_Aansl_Gasketel              := ='VestaOutput_impl/Woning_A04_Aansl_Gasketel/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A05_Aansl_eWP_lucht             := ='VestaOutput_impl/Woning_A05_Aansl_eWP_lucht/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A06_Aansl_eWP_bodem             := ='VestaOutput_impl/Woning_A06_Aansl_eWP_bodem/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A07_Aansl_Rest70_collGGheater   := ='VestaOutput_impl/Woning_A07_Aansl_Rest70_collGGheater/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A08_Aansl_Geo70_collGGheater    := ='VestaOutput_impl/Woning_A08_Aansl_Geo70_collGGheater/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A09_Aansl_Rest30_eWPlucht       := ='VestaOutput_impl/Woning_A09_Aansl_Rest30_eWPlucht/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A10_Aansl_Rest30_colleWP70      := ='VestaOutput_impl/Woning_A10_Aansl_Rest30_colleWP70/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A11_Aansl_WKO15_colleWP70       := ='VestaOutput_impl/Woning_A11_Aansl_WKO15_colleWP70/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A12_Aansl_WKO15_colleWP50_beWP  := ='VestaOutput_impl/Woning_A12_Aansl_WKO15_colleWP50_beWP/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A13_Aansl_WKO15_TEO15_colleWP70 := ='VestaOutput_impl/Woning_A13_Aansl_WKO15_TEO15_colleWP70/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A14_Aansl_hWP                   := ='VestaOutput_impl/Woning_A14_Aansl_hWP/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A15_Aansl_h2WP                  := ='VestaOutput_impl/Woning_A15_Aansl_h2WP/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_A16_Aansl_h2R                   := ='VestaOutput_impl/Woning_A16_Aansl_h2R/Attribute_PerJaar/'+Jaar;
+					
+					attribute<nrAsl>        Woning_L01_Aansl_LabelAppp             := ='VestaOutput_impl/Woning_L01_Aansl_LabelAppp/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_L02_Aansl_LabelA                := ='VestaOutput_impl/Woning_L02_Aansl_LabelA/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_L03_Aansl_LabelB                := ='VestaOutput_impl/Woning_L03_Aansl_LabelB/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_L04_Aansl_LabelC                := ='VestaOutput_impl/Woning_L04_Aansl_LabelC/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_L05_Aansl_LabelD                := ='VestaOutput_impl/Woning_L05_Aansl_LabelD/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_L06_Aansl_LabelE                := ='VestaOutput_impl/Woning_L06_Aansl_LabelE/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_L07_Aansl_LabelF                := ='VestaOutput_impl/Woning_L07_Aansl_LabelF/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_L08_Aansl_LabelG                := ='VestaOutput_impl/Woning_L08_Aansl_LabelG/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Woning_L09_Aansl_GeenLabel             := ='VestaOutput_impl/Woning_L09_Aansl_GeenLabel/Attribute_PerJaar/'+Jaar;
+					
+					attribute<GJ_yr>        Util_H01_Vraag_Warmte_Totaal           := ='VestaOutput_impl/Util_H01_Vraag_Warmte_Totaal/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Util_H02_Vraag_Ruimteverwarming        := ='VestaOutput_impl/Util_H02_Vraag_Ruimteverwarming/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Util_H03_Vraag_Tapwater                := ='VestaOutput_impl/Util_H03_Vraag_Tapwater/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Util_H04_Vraag_Ventilatie              := ='VestaOutput_impl/Util_H04_Vraag_Ventilatie/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Util_H05_Vraag_Koude                   := ='VestaOutput_impl/Util_H05_Vraag_Koude/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Util_H06_Vraag_Apparaten               := ='VestaOutput_impl/Util_H06_Vraag_Apparaten/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Util_H09_Input_Aardgas                 := ='VestaOutput_impl/Util_H09_Input_Aardgas/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Util_H10_Input_Duurzaamgas             := ='VestaOutput_impl/Util_H10_Input_Duurzaamgas/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Util_H11_Input_Elektriciteit           := ='VestaOutput_impl/Util_H11_Input_Elektriciteit/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Util_H12_Input_MTwarmte                := ='VestaOutput_impl/Util_H12_Input_MTwarmte/Attribute_PerJaar/'+Jaar;
+					attribute<GJ_yr>        Util_H13_Input_LTwarmte                := ='VestaOutput_impl/Util_H13_Input_LTwarmte/Attribute_PerJaar/'+Jaar;
+					attribute<kW>           Util_H21_CapaciteitsvraagE             := ='VestaOutput_impl/Util_H21_CapaciteitsvraagE/Attribute_PerJaar/'+Jaar;
+					attribute<MSR>          Util_H22_AantalNieuweMSR               := ='VestaOutput_impl/Util_H22_AantalNieuweMSR/Attribute_PerJaar/'+Jaar;
+					
+					attribute<nrAsl>        Util_A01_Aansl_aardgas                 := ='VestaOutput_impl/Util_A01_Aansl_aardgas/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A02_Aansl_groengas                := ='VestaOutput_impl/Util_A02_Aansl_groengas/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A03_Aansl_waterstof               := ='VestaOutput_impl/Util_A03_Aansl_waterstof/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A04_Aansl_gasketel                := ='VestaOutput_impl/Util_A04_Aansl_gasketel/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A05_Aansl_eWP_lucht               := ='VestaOutput_impl/Util_A05_Aansl_eWP_lucht/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A06_Aansl_eWP_bodem               := ='VestaOutput_impl/Util_A06_Aansl_eWP_bodem/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A07_Aansl_Rest70_collGGheater     := ='VestaOutput_impl/Util_A07_Aansl_Rest70_collGGheater/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A08_Aansl_Geo70_collGGheater      := ='VestaOutput_impl/Util_A08_Aansl_Geo70_collGGheater/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A09_Aansl_Rest30_eWPlucht         := ='VestaOutput_impl/Util_A09_Aansl_Rest30_eWPlucht/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A10_Aansl_Rest30_colleWP70        := ='VestaOutput_impl/Util_A10_Aansl_Rest30_colleWP70/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A11_Aansl_WKO15_colleWP70         := ='VestaOutput_impl/Util_A11_Aansl_WKO15_colleWP70/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A12_Aansl_WKO15_colleWP50_beWP    := ='VestaOutput_impl/Util_A12_Aansl_WKO15_colleWP50_beWP/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A13_Aansl_WKO15_TEO15_colleWP70   := ='VestaOutput_impl/Util_A13_Aansl_WKO15_TEO15_colleWP70/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A14_Aansl_hWP                     := ='VestaOutput_impl/Util_A14_Aansl_hWP/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A15_Aansl_h2WP                    := ='VestaOutput_impl/Util_A15_Aansl_h2WP/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_A16_Aansl_h2R                     := ='VestaOutput_impl/Util_A16_Aansl_h2R/Attribute_PerJaar/'+Jaar;
+					
+					attribute<nrAsl>        Util_L01_Aansl_LabelAppp               := ='VestaOutput_impl/Util_L01_Aansl_LabelAppp/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_L02_Aansl_LabelA                  := ='VestaOutput_impl/Util_L02_Aansl_LabelA/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_L03_Aansl_LabelB                  := ='VestaOutput_impl/Util_L03_Aansl_LabelB/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_L04_Aansl_LabelC                  := ='VestaOutput_impl/Util_L04_Aansl_LabelC/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_L05_Aansl_LabelD                  := ='VestaOutput_impl/Util_L05_Aansl_LabelD/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_L06_Aansl_LabelE                  := ='VestaOutput_impl/Util_L06_Aansl_LabelE/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_L07_Aansl_LabelF                  := ='VestaOutput_impl/Util_L07_Aansl_LabelF/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_L08_Aansl_LabelG                  := ='VestaOutput_impl/Util_L08_Aansl_LabelG/Attribute_PerJaar/'+Jaar;
+					attribute<nrAsl>        Util_L09_Aansl_GeenLabel               := ='VestaOutput_impl/Util_L09_Aansl_GeenLabel/Attribute_PerJaar/'+Jaar;
+					
+					attribute<ton_yr>       H15_CO2_uitstoot                       := ='VestaOutput_impl/H15_CO2_uitstoot/Attribute_PerJaar/'+Jaar;
+					attribute<Eur_yr>       H16_Nat_meerkost                       := ='VestaOutput_impl/H16_Nat_meerkost/Attribute_PerJaar/'+Jaar;
+					attribute<Eur_ton>      H17_Nat_meerkost_CO2                   := ='VestaOutput_impl/H17_Nat_meerkost_CO2/Attribute_PerJaar/'+Jaar;
+					attribute<Eur_yr_WEQ>   H18_Nat_meerkost_WEQ                   := ='VestaOutput_impl/H18_Nat_meerkost_WEQ/Attribute_PerJaar/'+Jaar;
+					attribute<kW>           H23_Capaciteit_huidig                  := ='VestaOutput_impl/H23_Capaciteit_huidig/Attribute_PerJaar/'+Jaar;
+				}
+			}
+			
+			Template KiesVariabeleVanStrategie
+			{
+				parameter<string>    TargetAttribute;
+				unit<float64>        valuetype;
+				container Attribute_PerJaar := 
+					for_each_nedv(
+						RekenJaar_tot2040/name
+						, replace('switch('+AsList('
+									case(Calculations/Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Havenstad_Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+'
+									, rjoin(id(buurt), ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/buurt_rel, ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/'+TargetAttribute+'[valuetype]))'
+									, ',')+'
+								, (0/0)[valuetype])'
+							,'@RJ@', string(RekenJaar_tot2040/values))
+						, buurt
+						, valuetype
+					);
+			}
+		}
+	}
+}
