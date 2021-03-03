@@ -19,10 +19,10 @@ set SUBFILENAME=%CUR_YYYY%%CUR_MM%%CUR_DD%-%CUR_HH%%CUR_NN%%CUR_SS%
 set STUDIEGEBIED=Havenstad
 REM 'NL' 'Havenstad' 'Hengelo' 'GooienVechtstreek'
 
-set FLIPSTATUS=FALSE
+set FLIPSTATUS=TRUE
 REM FALSE TRUE
 
-set SCENARIO=1_AllesGas
+set SCENARIO=3_HavenstadAllElectric
 REM	//SCENARIO SETTINGS:
 REM		// Geen scenarios                'LosseStrategieen' 
 REM		// Gooi en Vechtstreek scenarios '1_SA' '2_Check' '3_GeenGroenGas' '4_LabelB' 
@@ -34,10 +34,7 @@ REM		// Hengelo scenarios             'Combinatie_s1abs2ad'
 REM set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_All
  set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_All_metRES
 
-REM Strategieen voor 1_AllesGas
- "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH%"
 
-pause Ready
 
 REM Strategieen voor 2_AllesNaturel
  "%exe_path%" "%prj_dir%\Runs\S1a_B_LuchtWP.dms" "%EXPORT_PATH%"
@@ -51,6 +48,7 @@ REM Strategieen voor 2_AllesNaturel
  "%exe_path%" "%prj_dir%\Runs\S3f_D_LT30_70.dms" "%EXPORT_PATH%"
 
 
+pause Ready
 
 
 

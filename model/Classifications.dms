@@ -499,6 +499,12 @@ container Classifications: Using = "Units", KeepData = "True", IsHidden = "True"
 		attribute<string> name := 'J' + string(Values);
 		container V := for_each_nedv(name, 'value('+string(id(.))+', ..)', void, .);
 	}
+	unit<uint8> RekenJaar_tot2040 := subset(id(RekenJaar) < 3b)
+	{
+		attribute<string> name := RekenJaar/name[nr_OrgEntity];
+		attribute<uint16>  values := RekenJaar/values[nr_OrgEntity];
+		container V := for_each_nedv(name, 'value('+string(id(.))+', ..)', void, .);
+	}
 	
 // =========  Classificaties voor rapgroepen
 	// let op: de set van mogelijke RapGroeperingen is afhankelijk van de gekozen BebouwingsComponenten.

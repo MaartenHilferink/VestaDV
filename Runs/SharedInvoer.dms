@@ -21,7 +21,7 @@ container SharedInvoer
 		// Gooi en Vechtstreek scenarios '1_SA' '2_Check' '3_GeenGroenGas' '4_LabelB' 
 		// Havenstad scenarios           '1_AllesGas' '2_AllesNaturel' '3_HavenstadAllElectric'
 		// Hengelo scenarios             'Combinatie_s1abs2ad'
-	parameter<string> Scenario_config : ['2_AllesNaturel']; 
+	parameter<string> Scenario_config : ['1_AllesGas']; 
 
 
 	parameter<string> StudieGebied_cmd_setting := Expand(., '%env:STUDIEGEBIED%'); 

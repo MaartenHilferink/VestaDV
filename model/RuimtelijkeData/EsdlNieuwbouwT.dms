@@ -142,7 +142,9 @@ template EsdlNieuwbouw
 																					? StrategieToegestaan_Check
 																					: SharedInvoer/Scenario == '3_GeenGroenGas'
 																						? StrategieToegestaan_GeenGroengas
-																						: const(true,.);
+																						: SharedInvoer/Scenario == '3_HavenstadAllElectric'
+																							? StrategieToegestaan_Check
+																							: const(true,.);
 		
 		attribute<bool> StrategieToegestaan_per_buurt(RegioIndelingen/buurt) :=  StrategieToegestaan[invert(PlanRegio_rel)] || not(IsDefined(invert(PlanRegio_rel)));
 	}

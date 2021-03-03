@@ -24,7 +24,7 @@ template AllocatieResultatenComponent
 		container   GebouwOpties  := BebouwingsComponent_UpRef/GebouwOpties;
 		unit<uint8> BcGebouwOptie := BebouwingsComponent_UpRef/BcGebouwOptie;
 
-		attribute<BcGebouwOptie>              GebouwOptie_rel  := Classifications/WarmteOptie/IsGebiedsOptie[WarmteOptie_rel] ? (0 / 0)[BcGebouwOptie] : BO_base/GebouwOptie_rel;
+		attribute<BcGebouwOptie>              GebouwOptie_rel  := BO_base/GebouwOptie_rel;
 		attribute<string>                     GebouwOptie_name := BcGebouwOptie/name[GebouwOptie_rel];
 		attribute<Classifications/Schillabel> Schillabel_rel   := ='merge(GebouwOptie_rel, Classifications/Schillabel, '+AsItemList('GebouwOpties/'+BcGebouwOptie/name+'/Schillabel_rel')+')';
 

@@ -85,17 +85,48 @@ unit<uint32> Buurt:
 	
 	unit<uint32> Subset_Havenstad := ='subset('+AsList('BU_CODE == '+quote(LeidraadResultaten/Exports/Settings/selected_Havenstad/Values), ' || ')+')'
 	{
-		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity];
+		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity]
+		{
+			parameter<uint32> PenColor   := rgb(100,100,100), DialogType = "PenColor";
+			parameter<int16>  PenWidth   := 1s          , DialogType = "PenWidth";
+		}
 		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
+		
+		parameter<rdc_mm> union (poly) := union_polygon(Geometry[rdc_mm]);
+		
+		unit<uint32> unioned_unit_1 : nrofrows = 1
+		{
+			attribute<rdc_mm> geometry_mm (poly) := union_data(., ../union);
+		}
+		
+		unit<uint32> single2multi_1 := split_polygon(unioned_unit_1/geometry_mm)
+		{
+			attribute<rdc_meter> geometry_rd (poly) := geometry[rdc_meter]
+			{
+				parameter<uint32> BrushColor := rgb(0/0,0/0,0/0), DialogType = "BrushColor";
+				parameter<uint32> PenColor   := rgb(255,0,0), DialogType = "PenColor";
+				parameter<int16>  PenWidth   := 2s          , DialogType = "PenWidth";
+			}
+		}
+			
+			
 	}
 	unit<uint32> Subset_RESNoordHollandZuid := subset(Energieregio_rel == Energieregio/V/RESNoordHollandZuid)
 	{
-		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity];
+		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity]
+		{
+			parameter<uint32> PenColor   := rgb(100,100,100), DialogType = "PenColor";
+			parameter<int16>  PenWidth   := 1s          , DialogType = "PenWidth";
+		}
 		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
 	}
 	unit<uint32> Subset_Hengelo := ='subset('+AsList('GM_CODE == '+quote(LeidraadResultaten/Exports/Settings/selected_Hengelo/Values), ' || ')+')'
 	{
-		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity];
+		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity]
+		{
+			parameter<uint32> PenColor   := rgb(0,0,0), DialogType = "PenColor";
+			parameter<int16>  PenWidth   := 1s          , DialogType = "PenWidth";
+		}
 		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
 		attribute<string>    BU_NAAM         := ../BU_NAAM[nr_OrgEntity];
 	}
