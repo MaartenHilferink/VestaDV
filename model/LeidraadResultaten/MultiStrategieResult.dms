@@ -1,5 +1,13 @@
 container MultiStrategieResult
 {
+	container Generates
+	{
+		parameter<string> Havenstad_all            := =AsList('MultiStrategieResult_PerStudyArea/Havenstad/PerSccenario_AMS/'+Impl/Scenarios_AMS/name+'/Generate_Output/generate_all', ' + ');
+		parameter<string> RESNoordHollandZuid_all  := =AsList('MultiStrategieResult_PerStudyArea/RESNoordHollandZuid/PerSccenario_AMS/'+Impl/Scenarios_AMS/name+'/Generate_Output/generate_all', ' + ');
+		parameter<string> GooienVechtstreek_all    := =AsList('MultiStrategieResult_PerStudyArea/GooiEnVechtstreek/PerSccenario_GV/'+Impl/Scenarios_GV/name+'/Generate_Output/generate_all', ' + ');
+		parameter<string> RESGooienVechtstreek_all := =AsList('MultiStrategieResult_PerStudyArea/RESGooienVechtstreek/PerSccenario_GV/'+Impl/Scenarios_GV/name+'/Generate_Output/generate_all', ' + ');
+	}
+	
 	container Impl : using = "Classifications"
 	{
 		unit<uint32> StudyAreas : nrofrows = 4
@@ -60,7 +68,6 @@ container MultiStrategieResult
 														|| id(VestaVarianten) == VestaVarianten/V/S3e_B_TEO 
 														|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
 														|| id(VestaVarianten) == VestaVarianten/V/S3g_D_BuurtWKO 
-														|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
 														|| id(VestaVarianten) == VestaVarianten/V/S3h_D_TEO 
 														|| id(VestaVarianten) == VestaVarianten/V/S4a_GG_B_hWP 
 														|| id(VestaVarianten) == VestaVarianten/V/S4b_GG_B_HR 
@@ -87,14 +94,13 @@ container MultiStrategieResult
 														|| id(VestaVarianten) == VestaVarianten/V/S3e_B_TEO 
 														|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
 														|| id(VestaVarianten) == VestaVarianten/V/S3g_D_BuurtWKO 
-														|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
 														|| id(VestaVarianten) == VestaVarianten/V/S3h_D_TEO 
 													)
 		{ 
 			attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
 			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
 		}
-		unit<uint8> GV_Scenario14_strategie := subset(
+		unit<uint8> GV_Scenario4_strategie := subset(
 														   id(VestaVarianten) == VestaVarianten/V/S1a_B_LuchtWP
 														|| id(VestaVarianten) == VestaVarianten/V/S1b_B_BodemWP 
 														
@@ -113,32 +119,6 @@ container MultiStrategieResult
 		{ 
 			attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
 			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
-		}
-		
-		// unit<uint8> Havenstad_Scenario2_strategie_restwarmte := subset(
-																	   // id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
-																	// || id(VestaVarianten) == VestaVarianten/V/S2d_D_Restwarmte 
-																	// || id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
-																	// || id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
-																	// || id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
-																// )
-		// {
-			// attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
-			// attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
-		// }
-		
-		// unit<uint8> Havenstad_Scenario2_strategie_restwarmte_NoData   := union_unit_uint8(NoData, Havenstad_Scenario2_strategie_restwarmte)
-		// {
-			// attribute<string> name  := union_data(.,NoData/name, Havenstad_Scenario2_strategie_restwarmte/name);
-			// attribute<string> label := union_data(.,NoData/label, Havenstad_Scenario2_strategie_restwarmte/label);
-			// container V := for_each_nedv(name, string(id(.))+'[..]', void, .);
-		// }
-
-		
-		container Generates
-		{
-			parameter<string> Havenstad_all           := =AsList('MultiStrategieResult_PerStudyArea/Havenstad/PerSccenario/'+Scenarios/name+'/Generate_Output/generate_all', ' + ');
-			parameter<string> RESNoordHollandZuid_all := =AsList('MultiStrategieResult_PerStudyArea/RESNoordHollandZuid/PerSccenario/'+Scenarios/name+'/Generate_Output/generate_all', ' + ');
 		}
 		
 	}
@@ -249,7 +229,13 @@ container MultiStrategieResult
 					attribute<int32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[int32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[int32]);
 					attribute<int32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [int32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [int32]);
 					attribute<int32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [int32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [int32]);
-					attribute<int32>   aansl_aardgas    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas  [int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas  [int32]);
+					attribute<int32>   aansl_aardgas               (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas[int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas[int32]);
+					attribute<int32>   aansl_groengas              (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A02_Aansl_groengas[int32]) + rjoin(id(buurt), buurt_rel, util_A02_Aansl_groengas[int32]);
+					attribute<int32>   Aansl_Geo70_collGGheater    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A08_Aansl_Geo70_collGGheater[int32]) + rjoin(id(buurt), buurt_rel, util_A08_Aansl_Geo70_collGGheater[int32]);
+					attribute<int32>   Aansl_WKO15_colleWP70       (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A11_Aansl_WKO15_colleWP70[int32]) + rjoin(id(buurt), buurt_rel, util_A11_Aansl_WKO15_colleWP70[int32]);
+					attribute<int32>   Aansl_WKO15_colleWP50_beWP  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A12_Aansl_WKO15_colleWP50_beWP[int32]) + rjoin(id(buurt), buurt_rel, util_A12_Aansl_WKO15_colleWP50_beWP[int32]);
+					attribute<int32>   Aansl_WKO15_TEO15_colleWP70 (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A13_Aansl_WKO15_TEO15_colleWP70[int32]) + rjoin(id(buurt), buurt_rel, util_A13_Aansl_WKO15_TEO15_colleWP70[int32]);
+					attribute<int32>   Aansl_hWP                   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A14_Aansl_hWP[int32]) + rjoin(id(buurt), buurt_rel, util_A14_Aansl_hWP[int32]);
 				}
 				unit<uint32> J2030
 				: StorageName = "= DataPath+'/Y2030/PerPlanRegio_ESDL.csv'"
@@ -258,6 +244,7 @@ container MultiStrategieResult
 				, KeepData = "true"
 				{
 					attribute<rdc_meter> geometry (poly, Buurt)      := Buurt/geometry;
+					attribute<string>     BUURT_CODE (buurt)         := Buurt/BU_CODE;
 					attribute<Buurt>     Buurt_rel                   := rlookup(BU_CODE, Buurt/BU_CODE);
 					attribute<int32>   Nat_Meerkosten (Buurt)      := rjoin(id(buurt), buurt_rel, H16_Nat_meerkost[int32]);
 					attribute<int32>   CO2_uitstoot (Buurt)        := rjoin(id(buurt), buurt_rel, H15_CO2_uitstoot[int32]);
@@ -269,19 +256,40 @@ container MultiStrategieResult
 																		  case(VariantName == 'S0_Referentie', aansl_aardgas > 0i || aansl_groengas > 0i)
 																		, case(VariantName == 'S1a_B_LuchtWP', aansl_ewp_lucht > 0i)
 																		, case(VariantName == 'S1b_B_BodemWP', aansl_ewp_bodem > 0i)
+																		
 																		, case(VariantName == 'S2a_B_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S2b_B_Geo_contour', Aansl_Geo70_collGGheater > 0i)
 																		, case(VariantName == 'S2d_D_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S2e_D_Geo_contour', Aansl_Geo70_collGGheater > 0i)
+																		
 																		, case(VariantName == 'S3a_B_LT30_30', aansl_lt_30_30 > 0i)
 																		, case(VariantName == 'S3b_B_LT30_70', aansl_lt_30_70 > 0i)
+																		, case(VariantName == 'S3c_B_BuurtWKO', Aansl_WKO15_colleWP70 > 0i)
+																		, case(VariantName == 'S3d_B_WKO', Aansl_WKO15_colleWP50_beWP > 0i)
+																		, case(VariantName == 'S3e_B_TEO', Aansl_WKO15_TEO15_colleWP70 > 0i)
+																		, case(VariantName == 'S3f_D_LT30_70', aansl_lt_30_70 > 0i)
+																		, case(VariantName == 'S3g_D_BuurtWKO', Aansl_WKO15_colleWP70 > 0i)
+																		, case(VariantName == 'S3h_D_TEO', Aansl_WKO15_TEO15_colleWP70 > 0i)
+																		
+																		, case(VariantName == 'S4a_GG_B_hWP', Aansl_hWP > 0i)
+																		, case(VariantName == 'S4b_GG_B_HR', aansl_groengas > 0i)
+																		, case(VariantName == 'S4c_GG_D_hWP', Aansl_hWP > 0i)
+																		, case(VariantName == 'S4d_GG_D_HR', aansl_groengas > 0i)
 																		, FALSE);
+																		
 					
-					attribute<int32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[int32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[int32]);
-					attribute<int32>   aansl_ewp_lucht  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A05_Aansl_eWP_lucht[int32]) + rjoin(id(buurt), buurt_rel, util_A05_Aansl_eWP_lucht[int32]);
-					attribute<int32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[int32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[int32]);
-					attribute<int32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [int32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [int32]);
-					attribute<int32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [int32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [int32]);
-					attribute<int32>   aansl_aardgas    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas  [int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas  [int32]);
-					attribute<int32>   aansl_groengas   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A02_Aansl_groengas   [int32]) + rjoin(id(buurt), buurt_rel, util_A02_Aansl_groengas   [int32]);
+					attribute<int32>   aansl_restwarmte            (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[int32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[int32]);
+					attribute<int32>   aansl_ewp_lucht             (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A05_Aansl_eWP_lucht[int32]) + rjoin(id(buurt), buurt_rel, util_A05_Aansl_eWP_lucht[int32]);
+					attribute<int32>   aansl_ewp_bodem             (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[int32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[int32]);
+					attribute<int32>   aansl_lt_30_30              (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30[int32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30[int32]);
+					attribute<int32>   aansl_lt_30_70              (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70[int32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70[int32]);
+					attribute<int32>   aansl_aardgas               (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas[int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas[int32]);
+					attribute<int32>   aansl_groengas              (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A02_Aansl_groengas[int32]) + rjoin(id(buurt), buurt_rel, util_A02_Aansl_groengas[int32]);
+					attribute<int32>   Aansl_Geo70_collGGheater    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A08_Aansl_Geo70_collGGheater[int32]) + rjoin(id(buurt), buurt_rel, util_A08_Aansl_Geo70_collGGheater[int32]);
+					attribute<int32>   Aansl_WKO15_colleWP70       (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A11_Aansl_WKO15_colleWP70[int32]) + rjoin(id(buurt), buurt_rel, util_A11_Aansl_WKO15_colleWP70[int32]);
+					attribute<int32>   Aansl_WKO15_colleWP50_beWP  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A12_Aansl_WKO15_colleWP50_beWP[int32]) + rjoin(id(buurt), buurt_rel, util_A12_Aansl_WKO15_colleWP50_beWP[int32]);
+					attribute<int32>   Aansl_WKO15_TEO15_colleWP70 (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A13_Aansl_WKO15_TEO15_colleWP70[int32]) + rjoin(id(buurt), buurt_rel, util_A13_Aansl_WKO15_TEO15_colleWP70[int32]);
+					attribute<int32>   Aansl_hWP                   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A14_Aansl_hWP[int32]) + rjoin(id(buurt), buurt_rel, util_A14_Aansl_hWP[int32]);
 				}
 				unit<uint32> J2040
 				: StorageName = "= DataPath+'/Y2040/PerPlanRegio_ESDL.csv'"
@@ -301,10 +309,25 @@ container MultiStrategieResult
 																		  case(VariantName == 'S0_Referentie', aansl_aardgas > 0i || aansl_groengas > 0i)
 																		, case(VariantName == 'S1a_B_LuchtWP', aansl_ewp_lucht > 0i)
 																		, case(VariantName == 'S1b_B_BodemWP', aansl_ewp_bodem > 0i)
+																		
 																		, case(VariantName == 'S2a_B_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S2b_B_Geo_contour', Aansl_Geo70_collGGheater > 0i)
 																		, case(VariantName == 'S2d_D_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S2e_D_Geo_contour', Aansl_Geo70_collGGheater > 0i)
+																		
 																		, case(VariantName == 'S3a_B_LT30_30', aansl_lt_30_30 > 0i)
 																		, case(VariantName == 'S3b_B_LT30_70', aansl_lt_30_70 > 0i)
+																		, case(VariantName == 'S3c_B_BuurtWKO', Aansl_WKO15_colleWP70 > 0i)
+																		, case(VariantName == 'S3d_B_WKO', Aansl_WKO15_colleWP50_beWP > 0i)
+																		, case(VariantName == 'S3e_B_TEO', Aansl_WKO15_TEO15_colleWP70 > 0i)
+																		, case(VariantName == 'S3f_D_LT30_70', aansl_lt_30_70 > 0i)
+																		, case(VariantName == 'S3g_D_BuurtWKO', Aansl_WKO15_colleWP70 > 0i)
+																		, case(VariantName == 'S3h_D_TEO', Aansl_WKO15_TEO15_colleWP70 > 0i)
+																		
+																		, case(VariantName == 'S4a_GG_B_hWP', Aansl_hWP > 0i)
+																		, case(VariantName == 'S4b_GG_B_HR', aansl_groengas > 0i)
+																		, case(VariantName == 'S4c_GG_D_hWP', Aansl_hWP > 0i)
+																		, case(VariantName == 'S4d_GG_D_HR', aansl_groengas > 0i)
 																		, FALSE);
 					
 					attribute<int32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[int32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[int32]);
@@ -312,8 +335,13 @@ container MultiStrategieResult
 					attribute<int32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[int32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[int32]);
 					attribute<int32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [int32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [int32]);
 					attribute<int32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [int32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [int32]);
-					attribute<int32>   aansl_aardgas    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas  [int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas  [int32]);
-					attribute<int32>   aansl_groengas   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A02_Aansl_groengas   [int32]) + rjoin(id(buurt), buurt_rel, util_A02_Aansl_groengas   [int32]);
+					attribute<int32>   aansl_aardgas               (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas[int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas[int32]);
+					attribute<int32>   aansl_groengas              (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A02_Aansl_groengas[int32]) + rjoin(id(buurt), buurt_rel, util_A02_Aansl_groengas[int32]);
+					attribute<int32>   Aansl_Geo70_collGGheater    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A08_Aansl_Geo70_collGGheater[int32]) + rjoin(id(buurt), buurt_rel, util_A08_Aansl_Geo70_collGGheater[int32]);
+					attribute<int32>   Aansl_WKO15_colleWP70       (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A11_Aansl_WKO15_colleWP70[int32]) + rjoin(id(buurt), buurt_rel, util_A11_Aansl_WKO15_colleWP70[int32]);
+					attribute<int32>   Aansl_WKO15_colleWP50_beWP  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A12_Aansl_WKO15_colleWP50_beWP[int32]) + rjoin(id(buurt), buurt_rel, util_A12_Aansl_WKO15_colleWP50_beWP[int32]);
+					attribute<int32>   Aansl_WKO15_TEO15_colleWP70 (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A13_Aansl_WKO15_TEO15_colleWP70[int32]) + rjoin(id(buurt), buurt_rel, util_A13_Aansl_WKO15_TEO15_colleWP70[int32]);
+					attribute<int32>   Aansl_hWP                   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A14_Aansl_hWP[int32]) + rjoin(id(buurt), buurt_rel, util_A14_Aansl_hWP[int32]);
 				}
 				unit<uint32> J2050
 				: StorageName = "= DataPath+'/Y2050/PerPlanRegio_ESDL.csv'"
@@ -333,10 +361,25 @@ container MultiStrategieResult
 																		  case(VariantName == 'S0_Referentie', aansl_aardgas > 0i || aansl_groengas > 0i)
 																		, case(VariantName == 'S1a_B_LuchtWP', aansl_ewp_lucht > 0i)
 																		, case(VariantName == 'S1b_B_BodemWP', aansl_ewp_bodem > 0i)
+																		
 																		, case(VariantName == 'S2a_B_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S2b_B_Geo_contour', Aansl_Geo70_collGGheater > 0i)
 																		, case(VariantName == 'S2d_D_Restwarmte', aansl_restwarmte > 0i)
+																		, case(VariantName == 'S2e_D_Geo_contour', Aansl_Geo70_collGGheater > 0i)
+																		
 																		, case(VariantName == 'S3a_B_LT30_30', aansl_lt_30_30 > 0i)
 																		, case(VariantName == 'S3b_B_LT30_70', aansl_lt_30_70 > 0i)
+																		, case(VariantName == 'S3c_B_BuurtWKO', Aansl_WKO15_colleWP70 > 0i)
+																		, case(VariantName == 'S3d_B_WKO', Aansl_WKO15_colleWP50_beWP > 0i)
+																		, case(VariantName == 'S3e_B_TEO', Aansl_WKO15_TEO15_colleWP70 > 0i)
+																		, case(VariantName == 'S3f_D_LT30_70', aansl_lt_30_70 > 0i)
+																		, case(VariantName == 'S3g_D_BuurtWKO', Aansl_WKO15_colleWP70 > 0i)
+																		, case(VariantName == 'S3h_D_TEO', Aansl_WKO15_TEO15_colleWP70 > 0i)
+																		
+																		, case(VariantName == 'S4a_GG_B_hWP', Aansl_hWP > 0i)
+																		, case(VariantName == 'S4b_GG_B_HR', aansl_groengas > 0i)
+																		, case(VariantName == 'S4c_GG_D_hWP', Aansl_hWP > 0i)
+																		, case(VariantName == 'S4d_GG_D_HR', aansl_groengas > 0i)
 																		, FALSE);
 					
 					attribute<int32>   aansl_restwarmte (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G10_Aansl_Restwarmte[int32]) + rjoin(id(buurt), buurt_rel, util_G10_Aansl_Restwarmte[int32]);
@@ -344,8 +387,13 @@ container MultiStrategieResult
 					attribute<int32>   aansl_ewp_bodem  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A06_Aansl_eWP_bodem[int32]) + rjoin(id(buurt), buurt_rel, util_A06_Aansl_eWP_bodem[int32]);
 					attribute<int32>   aansl_lt_30_30   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G03_Aansl_LT30_30 [int32]) + rjoin(id(buurt), buurt_rel, util_G03_Aansl_LT30_30 [int32]);
 					attribute<int32>   aansl_lt_30_70   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_G04_Aansl_LT30_70 [int32]) + rjoin(id(buurt), buurt_rel, util_G04_Aansl_LT30_70 [int32]);
-					attribute<int32>   aansl_aardgas    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas  [int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas  [int32]);
-					attribute<int32>   aansl_groengas   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A02_Aansl_groengas   [int32]) + rjoin(id(buurt), buurt_rel, util_A02_Aansl_groengas   [int32]);
+					attribute<int32>   aansl_aardgas               (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A01_Aansl_aardgas[int32]) + rjoin(id(buurt), buurt_rel, util_A01_Aansl_aardgas[int32]);
+					attribute<int32>   aansl_groengas              (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A02_Aansl_groengas[int32]) + rjoin(id(buurt), buurt_rel, util_A02_Aansl_groengas[int32]);
+					attribute<int32>   Aansl_Geo70_collGGheater    (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A08_Aansl_Geo70_collGGheater[int32]) + rjoin(id(buurt), buurt_rel, util_A08_Aansl_Geo70_collGGheater[int32]);
+					attribute<int32>   Aansl_WKO15_colleWP70       (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A11_Aansl_WKO15_colleWP70[int32]) + rjoin(id(buurt), buurt_rel, util_A11_Aansl_WKO15_colleWP70[int32]);
+					attribute<int32>   Aansl_WKO15_colleWP50_beWP  (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A12_Aansl_WKO15_colleWP50_beWP[int32]) + rjoin(id(buurt), buurt_rel, util_A12_Aansl_WKO15_colleWP50_beWP[int32]);
+					attribute<int32>   Aansl_WKO15_TEO15_colleWP70 (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A13_Aansl_WKO15_TEO15_colleWP70[int32]) + rjoin(id(buurt), buurt_rel, util_A13_Aansl_WKO15_TEO15_colleWP70[int32]);
+					attribute<int32>   Aansl_hWP                   (Buurt) := rjoin(id(buurt), buurt_rel, Woning_A14_Aansl_hWP[int32]) + rjoin(id(buurt), buurt_rel, util_A14_Aansl_hWP[int32]);
 				}
 			}
 		}
@@ -355,7 +403,7 @@ container MultiStrategieResult
 			container Strategie_obv_Laagste_Nat_Meerkosten := 
 				for_each_nedv(
 					RekenJaar/name
-					, replace('argmin(0i/0i,'+AsItemList('ReadData/Read_CSVs_perVariant/'+(Settings/Havenstad_Scenario_strategie/name)+'/J@RJ@/IsRelevant ? ReadData/Read_CSVs_perVariant/'+(Settings/Havenstad_Scenario_strategie/name)+'/J@RJ@/Nat_Meerkosten : 0i/0i')+')[Settings/Scenario_strategie_NoData]','@RJ@', string(RekenJaar/values))
+					, replace('argmin(0i/0i,'+AsItemList('ReadData/Read_CSVs_perVariant/'+(Settings/Scenario_strategie/name)+'/J@RJ@/IsRelevant ? ReadData/Read_CSVs_perVariant/'+(Settings/Scenario_strategie/name)+'/J@RJ@/Nat_Meerkosten : 0i/0i')+')[Settings/Scenario_strategie_NoData]','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, Settings/Scenario_strategie_NoData
 				);
@@ -363,7 +411,7 @@ container MultiStrategieResult
 			container NationaleMeerKosten_vanBeste := 
 				for_each_nedv(
 					RekenJaar/name
-					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Nat_Meerkosten)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie/name+'/J@RJ@/Nat_Meerkosten)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
 				);
@@ -371,7 +419,7 @@ container MultiStrategieResult
 			container CO2Uitstoot_vanBeste := 
 				for_each_nedv(
 					RekenJaar/name
-					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/CO2_uitstoot)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie/name+'/J@RJ@/CO2_uitstoot)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
 				);
@@ -379,14 +427,14 @@ container MultiStrategieResult
 			container Elekvraag_vanBeste := 
 				for_each_nedv(
 					RekenJaar/name
-					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Elektriciteitsvraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie/name+'/J@RJ@/Elektriciteitsvraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
 				);
 			container Warmtevraag_vanBeste := 
 				for_each_nedv(
 					RekenJaar/name
-					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Warmtevraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie/name+'/J@RJ@/Warmtevraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
 				);
@@ -608,8 +656,8 @@ container MultiStrategieResult
 					for_each_nedv(
 						RekenJaar/name
 						, replace('MakeDefined(switch('+AsList('
-									case(Calculations/Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie_NoData/name+'
-									, rjoin(id(buurt), ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie_NoData/name+'/J@RJ@/buurt_rel, ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie_NoData/name+'/J@RJ@/'+TargetAttribute+'[valuetype]))'
+									case(Calculations/Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie/name+'
+									, rjoin(id(buurt), ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie/name+'/J@RJ@/buurt_rel, ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie/name+'/J@RJ@/'+TargetAttribute+'[valuetype]))'
 									, ',')+'
 								, 0[valuetype]),0[valuetype])'
 							,'@RJ@', string(RekenJaar/values))
