@@ -134,7 +134,7 @@ container LeidraadResultaten: using = "Model;Geography"
 				{
 					parameter<string> BebouwingsSector;
 					
-					Unit<uint32>  PerPlanRegio := PlanRegio, using = "Settings", freedata = "false"
+					Unit<uint32>  PerPlanRegio := PlanRegio, using = "Settings"
 					{
 						attribute<String>       BU_CODE                         (Planregio) := PlanRegio/BU_CODE;
 						attribute<string>       IsTargetStudyArea               (Planregio) := PlanRegio/IsTargetStudyArea;
@@ -566,7 +566,7 @@ container LeidraadResultaten: using = "Model;Geography"
 				unit<uint32> BO_NieuwbouwWoning := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwWoning/BO';
 				unit<uint32> BO_NieuwbouwUtil   := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/NieuwbouwUtil/BO';
 				
-				container Schillabel : FreeData = "false"
+				container Schillabel
 				{
 					attribute<Classifications/schillabel> BestaandeWoning (BO_BestaandeWoning) := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeWoning/BO/Schillabel_rel';
 					attribute<Classifications/schillabel> BestaandeUtil   (BO_BestaandeUtil)   := ='TussenResultaten/'+SrcRekenstapName+'/AllocatieResultaten/BestaandeUtil/BO/Schillabel_rel';
@@ -576,7 +576,7 @@ container LeidraadResultaten: using = "Model;Geography"
 
 						// /TussenResultaten/R3_2030/BebouwingsComponenten/BestaandeWoning/BO/Defaultlabel_new
 						
-				container SchillabelOrDefault : using = "Settings", FreeData = "false"
+				container SchillabelOrDefault : using = "Settings"
 				{
 					container BestaandeWoning :=  
 						for_each_nedv(
@@ -668,7 +668,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					container PlanregioResults      := ='LeidraadResultaten/'+ReportRekenstap+'/PlanregioResults';
 					// container ZichtJaar             := LeidraadResultaten/ZichtJaar;
 
-					container Hoofdindicatoren : using = "PlanregioResults;StateNaAllocatie", FreeData = "false"
+					container Hoofdindicatoren : using = "PlanregioResults;StateNaAllocatie"
 					{
 						unit<uint32> extensief := Invoer/DefaultInstellingen/Basis/PlanRegio
 						{
@@ -1122,7 +1122,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			
 			container Bronnen 
 			{
-				unit<uint32> CombinedBronnen := =Settings/CombinedBronnen_str, FreeData = "false"
+				unit<uint32> CombinedBronnen := =Settings/CombinedBronnen_str
 				{
 					attribute<string>     bron_naam                   := =Settings/CombinedBronnen_str+'/bron_naam';
 					attribute<string>     bron_id                     := =Settings/CombinedBronnen_str+'/bron_id';
@@ -1147,7 +1147,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					for_each_ne(
 						Settings/WarmteBronRelevanteRekenstappen/name
 						, 'HTwarmteBronnenT('+Quote(Settings/WarmteBronRelevanteRekenstappen/name)+')'
-					), FreeData = "false";
+					);
 				
 				template HTwarmteBronnenT
 				{
@@ -1179,7 +1179,7 @@ container LeidraadResultaten: using = "Model;Geography"
 					for_each_ne(
 						Settings/WarmteBronRelevanteRekenstappen/name
 						, 'LTwarmteBronnenT('+Quote(Settings/WarmteBronRelevanteRekenstappen/name)+')'
-					), FreeData = "false";
+					);
 				
 				template LTwarmteBronnenT
 				{
@@ -1264,7 +1264,7 @@ container LeidraadResultaten: using = "Model;Geography"
 	
 	#include<MultiStrategieResult.dms>
 
-	container StartJaar := CalculationSchemes/LeidraadResultaten('StartJaar'), FreeData = "false"
+	container StartJaar := CalculationSchemes/LeidraadResultaten('StartJaar')
 	{
 		container WarmteBestaand
 		{
@@ -1383,7 +1383,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			}
 		}
 	}
-	container Res2030   := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2030w, Classifications/RekenJaar/values)]), FreeData = "false"
+	container Res2030   := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2030w, Classifications/RekenJaar/values)])
 	{	
 		container WarmteBestaand
 		{
@@ -1437,7 +1437,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			}
 		}
 	}
-	container Res2040   := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2040w, Classifications/RekenJaar/values)]), FreeData = "false"
+	container Res2040   := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name, Classifications/Rekenstap/RekenJaar_rel)[rlookup(2040w, Classifications/RekenJaar/values)])
 	{	
 		container WarmteBestaand
 		{
@@ -1491,7 +1491,7 @@ container LeidraadResultaten: using = "Model;Geography"
 			}
 		}
 	}
-	container Res2050   := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name)), FreeData = "false"
+	container Res2050   := CalculationSchemes/LeidraadResultaten(last(Classifications/Rekenstap/name))
 	{
 		container OrigKosten     := Ref2030/PlanregioResults/NationaleKosten
 		{

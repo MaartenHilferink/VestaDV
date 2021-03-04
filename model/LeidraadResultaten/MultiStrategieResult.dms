@@ -2,14 +2,19 @@ container MultiStrategieResult
 {
 	container Impl : using = "Classifications"
 	{
-		unit<uint32> StudyAreas : nrofrows = 2
+		unit<uint32> StudyAreas : nrofrows = 4
 		{
-			attribute<string> name : ['Havenstad', 'RESNoordHollandZuid'];
+			attribute<string> name : ['Havenstad', 'RESNoordHollandZuid','GooiEnVechtstreek','RESGooienVechtstreek'];
 			attribute<string> label := name, DialogType = "LabelText";
 		}
-		unit<uint32> Scenarios : nrofrows = 3
+		unit<uint32> Scenarios_AMS : nrofrows = 3
 		{
 			attribute<string> name : ['AMS_1_AllesGas', 'AMS_2_AllesNaturel', 'AMS_3_HavenstadAllElectric'];
+			attribute<string> label := name, DialogType = "LabelText";
+		}
+		unit<uint32> Scenarios_GV : nrofrows = 4
+		{
+			attribute<string> name : ['GV_1_SA', 'GV_2_Check', 'GV_3_GeenGroenGas','GV_4_LabelB'];
 			attribute<string> label := name, DialogType = "LabelText";
 		}
 		
@@ -19,7 +24,9 @@ container MultiStrategieResult
 			attribute<string> label := name, DialogType = "LabelText";
 		}
 		
-		unit<uint8> Havenstad_Scenario1_strategie := subset(id(VestaVarianten) == VestaVarianten/V/S0_Referentie)
+		unit<uint8> Havenstad_Scenario1_strategie := subset(
+														id(VestaVarianten) == VestaVarianten/V/S0_Referentie
+													)
 		{
 			attribute<string> name := VestaVarianten/VariantNaam[nr_OrgEntity];
 			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
@@ -39,24 +46,93 @@ container MultiStrategieResult
 			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
 		}
 		
-		unit<uint8> Havenstad_Scenario2_strategie_restwarmte := subset(
-																	   id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
-																	|| id(VestaVarianten) == VestaVarianten/V/S2d_D_Restwarmte 
-																	|| id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
-																	|| id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
-																	|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
-																)
-		{
+		unit<uint8> GV_Scenario12_strategie := subset(
+														   id(VestaVarianten) == VestaVarianten/V/S1a_B_LuchtWP
+														|| id(VestaVarianten) == VestaVarianten/V/S1b_B_BodemWP 
+														|| id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
+														|| id(VestaVarianten) == VestaVarianten/V/S2b_B_Geo_contour 
+														|| id(VestaVarianten) == VestaVarianten/V/S2d_D_Restwarmte 
+														|| id(VestaVarianten) == VestaVarianten/V/S2e_D_Geo_contour 
+														|| id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
+														|| id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
+														|| id(VestaVarianten) == VestaVarianten/V/S3c_B_BuurtWKO 
+														|| id(VestaVarianten) == VestaVarianten/V/S3d_B_WKO 
+														|| id(VestaVarianten) == VestaVarianten/V/S3e_B_TEO 
+														|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
+														|| id(VestaVarianten) == VestaVarianten/V/S3g_D_BuurtWKO 
+														|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
+														|| id(VestaVarianten) == VestaVarianten/V/S3h_D_TEO 
+														|| id(VestaVarianten) == VestaVarianten/V/S4a_GG_B_hWP 
+														|| id(VestaVarianten) == VestaVarianten/V/S4b_GG_B_HR 
+														|| id(VestaVarianten) == VestaVarianten/V/S4c_GG_D_hWP 
+														|| id(VestaVarianten) == VestaVarianten/V/S4d_GG_D_HR 
+													)
+		{ 
+			attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
+			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
+		}
+		unit<uint8> GV_Scenario3_strategie := subset(
+														   id(VestaVarianten) == VestaVarianten/V/S1a_B_LuchtWP
+														|| id(VestaVarianten) == VestaVarianten/V/S1b_B_BodemWP 
+														
+														|| id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
+														|| id(VestaVarianten) == VestaVarianten/V/S2b_B_Geo_contour 
+														|| id(VestaVarianten) == VestaVarianten/V/S2d_D_Restwarmte 
+														|| id(VestaVarianten) == VestaVarianten/V/S2e_D_Geo_contour 
+														
+														|| id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
+														|| id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
+														|| id(VestaVarianten) == VestaVarianten/V/S3c_B_BuurtWKO 
+														|| id(VestaVarianten) == VestaVarianten/V/S3d_B_WKO 
+														|| id(VestaVarianten) == VestaVarianten/V/S3e_B_TEO 
+														|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
+														|| id(VestaVarianten) == VestaVarianten/V/S3g_D_BuurtWKO 
+														|| id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
+														|| id(VestaVarianten) == VestaVarianten/V/S3h_D_TEO 
+													)
+		{ 
+			attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
+			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
+		}
+		unit<uint8> GV_Scenario14_strategie := subset(
+														   id(VestaVarianten) == VestaVarianten/V/S1a_B_LuchtWP
+														|| id(VestaVarianten) == VestaVarianten/V/S1b_B_BodemWP 
+														
+														|| id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
+														|| id(VestaVarianten) == VestaVarianten/V/S2b_B_Geo_contour 
+														
+														|| id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
+														|| id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
+														|| id(VestaVarianten) == VestaVarianten/V/S3c_B_BuurtWKO 
+														|| id(VestaVarianten) == VestaVarianten/V/S3d_B_WKO 
+														|| id(VestaVarianten) == VestaVarianten/V/S3e_B_TEO 
+														
+														|| id(VestaVarianten) == VestaVarianten/V/S4a_GG_B_hWP 
+														|| id(VestaVarianten) == VestaVarianten/V/S4b_GG_B_HR 
+													)
+		{ 
 			attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
 			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
 		}
 		
-		unit<uint8> Havenstad_Scenario2_strategie_restwarmte_NoData   := union_unit_uint8(NoData, Havenstad_Scenario2_strategie_restwarmte)
-		{
-			attribute<string> name  := union_data(.,NoData/name, Havenstad_Scenario2_strategie_restwarmte/name);
-			attribute<string> label := union_data(.,NoData/label, Havenstad_Scenario2_strategie_restwarmte/label);
-			container V := for_each_nedv(name, string(id(.))+'[..]', void, .);
-		}
+		// unit<uint8> Havenstad_Scenario2_strategie_restwarmte := subset(
+																	   // id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
+																	// || id(VestaVarianten) == VestaVarianten/V/S2d_D_Restwarmte 
+																	// || id(VestaVarianten) == VestaVarianten/V/S3a_B_LT30_30 
+																	// || id(VestaVarianten) == VestaVarianten/V/S3b_B_LT30_70 
+																	// || id(VestaVarianten) == VestaVarianten/V/S3f_D_LT30_70 
+																// )
+		// {
+			// attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
+			// attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
+		// }
+		
+		// unit<uint8> Havenstad_Scenario2_strategie_restwarmte_NoData   := union_unit_uint8(NoData, Havenstad_Scenario2_strategie_restwarmte)
+		// {
+			// attribute<string> name  := union_data(.,NoData/name, Havenstad_Scenario2_strategie_restwarmte/name);
+			// attribute<string> label := union_data(.,NoData/label, Havenstad_Scenario2_strategie_restwarmte/label);
+			// container V := for_each_nedv(name, string(id(.))+'[..]', void, .);
+		// }
 
 		
 		container Generates
@@ -77,10 +153,15 @@ container MultiStrategieResult
 	{
 		parameter<string> StudyArea;
 		////
-		container PerSccenario := 
+		container PerSccenario_AMS := 
 			for_each_ne(
-				Impl/Scenarios/name
-				, 'MultiStrategieResult_perScenarioT('+quote(Impl/Scenarios/name)+')'
+				Impl/Scenarios_AMS/name
+				, 'MultiStrategieResult_perScenarioT('+quote(Impl/Scenarios_AMS/name)+')'
+			);
+		container PerSccenario_GV := 
+			for_each_ne(
+				Impl/Scenarios_GV/name
+				, 'MultiStrategieResult_perScenarioT('+quote(Impl/Scenarios_GV/name)+')'
 			);
 	}
 	
@@ -95,13 +176,13 @@ container MultiStrategieResult
 		
 		container Generate_Output :=
 			for_each_nedv(
-				RekenJaar_tot2040/name
-				, 'Settings/export_output/'+RekenJaar_tot2040/name+'/result'
+				RekenJaar/name
+				, 'Settings/export_output/'+RekenJaar/name+'/result'
 				, void
 				, string
 			)
 		{
-			parameter<String> Generate_All := 'Ready', ExplicitSuppliers = "=AsList(RekenJaar_tot2040/name, ';')";
+			parameter<String> Generate_All := 'Ready', ExplicitSuppliers = "=AsList(RekenJaar/name, ';')";
 		}
 		
 
@@ -111,18 +192,25 @@ container MultiStrategieResult
 			unit<uint32> list_output_attributes   := SubItem_PropValues(Output/PerJaar/J2019/Attributen,'name');
 			parameter<string> list_output_attributes_str := replace(AsList(list_output_attributes/name, ';'), 'Geometry;','');
 			
-			unit<uint8> Havenstad_Scenario_strategie := =Scenario == 'AMS_1_AllesGas' ? 'Impl/Havenstad_Scenario1_strategie' : Scenario == 'AMS_2_AllesNaturel' ? 'Impl/Havenstad_Scenario2_strategie' : 'Impl/Havenstad_Scenario2_strategie';
+
+			unit<uint8> Havenstad_Scenario_strategie                := =Scenario == 'AMS_1_AllesGas' ? 'Impl/Havenstad_Scenario1_strategie' : Scenario == 'AMS_2_AllesNaturel' ? 'Impl/Havenstad_Scenario2_strategie' : 'Impl/Havenstad_Scenario2_strategie';
+			unit<uint8> RESNoordHollandZuid_Scenario_strategie      := Havenstad_Scenario_strategie;
+			unit<uint8> GooiEnVechtstreek_Scenario_strategie        := =Scenario == 'GV_1_SA' ? 'Impl/GV_Scenario12_strategie' : Scenario == 'GV_2_Check' ? 'Impl/GV_Scenario12_strategie' : Scenario == 'GV_3_GeenGroenGas' ? 'Impl/GV_Scenario3_strategie' : Scenario == 'GV_4_LabelB' ? 'Impl/GV_Scenario4_strategie' : '';
+			unit<uint8> RESGooienVechtstreek_Scenario_strategie     := GooiEnVechtstreek_Scenario_strategie;
 			
-			unit<uint8> Havenstad_Scenario_strategie_NoData   := union_unit_uint8(Impl/NoData, Havenstad_Scenario_strategie)
+			unit<uint8> Scenario_Strategie := =StudyArea+'_Scenario_strategie';
+			
+			unit<uint8> Scenario_strategie_NoData   := union_unit_uint8(Impl/NoData, Scenario_Strategie)
 			{
-				attribute<string> name  := union_data(., Impl/NoData/name, Havenstad_Scenario_strategie/name);
-				attribute<string> label := union_data(., Impl/NoData/label, Havenstad_Scenario_strategie/label);
+				attribute<string> name  := union_data(., Impl/NoData/name, Scenario_Strategie/name);
+				attribute<string> label := union_data(., Impl/NoData/label, Scenario_Strategie/label);
 				container V := for_each_nedv(name, string(id(.))+'[..]', void, .);
 			}
+			
 			container export_output := 
 				for_each_ne(
-					RekenJaar_tot2040/name
-					, 'model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Output/PerJaar/'+RekenJaar_tot2040/name+'/Attributen, '+quote(list_output_attributes_str)+' , '+quote(OutputFolder_str+'/'+RekenJaar_tot2040/name+'/PerPlanRegio_ESDL.csv')+')'
+					RekenJaar/name
+					, 'model/CalculationSchemes/Rapportage/WriteTable32ToCSV_ESDL(Output/PerJaar/'+RekenJaar/name+'/Attributen, '+quote(list_output_attributes_str)+' , '+quote(OutputFolder_str+'/'+RekenJaar/name+'/PerPlanRegio_ESDL.csv')+')'
 				);
 		}
 		
@@ -130,8 +218,8 @@ container MultiStrategieResult
 		{
 			container Read_CSVs_perVariant := 
 				for_each_ne(
-					Settings/Havenstad_Scenario_strategie/name
-					, 'Read_CSVs_T('+quote(Settings/Havenstad_Scenario_strategie/name)+')'
+					Settings/Scenario_strategie_NoData/name
+					, 'Read_CSVs_T('+quote(Settings/Scenario_strategie_NoData/name)+')'
 				);
 			
 			Template Read_CSVs_T
@@ -267,15 +355,15 @@ container MultiStrategieResult
 			container Strategie_obv_Laagste_Nat_Meerkosten := 
 				for_each_nedv(
 					RekenJaar/name
-					, replace('argmin(0i/0i,'+AsItemList('ReadData/Read_CSVs_perVariant/'+(Settings/Havenstad_Scenario_strategie/name)+'/J@RJ@/IsRelevant ? ReadData/Read_CSVs_perVariant/'+(Settings/Havenstad_Scenario_strategie/name)+'/J@RJ@/Nat_Meerkosten : 0i/0i')+')[Settings/Havenstad_Scenario_strategie_NoData]','@RJ@', string(RekenJaar/values))
+					, replace('argmin(0i/0i,'+AsItemList('ReadData/Read_CSVs_perVariant/'+(Settings/Havenstad_Scenario_strategie/name)+'/J@RJ@/IsRelevant ? ReadData/Read_CSVs_perVariant/'+(Settings/Havenstad_Scenario_strategie/name)+'/J@RJ@/Nat_Meerkosten : 0i/0i')+')[Settings/Scenario_strategie_NoData]','@RJ@', string(RekenJaar/values))
 					, Buurt
-					, Settings/Havenstad_Scenario_strategie_NoData
+					, Settings/Scenario_strategie_NoData
 				);
 				
 			container NationaleMeerKosten_vanBeste := 
 				for_each_nedv(
 					RekenJaar/name
-					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Havenstad_Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Nat_Meerkosten)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Nat_Meerkosten)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
 				);
@@ -283,7 +371,7 @@ container MultiStrategieResult
 			container CO2Uitstoot_vanBeste := 
 				for_each_nedv(
 					RekenJaar/name
-					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Havenstad_Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/CO2_uitstoot)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/CO2_uitstoot)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
 				);
@@ -291,14 +379,14 @@ container MultiStrategieResult
 			container Elekvraag_vanBeste := 
 				for_each_nedv(
 					RekenJaar/name
-					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Havenstad_Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Elektriciteitsvraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Elektriciteitsvraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
 				);
 			container Warmtevraag_vanBeste := 
 				for_each_nedv(
 					RekenJaar/name
-					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Havenstad_Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Warmtevraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
+					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/Warmtevraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
 				);
@@ -404,8 +492,8 @@ container MultiStrategieResult
 
 			container PerJaar := 
 				for_each_ne(
-					RekenJaar_tot2040/name
-					, 'PerJaarT('+quote(RekenJaar_tot2040/name)+')'
+					RekenJaar/name
+					, 'PerJaarT('+quote(RekenJaar/name)+')'
 				);
 			
 			Template PerJaarT
@@ -416,7 +504,7 @@ container MultiStrategieResult
 				{
 					attribute<dpoint>       Geometry (poly)                        := Buurt/Geometry;
 					attribute<String>       BU_CODE                                := Buurt/BU_CODE;
-					attribute<string>       Strategie                              := ='Jaar == ''J2019'' ? ''StartJaar'' : Settings/Havenstad_Scenario_strategie_NoData/name[Calculations/Strategie_obv_Laagste_Nat_Meerkosten/'+Jaar+']';
+					attribute<string>       Strategie                              := ='Jaar == ''J2019'' ? ''StartJaar'' : Scenario == ''AMS_1_AllesGas'' ? ''S0_Referentie'' : Settings/Scenario_strategie_NoData/name[Calculations/Strategie_obv_Laagste_Nat_Meerkosten/'+Jaar+']';
 					attribute<nrAsl>        I09_aantal_woningen	                   := ='VestaOutput_impl/I09_aantal_woningen/Attribute_PerJaar/'+Jaar;
 					attribute<nrAsl>        I10_aantal_utiliteit                   := ='VestaOutput_impl/I10_aantal_utiliteit/Attribute_PerJaar/'+Jaar;
 					attribute<nrWoning>     I11_woningequivalenten                 := ='VestaOutput_impl/I11_woningequivalenten/Attribute_PerJaar/'+Jaar;
@@ -518,13 +606,13 @@ container MultiStrategieResult
 				unit<float64>        valuetype;
 				container Attribute_PerJaar := 
 					for_each_nedv(
-						RekenJaar_tot2040/name
-						, replace('switch('+AsList('
-									case(Calculations/Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Havenstad_Scenario_strategie_NoData/v/'+Settings/Havenstad_Scenario_strategie/name+'
-									, rjoin(id(buurt), ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/buurt_rel, ReadData/Read_CSVs_perVariant/'+Settings/Havenstad_Scenario_strategie/name+'/J@RJ@/'+TargetAttribute+'[valuetype]))'
+						RekenJaar/name
+						, replace('MakeDefined(switch('+AsList('
+									case(Calculations/Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie_NoData/name+'
+									, rjoin(id(buurt), ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie_NoData/name+'/J@RJ@/buurt_rel, ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie_NoData/name+'/J@RJ@/'+TargetAttribute+'[valuetype]))'
 									, ',')+'
-								, (0/0)[valuetype])'
-							,'@RJ@', string(RekenJaar_tot2040/values))
+								, 0[valuetype]),0[valuetype])'
+							,'@RJ@', string(RekenJaar/values))
 						, buurt
 						, valuetype
 					);

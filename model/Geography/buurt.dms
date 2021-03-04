@@ -111,6 +111,8 @@ unit<uint32> Buurt:
 			
 			
 	}
+	unit<uint32> Subset_RESGooienVechtstreek := Subset_RESNoordHollandZuid;
+	
 	unit<uint32> Subset_RESNoordHollandZuid := subset(Energieregio_rel == Energieregio/V/RESNoordHollandZuid)
 	{
 		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity]
@@ -121,6 +123,16 @@ unit<uint32> Buurt:
 		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
 	}
 	unit<uint32> Subset_Hengelo := ='subset('+AsList('GM_CODE == '+quote(LeidraadResultaten/Exports/Settings/selected_Hengelo/Values), ' || ')+')'
+	{
+		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity]
+		{
+			parameter<uint32> PenColor   := rgb(0,0,0), DialogType = "PenColor";
+			parameter<int16>  PenWidth   := 1s          , DialogType = "PenWidth";
+		}
+		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
+		attribute<string>    BU_NAAM         := ../BU_NAAM[nr_OrgEntity];
+	}
+	unit<uint32> Subset_GooienVechtstreek := ='subset('+AsList('GM_CODE == '+quote(LeidraadResultaten/Exports/Settings/selected_GooienVechtstreek/Values), ' || ')+')'
 	{
 		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity]
 		{
