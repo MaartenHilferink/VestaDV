@@ -6,13 +6,15 @@ container MultiStrategieResult
 		parameter<string> RESNoordHollandZuid_all  := =AsList('MultiStrategieResult_PerStudyArea/RESNoordHollandZuid/PerSccenario_AMS/'+Impl/Scenarios_AMS/name+'/Generate_Output/generate_all', ' + ');
 		parameter<string> GooienVechtstreek_all    := =AsList('MultiStrategieResult_PerStudyArea/GooiEnVechtstreek/PerSccenario_GV/'+Impl/Scenarios_GV/name+'/Generate_Output/generate_all', ' + ');
 		parameter<string> RESGooienVechtstreek_all := =AsList('MultiStrategieResult_PerStudyArea/RESGooienVechtstreek/PerSccenario_GV/'+Impl/Scenarios_GV/name+'/Generate_Output/generate_all', ' + ');
+		parameter<string> Hengelo_all              := =AsList('MultiStrategieResult_PerStudyArea/Hengelo/PerSccenario_HGL/'+Impl/Scenarios_HGL/name+'/Generate_Output/generate_all', ' + ');
+		parameter<string> RESTwente_all            := =AsList('MultiStrategieResult_PerStudyArea/RESTwente/PerSccenario_HGL/'+Impl/Scenarios_HGL/name+'/Generate_Output/generate_all', ' + ');
 	}
 	
 	container Impl : using = "Classifications"
 	{
-		unit<uint32> StudyAreas : nrofrows = 4
+		unit<uint32> StudyAreas : nrofrows = 6
 		{
-			attribute<string> name : ['Havenstad', 'RESNoordHollandZuid','GooiEnVechtstreek','RESGooienVechtstreek'];
+			attribute<string> name : ['Havenstad', 'RESNoordHollandZuid','GooiEnVechtstreek','RESGooienVechtstreek','Hengelo','RESTwente'];
 			attribute<string> label := name, DialogType = "LabelText";
 		}
 		unit<uint32> Scenarios_AMS : nrofrows = 3
@@ -23,6 +25,11 @@ container MultiStrategieResult
 		unit<uint32> Scenarios_GV : nrofrows = 4
 		{
 			attribute<string> name : ['GV_1_SA', 'GV_2_Check', 'GV_3_GeenGroenGas','GV_4_LabelB'];
+			attribute<string> label := name, DialogType = "LabelText";
+		}
+		unit<uint32> Scenarios_HGL : nrofrows = 1
+		{
+			attribute<string> name : ['HGL_Combinatie_s1abs2ad'];
 			attribute<string> label := name, DialogType = "LabelText";
 		}
 		
@@ -120,6 +127,17 @@ container MultiStrategieResult
 			attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
 			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
 		}
+		unit<uint8> HGL_Scenario1_strategie := subset(
+														   id(VestaVarianten) == VestaVarianten/V/S1a_B_LuchtWP
+														|| id(VestaVarianten) == VestaVarianten/V/S1b_B_BodemWP 
+														
+														|| id(VestaVarianten) == VestaVarianten/V/S2a_B_Restwarmte 
+														|| id(VestaVarianten) == VestaVarianten/V/S2d_D_Restwarmte 
+													)
+		{ 
+			attribute<string> name  := VestaVarianten/VariantNaam[nr_OrgEntity];
+			attribute<string> label := VestaVarianten/label[nr_OrgEntity], DialogType = "LabelText";
+		}
 		
 	}
 	
@@ -142,6 +160,11 @@ container MultiStrategieResult
 			for_each_ne(
 				Impl/Scenarios_GV/name
 				, 'MultiStrategieResult_perScenarioT('+quote(Impl/Scenarios_GV/name)+')'
+			);
+		container PerSccenario_HGL := 
+			for_each_ne(
+				Impl/Scenarios_HGL/name
+				, 'MultiStrategieResult_perScenarioT('+quote(Impl/Scenarios_HGL/name)+')'
 			);
 	}
 	
@@ -177,6 +200,8 @@ container MultiStrategieResult
 			unit<uint8> RESNoordHollandZuid_Scenario_strategie      := Havenstad_Scenario_strategie;
 			unit<uint8> GooiEnVechtstreek_Scenario_strategie        := =Scenario == 'GV_1_SA' ? 'Impl/GV_Scenario12_strategie' : Scenario == 'GV_2_Check' ? 'Impl/GV_Scenario12_strategie' : Scenario == 'GV_3_GeenGroenGas' ? 'Impl/GV_Scenario3_strategie' : Scenario == 'GV_4_LabelB' ? 'Impl/GV_Scenario4_strategie' : '';
 			unit<uint8> RESGooienVechtstreek_Scenario_strategie     := GooiEnVechtstreek_Scenario_strategie;
+			unit<uint8> Hengelo_Scenario_strategie                  := =Scenario == 'HGL_Combinatie_s1abs2ad' ? 'Impl/HGL_Scenario1_strategie' : '';
+			unit<uint8> RESTwente_Scenario_strategie                := Hengelo_Scenario_strategie;
 			
 			unit<uint8> Scenario_Strategie := =StudyArea+'_Scenario_strategie';
 			

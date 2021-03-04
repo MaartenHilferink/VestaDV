@@ -122,6 +122,15 @@ unit<uint32> Buurt:
 		}
 		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
 	}
+	unit<uint32> Subset_RESTwente := subset(Energieregio_rel == Energieregio/V/RESTwente)
+	{
+		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity]
+		{
+			parameter<uint32> PenColor   := rgb(100,100,100), DialogType = "PenColor";
+			parameter<int16>  PenWidth   := 1s          , DialogType = "PenWidth";
+		}
+		attribute<string>    BU_CODE         := ../BU_CODE[nr_OrgEntity];
+	}
 	unit<uint32> Subset_Hengelo := ='subset('+AsList('GM_CODE == '+quote(LeidraadResultaten/Exports/Settings/selected_Hengelo/Values), ' || ')+')'
 	{
 		attribute<rdc_meter> geometry (poly) := ../geometry[nr_OrgEntity]
