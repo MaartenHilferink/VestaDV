@@ -20,6 +20,13 @@ set EXPORT_PATH=LeidraadResultaten/Exports/ESDL/Generate_PerPlanRegio_All_metRES
 set STUDIEGEBIED=GooienVechtstreek
 
 REM ========== GOOI EN VECHTSTREEK SCENARIOS ==========
+ 
+REM Strategieen voor 4_LabelB
+set FLIPSTATUS=FALSE
+set SCENARIO=GV_4_LabelB
+ "%exe_path%" "%prj_dir%\Runs\S2a_B_Restwarmte.dms" "%EXPORT_PATH%"
+
+pause Ready
 
 REM Strategieen voor GV_1_SA
 set FLIPSTATUS=TRUE
@@ -45,7 +52,7 @@ set SCENARIO=GV_1_SA
  "%exe_path%" "%prj_dir%\Runs\S4b_GG_B_HR.dms" "%EXPORT_PATH%" 
  "%exe_path%" "%prj_dir%\Runs\S4c_GG_D_hWP.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S4d_GG_D_HR.dms" "%EXPORT_PATH%"
- 
+
 REM Strategieen voor GV_2_Check
 set FLIPSTATUS=TRUE
 set SCENARIO=GV_2_Check
@@ -97,9 +104,6 @@ set SCENARIO=GV_4_LabelB
  "%exe_path%" "%prj_dir%\Runs\S1a_B_LuchtWP.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S1b_B_BodemWP.dms" "%EXPORT_PATH%"
 
- "%exe_path%" "%prj_dir%\Runs\S1a_B_LuchtWP.dms" "%EXPORT_PATH%"
- "%exe_path%" "%prj_dir%\Runs\S1b_B_BodemWP.dms" "%EXPORT_PATH%"
-
  "%exe_path%" "%prj_dir%\Runs\S2a_B_Restwarmte.dms" "%EXPORT_PATH%"
  "%exe_path%" "%prj_dir%\Runs\S2b_B_Geo_contour.dms" "%EXPORT_PATH%"
 
@@ -113,7 +117,8 @@ set SCENARIO=GV_4_LabelB
  "%exe_path%" "%prj_dir%\Runs\S4b_GG_B_HR.dms" "%EXPORT_PATH%" 
 
 
-pause Ready
+
+
 
 REM ========== Volledige lijst met strategieen ==========
  "%exe_path%" "%prj_dir%\Runs\S0_Referentie.dms" "%EXPORT_PATH%"
