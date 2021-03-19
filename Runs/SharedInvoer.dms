@@ -14,14 +14,14 @@
 container SharedInvoer
 {   
 	parameter<string> StudieGebied_config  : ['Havenstad']; // 'NL' 'Havenstad' 'Hengelo' 'GooienVechtstreek' 
-	parameter<string> FlipStatus_config    : ['FALSE']; // FALSE TRUE
+	parameter<string> FlipStatus_config    : ['TRUE']; // FALSE TRUE
 	
 	//SCENARIO SETTINGS:
 		// Geen scenarios                'LosseStrategieen' 
 		// Gooi en Vechtstreek scenarios 'GV_1_SA' 'GV_2_Check' 'GV_3_GeenGroenGas' 'GV_4_LabelB' 
 		// Havenstad scenarios           'AMS_1_AllesGas' 'AMS_2_AllesNaturel' 'AMS_3_HavenstadAllElectric'
 		// Hengelo scenarios             'HGL_Combinatie_s1abs2ad'
-	parameter<string> Scenario_config : ['AMS_1_AllesGas']; 
+	parameter<string> Scenario_config : ['AMS_3_HavenstadAllElectric']; 
 
 
 	parameter<string> StudieGebied_cmd_setting := Expand(., '%env:STUDIEGEBIED%'); 

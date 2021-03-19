@@ -431,7 +431,7 @@ container MultiStrategieResult
 					, replace('argmin(0i/0i,'+AsItemList('ReadData/Read_CSVs_perVariant/'+(Settings/Scenario_strategie/name)+'/J@RJ@/IsRelevant ? ReadData/Read_CSVs_perVariant/'+(Settings/Scenario_strategie/name)+'/J@RJ@/Nat_Meerkosten : 0i/0i')+')[Settings/Scenario_strategie_NoData]','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, Settings/Scenario_strategie_NoData
-				);
+				), FreeData = "False";
 				
 			container NationaleMeerKosten_vanBeste := 
 				for_each_nedv(
@@ -439,7 +439,7 @@ container MultiStrategieResult
 					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie/name+'/J@RJ@/Nat_Meerkosten)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
-				);
+				), FreeData = "False";
 				
 			container CO2Uitstoot_vanBeste := 
 				for_each_nedv(
@@ -447,7 +447,7 @@ container MultiStrategieResult
 					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie/name+'/J@RJ@/CO2_uitstoot)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
-				);
+				), FreeData = "False";
 				
 			container Elekvraag_vanBeste := 
 				for_each_nedv(
@@ -455,14 +455,14 @@ container MultiStrategieResult
 					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie/name+'/J@RJ@/Elektriciteitsvraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
-				);
+				), FreeData = "False";
 			container Warmtevraag_vanBeste := 
 				for_each_nedv(
 					RekenJaar/name
 					, replace('switch('+AsList('case(Strategie_obv_Laagste_Nat_Meerkosten/J@RJ@ == Settings/Scenario_strategie_NoData/v/'+Settings/Scenario_strategie/name+', ReadData/Read_CSVs_perVariant/'+Settings/Scenario_strategie/name+'/J@RJ@/Warmtevraag)', ',')+', 0i/0i)','@RJ@', string(RekenJaar/values))
 					, Buurt
 					, int32
-				);
+				), FreeData = "False";
 		}
 		
 		container Output
